@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LX Index</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Tajawal:wght@400;500;700&family=Readex+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<style>
+:root {
+--app-bg: #f1f5f9;
+--panel-bg: #ffffff;
+--panel-bd: #e2e8f0;
+--text-main: #0f172a;
+--accent: #2563eb;
+--accent-hover: #1d4ed8;
+--row-odd: #f8fafc;
+--row-even: #ffffff;
+--text-col: #0f172a;
+--font-family: 'Inter', system-ui, sans-serif;
+--font-size: 13px;
+--font-weight: 400;
+
+
+--out-bd-w: 2px;
+--out-bd-s: solid;
+--out-bd-c: #94a3b8;
+--out-rad: 12px;
+
+--in-h-w: 1px;
+--in-h-s: solid;
+--in-h-c: #e2e8f0;
+--in-v-w: 1px;
+--in-v-s: solid;
+--in-v-c: #e2e8f0;
+
+--div-bd-w: 2px;
+--div-bd-s: solid;
+--div-bd-c: #64748b;
+
+--cell-pad: 0 4px;
+--page-pad: 8mm;
+}
+
+{ box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+
+body { display: flex; height: 100vh; background: var(--app-bg); color: var(--text-main); overflow: hidden; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+#sidebar { width: 380px; background: var(--panel-bg); display: flex; flex-direction: column; border-right: 1px solid var(--panel-bd); z-index: 10; flex-shrink: 0; box-shadow: 4px 0 15px rgba(0,0,0,0.03); }
+
+.header { padding: 20px; border-bottom: 1px solid var(--panel-bd); display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); position: sticky; top: 0; z-index: 20; }
+.header h1 { font-size: 18px; font-weight: 700; color: #0f172a; letter-spacing: -0.5px; }
+
+.status-badge { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; color: #64748b; }
+.status-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; }
+
+.scroll-area { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+
+.panel { border: 1px solid var(--panel-bd); border-radius: 8px; padding: 16px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: opacity 0.2s; }
+.panel.disabled { opacity: 0.4; pointer-events: none; }
+
+.panel-title { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+
+.ctrl-group { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.ctrl-group:last-child { margin-bottom: 0; }
+.ctrl-label { font-size: 13px; font-weight: 500; color: #334155; }
+
+.unified-color-input { display: flex; align-items: center; border: 1px solid #cbd5e1; border-radius: 6px; padding: 4px; background: #fff; width: 130px; transition: 0.2s; }
+.unified-color-input:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1); }
+.unified-color-input .hash { color: #94a3b8; font-family: 'JetBrains Mono', monospace; font-size: 13px; padding-left: 6px; user-select: none; }
+.unified-color-input input[type="text"] { border: none; outline: none; width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; color: #334155; padding: 0 6px; background: transparent; }
+.unified-color-input input[type="color"] { width: 24px; height: 24px; padding: 0; border: none; border-radius: 4px; cursor: pointer; background: transparent; flex-shrink: 0; }
+.unified-color-input input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+.unified-color-input input[type="color"]::-webkit-color-swatch { border: 1px solid #cbd5e1; border-radius: 4px; }
+
+input[type="range"] { width: 100px; accent-color: var(--accent); cursor: pointer; }
+
+select { width: 100%; background: #ffffff; border: 1px solid #cbd5e1; color: #0f172a; padding: 8px 10px; border-radius: 6px; font-size: 13px; outline: none; cursor: pointer; }
+select:focus { border-color: var(--accent); }
+select.mini { width: 120px; padding: 6px; font-size: 12px; }
+input[type="number"] { outline: none; transition: 0.2s; }
+input[type="number"]:focus { border-color: var(--accent); }
+
+.btn { width: 100%; padding: 10px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 6px rgba(37,99,235,0.2); }
+.btn-secondary { background: #ffffff; color: #334155; border: 1px solid #cbd5e1; }
+.btn-secondary:hover { background: #f8fafc; border-color: #94a3b8; }
+.btn-danger { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+.btn-danger:hover { background: #fecaca; }
+.btn-icon { width: 32px; height: 32px; padding: 0; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; transition: 0.1s; }
+.btn-icon:hover { background: #f1f5f9; }
+.btn-icon.active { background: #e0e7ff; border-color: var(--accent); color: var(--accent); }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.toolbar-row { display: flex; gap: 6px; align-items: center; }
+
+.file-wrap { position: relative; overflow: hidden; display: block; }
+.file-wrap input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
+
+.theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.theme-grid.full { grid-template-columns: 1fr; }
+.theme-box { border: 1px solid #cbd5e1; padding: 10px; border-radius: 6px; cursor: pointer; transition: 0.2s; background: #f8fafc; text-align: center; }
+.theme-box:hover { border-color: var(--accent); background: #eff6ff; }
+.theme-box.active { border-color: var(--accent); background: #eff6ff; font-weight: 600; }
+.theme-name { font-size: 12px; color: #0f172a; margin-bottom: 2px; }
+.theme-desc { font-size: 10px; color: #64748b; font-weight: 400; }
+
+.contrast-badge { font-size: 10px; padding: 4px 8px; border-radius: 12px; font-weight: 600; }
+.c-pass { background: #dcfce7; color: #166534; }
+.c-fail { background: #fee2e2; color: #991b1b; }
+
+.divider { height: 1px; background: var(--panel-bd); margin: 16px 0; }
+
+#workspace { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; position: relative; }
+
+.page-wrapper { width: 210mm; height: 297mm; background: white; box-shadow: 0 20px 40px rgba(0,0,0,0.1); padding: var(--page-pad); flex-shrink: 0; box-sizing: border-box; position: relative; transition: all 0.2s; }
+
+.table-container { width: 100%; height: 100%; border-width: var(--out-bd-w); border-style: var(--out-bd-s); border-color: var(--out-bd-c); border-radius: var(--out-rad); overflow: hidden; box-sizing: border-box; }
+
+table.lx-index { width: 100%; height: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; background: var(--row-even); }
+table.lx-index tr { height: calc(100% / 50); }
+table.lx-index tr:nth-child(odd) { background-color: var(--row-odd); }
+
+table.lx-index td {
+padding: var(--cell-pad);
+font-family: var(--font-family);
+font-size: var(--font-size);
+font-weight: var(--font-weight);
+color: var(--text-col);
+border-bottom-width: var(--in-h-w);
+border-bottom-style: var(--in-h-s);
+border-bottom-color: var(--in-h-c);
+border-right-width: var(--in-v-w);
+border-right-style: var(--in-v-s);
+border-right-color: var(--in-v-c);
+white-space: nowrap;
+overflow: hidden;
+line-height: 1.2;
+vertical-align: middle;
+}
+
+table.lx-index tr:last-child td { border-bottom: none; }
+table.lx-index td:last-child { border-right: none !important; }
+table.lx-index td:nth-child(odd) {
+width: 24px;
+text-align: right;
+padding-right: 4px;
+padding-left: 0;
+font-weight: 600;
+opacity: 0.5;
+user-select: none;
+font-size: 11px;
+}
+
+table.lx-index td:nth-child(even) { outline: none; cursor: text; transition: background 0.1s, box-shadow 0.1s; position: relative; }
+table.lx-index td:nth-child(even):focus { background: #fff8dc; box-shadow: inset 0 0 0 2px var(--accent); border-radius: 2px; z-index: 5; }
+
+table.lx-index td:nth-child(2), table.lx-index td:nth-child(4), table.lx-index td:nth-child(6) {
+border-right-width: var(--div-bd-w); border-right-style: var(--div-bd-s); border-right-color: var(--div-bd-c);
+}
+
+.dup-warn { background-image: linear-gradient(135deg, transparent 85%, #fca5a5 85%, #ef4444 100%) !important; }
+
+#toast { position: fixed; bottom: 24px; right: 24px; background: #1e293b; color: white; padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 500; box-shadow: 0 10px 15px rgba(0,0,0,0.1); opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; z-index: 50; }
+#toast.show { opacity: 1; transform: translateY(0); }
+
+@media print {
+@page { size: A4 portrait; margin: 0; }
+body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; display: block; overflow: hidden; }
+#sidebar, #toast { display: none !important; }
+#workspace { padding: 0; display: block; overflow: hidden; background: none; }
+.page-wrapper { box-shadow: none; margin: 0; width: 210mm; height: 297mm; page-break-after: avoid; page-break-before: avoid; transform: none; }
+}
+</style>
+
+</head>
+<body>
+<aside id="sidebar">
+<div class="header">
+<h1>LX Index</h1>
+<div class="status-badge"><span class="status-dot" id="save-dot"></span>Saved</div>
+</div>
+<div class="scroll-area">
+<div class="panel">
+<div class="panel-title">1. Data Management</div>
+<div class="grid-2" style="margin-bottom: 8px;">
+<div class="file-wrap">
+<button class="btn btn-secondary">📂 Import Data</button>
+<input type="file" id="fileUpload" accept=".xlsx, .xls, .csv">
+</div>
+<button class="btn btn-danger" onclick="clearData()">🗑️ Clear All</button>
+</div>
+<button class="btn btn-secondary" onclick="downloadTemplate()">📥 Blank Template</button>
+</div>
+<div class="panel disabled" id="cell-panel">
+        <div class="panel-title" id="cell-panel-title" style="color:var(--accent);">★ Selected Cell Override</div>
+        
+        <div class="ctrl-group">
+            <span class="ctrl-label">Font Style</span>
+            <div class="toolbar-row">
+                <button class="btn-icon" id="btn-bold" onmousedown="event.preventDefault(); toggleStyle('bold')">B</button>
+                <button class="btn-icon" id="btn-italic" onmousedown="event.preventDefault(); toggleStyle('italic')">I</button>
+                <button class="btn-icon" id="btn-under" onmousedown="event.preventDefault(); toggleStyle('underline')">U</button>
+            </div>
+        </div>
+
+        <div class="ctrl-group">
+            <span class="ctrl-label">Specific Size</span>
+            <div style="display:flex; gap:6px;">
+                <select id="cell-size" style="width:70px; padding:4px;" onchange="applyCellSize()">
+                    <option value="">Auto</option>
+                    <option value="9px">9px</option>
+                    <option value="10px">10px</option>
+                    <option value="11px">11px</option>
+                    <option value="12px">12px</option>
+                    <option value="13px">13px</option>
+                    <option value="14px">14px</option>
+                    <option value="15px">15px</option>
+                    <option value="16px">16px</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="ctrl-group">
+            <span class="ctrl-label">Specific Color</span>
+            <div class="unified-color-input" style="width: 100px;">
+                <span class="hash">#</span>
+                <input type="text" id="cell-hex" maxlength="6" oninput="syncCellHex()" placeholder="Auto">
+                <input type="color" id="cell-color" oninput="syncCellCol()">
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:12px;">
+            <button class="btn btn-secondary" onmousedown="event.preventDefault(); copyFormat()">📋 Copy Style</button>
+            <button class="btn btn-secondary" onmousedown="event.preventDefault(); pasteFormat()">🖌️ Paste</button>
+        </div>
+        <button class="btn btn-secondary" style="margin-top:8px;" onclick="clearCellFormat()">🧹 Clear Override</button>
+    </div>
+
+    <div class="panel">
+        <div class="panel-title">2. Global Themes</div>
+        <div class="theme-grid">
+            <div class="theme-box active" id="theme-modern" onclick="applyStyle('modern')">
+                <div class="theme-name">Modern</div>
+                <div class="theme-desc">Soft & Rounded</div>
+            </div>
+            <div class="theme-box" id="theme-classic" onclick="applyStyle('classic')">
+                <div class="theme-name">Classic</div>
+                <div class="theme-desc">Sharp Grid</div>
+            </div>
+            <div class="theme-box" id="theme-ledger" onclick="applyStyle('ledger')">
+                <div class="theme-name">Ledger</div>
+                <div class="theme-desc">Accounting Look</div>
+            </div>
+            <div class="theme-box" id="theme-bleed" onclick="applyStyle('bleed')">
+                <div class="theme-name">Full Bleed</div>
+                <div class="theme-desc">Maximum Space</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-title">
+            3. Global Typography & Colors
+            <span id="contrast-badge" class="contrast-badge c-pass">Good</span>
+        </div>
+        
+        <div class="ctrl-group">
+            <span class="ctrl-label">Font Family</span>
+            <select id="f-family" class="mini" onchange="updateCSS(); saveSettings()">
+                <option value="'Inter', system-ui, sans-serif">Inter (Sans)</option>
+                <option value="system-ui, -apple-system, sans-serif">System Default</option>
+                <option value="'Tajawal', sans-serif">Tajawal (Arabic)</option>
+                <option value="'Readex Pro', sans-serif">Readex (Arabic)</option>
+                <option value="Arial, Helvetica, sans-serif">Arial (Sans)</option>
+                <option value="'Lora', Georgia, serif">Lora (Serif)</option>
+                <option value="'JetBrains Mono', monospace">Mono (Code)</option>
+            </select>
+        </div>
+        
+        <div class="ctrl-group">
+            <span class="ctrl-label">Base Size & Wt.</span>
+            <div style="display:flex; align-items:center; gap:6px;">
+                <select id="f-weight" style="width: 70px; padding: 4px;" onchange="updateCSS(); saveSettings()">
+                    <option value="400">Norm</option>
+                    <option value="500">Med</option>
+                    <option value="600">Bold</option>
+                </select>
+                <input type="range" id="f-size" min="9" max="16" value="13" style="width: 70px;" oninput="updateCSS(); updateSizeLabel();" onchange="saveSettings()">
+                <span id="f-size-lbl" style="font-size:11px; width:26px; text-align:right;">13px</span>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="ctrl-group">
+            <span class="ctrl-label">Odd Row Base</span>
+            <div class="unified-color-input">
+                <span class="hash">#</span>
+                <input type="text" id="hex-odd" value="f8fafc" maxlength="6" oninput="syncHex('odd')" onblur="saveSettings()">
+                <input type="color" id="c-odd" value="#f8fafc" oninput="syncCol('odd')" onchange="saveSettings()">
+            </div>
+        </div>
+
+        <div class="ctrl-group" style="margin-top:12px;">
+            <span class="ctrl-label">Even Row Base</span>
+            <div class="unified-color-input">
+                <span class="hash">#</span>
+                <input type="text" id="hex-even" value="ffffff" maxlength="6" oninput="syncHex('even')" onblur="saveSettings()">
+                <input type="color" id="c-even" value="#ffffff" oninput="syncCol('even')" onchange="saveSettings()">
+            </div>
+        </div>
+
+        <div class="ctrl-group" style="margin-top:12px;">
+            <span class="ctrl-label">Text Color</span>
+            <div class="unified-color-input">
+                <span class="hash">#</span>
+                <input type="text" id="hex-text" value="0f172a" maxlength="6" oninput="syncHex('text')" onblur="saveSettings()">
+                <input type="color" id="c-text" value="#0f172a" oninput="syncCol('text')" onchange="saveSettings()">
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-title">4. Layout & Grid Control</div>
+        
+        <div class="ctrl-group">
+            <span class="ctrl-label">Page Margin</span>
+            <select id="p-margin" style="width:120px; padding:4px;" onchange="updateCSS(); saveSettings()">
+                <option value="0mm">None (0mm)</option>
+                <option value="4mm">Tight (4mm)</option>
+                <option value="8mm">Standard (8mm)</option>
+                <option value="12mm">Wide (12mm)</option>
+            </select>
+        </div>
+
+        <div class="ctrl-group">
+            <span class="ctrl-label">Outer Radius</span>
+            <input type="range" id="b-rad" min="0" max="20" value="12" oninput="updateCSS()" onchange="saveSettings()">
+        </div>
+        
+        <div class="ctrl-group">
+            <span class="ctrl-label">Outer Line</span>
+            <div style="display:flex; gap:6px;">
+                <select id="b-out-s" style="width:70px; padding:4px;" onchange="updateCSS(); saveSettings()">
+                    <option value="solid">Solid</option>
+                    <option value="dashed">Dashed</option>
+                </select>
+                <input type="number" id="b-out-w" min="0" max="8" value="2" style="width:40px; text-align:center; border:1px solid #cbd5e1; border-radius:4px;" oninput="updateCSS()" onchange="saveSettings()">
+            </div>
+        </div>
+        <div class="ctrl-group">
+            <span class="ctrl-label">Outer Color</span>
+            <input type="color" id="b-out-c" value="#94a3b8" oninput="updateCSS()" onchange="saveSettings()">
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="ctrl-group">
+            <span class="ctrl-label">Row Line (H)</span>
+            <input type="range" id="b-in-hw" min="0" max="3" value="1" oninput="updateCSS()" onchange="saveSettings()">
+        </div>
+        <div class="ctrl-group">
+            <span class="ctrl-label">Cell Line (V)</span>
+            <input type="range" id="b-in-vw" min="0" max="3" value="1" oninput="updateCSS()" onchange="saveSettings()">
+        </div>
+        <div class="ctrl-group">
+            <span class="ctrl-label">Inner Grid Color</span>
+            <input type="color" id="b-in-c" value="#e2e8f0" oninput="updateCSS()" onchange="saveSettings()">
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="ctrl-group">
+            <span class="ctrl-label">Column Divider</span>
+            <div style="display:flex; gap:6px;">
+                <select id="b-div-s" style="width:70px; padding:4px;" onchange="updateCSS(); saveSettings()">
+                    <option value="solid">Solid</option>
+                    <option value="dashed">Dashed</option>
+                    <option value="double">Double</option>
+                </select>
+                <input type="number" id="b-div-w" min="0" max="6" value="2" style="width:40px; text-align:center; border:1px solid #cbd5e1; border-radius:4px;" oninput="updateCSS()" onchange="saveSettings()">
+            </div>
+        </div>
+        <div class="ctrl-group">
+            <span class="ctrl-label">Divider Color</span>
+            <input type="color" id="b-div-c" value="#64748b" oninput="updateCSS()" onchange="saveSettings()">
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-title">5. Export & Print</div>
+        <div class="grid-2">
+            <button class="btn btn-secondary" onclick="exportCSV()">💾 Save Data</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ Print PDF</button>
+        </div>
+    </div>
+    
+</div>
+</aside>
+
+<main id="workspace">
+<div class="page-wrapper">
+<div class="table-container" id="page-container"></div>
+</div>
+</main>
+
+<div id="toast">Notification</div>
+
+<script>
+let appData = {};
+let appStyles = {};
+let saveTimeout;
+let dupTimeout;
+let activeCellId = null;
+let clipboardFormat = null;
+let dupWarned = false;
+
+const themeDefs = {
+modern: { f: "'Inter', system-ui, sans-serif", fw: "400", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "12", ow: "2", os: "solid", oc: "#cbd5e1", ihw: "1", ivw: "0", ic: "#f1f5f9", dw: "2", ds: "solid", dc: "#94a3b8", pm: "8mm" },
+classic: { f: "Arial, Helvetica, sans-serif", fw: "400", fz: "12", ro: "f3f4f6", re: "ffffff", tx: "000000", orad: "0", ow: "1", os: "solid", oc: "#000000", ihw: "1", ivw: "1", ic: "#000000", dw: "2", ds: "solid", dc: "#000000", pm: "8mm" },
+ledger: { f: "'Lora', Georgia, serif", fw: "400", fz: "13", ro: "f0fdf4", re: "ffffff", tx: "1e293b", orad: "0", ow: "1", os: "solid", oc: "#94a3b8", ihw: "1", ivw: "1", ic: "#cbd5e1", dw: "3", ds: "double", dc: "#64748b", pm: "8mm" },
+bleed: { f: "system-ui, -apple-system, sans-serif", fw: "500", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "0", ow: "0", os: "solid", oc: "#ffffff", ihw: "1", ivw: "1", ic: "#e2e8f0", dw: "2", ds: "solid", dc: "#94a3b8", pm: "0mm" }
+};
+
+document.getElementById('fileUpload').addEventListener('change', handleFileUpload);
+document.addEventListener('mousedown', (e) => {
+if(e.target.id === 'workspace' || e.target.classList.contains('page-wrapper')) {
+disableCellPanel();
+}
+});
+
+window.onload = () => {
+loadFromLocal();
+if (Object.keys(appData).length === 0) loadDemoData();
+if (!loadSettings()) applyStyle('modern');
+renderPage();
+};
+
+function showToast(msg) {
+const t = document.getElementById('toast');
+t.textContent = msg;
+t.classList.add('show');
+setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function triggerAutoSave() {
+const dot = document.getElementById('save-dot');
+dot.style.background = '#f59e0b';
+dot.style.boxShadow = '0 0 8px #f59e0b';
+
+clearTimeout(saveTimeout);
+saveTimeout = setTimeout(() => {
+localStorage.setItem('lx_data_ul_v3', JSON.stringify(appData));
+localStorage.setItem('lx_style_ul_v3', JSON.stringify(appStyles));
+dot.style.background = '#22c55e';
+dot.style.boxShadow = '0 0 8px #22c55e';
+checkDuplicates();
+}, 600);
+}
+
+function checkDuplicates() {
+let counts = {};
+document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => {
+td.classList.remove('dup-warn');
+let txt = td.textContent.trim().toLowerCase();
+if(txt) {
+if(!counts[txt]) counts[txt] = [];
+counts[txt].push(td);
+}
+});
+
+let dupFound = false;
+for(let k in counts) {
+if(counts[k].length > 1) {
+dupFound = true;
+counts[k].forEach(td => td.classList.add('dup-warn'));
+}
+}
+
+if(dupFound && !dupWarned) {
+showToast("Duplicate values detected");
+dupWarned = true;
+}
+}
+
+function saveSettings() {
+const s = {
+f: document.getElementById('f-family').value,
+fw: document.getElementById('f-weight').value,
+fz: document.getElementById('f-size').value,
+ro: document.getElementById('hex-odd').value,
+re: document.getElementById('hex-even').value,
+tx: document.getElementById('hex-text').value,
+orad: document.getElementById('b-rad').value,
+ow: document.getElementById('b-out-w').value,
+os: document.getElementById('b-out-s').value,
+oc: document.getElementById('b-out-c').value,
+ihw: document.getElementById('b-in-hw').value,
+ivw: document.getElementById('b-in-vw').value,
+ic: document.getElementById('b-in-c').value,
+dw: document.getElementById('b-div-w').value,
+ds: document.getElementById('b-div-s').value,
+dc: document.getElementById('b-div-c').value,
+pm: document.getElementById('p-margin').value
+};
+localStorage.setItem('lx_settings_ul_v3', JSON.stringify(s));
+updateCSS();
+}
+
+function loadSettings() {
+const saved = localStorage.getItem('lx_settings_ul_v3');
+if (!saved) return false;
+const s = JSON.parse(saved);
+
+document.getElementById('f-family').value = s.f;
+document.getElementById('f-weight').value = s.fw;
+document.getElementById('f-size').value = s.fz;
+
+document.getElementById('hex-odd').value = s.ro; document.getElementById('c-odd').value = '#' + s.ro;
+document.getElementById('hex-even').value = s.re; document.getElementById('c-even').value = '#' + s.re;
+document.getElementById('hex-text').value = s.tx; document.getElementById('c-text').value = '#' + s.tx;
+
+document.getElementById('b-rad').value = s.orad;
+document.getElementById('b-out-w').value = s.ow;
+document.getElementById('b-out-s').value = s.os;
+document.getElementById('b-out-c').value = s.oc;
+
+document.getElementById('b-in-hw').value = s.ihw;
+document.getElementById('b-in-vw').value = s.ivw;
+document.getElementById('b-in-c').value = s.ic;
+
+document.getElementById('b-div-w').value = s.dw;
+document.getElementById('b-div-s').value = s.ds;
+document.getElementById('b-div-c').value = s.dc;
+document.getElementById('p-margin').value = s.pm || "8mm";
+
+updateSizeLabel();
+updateCSS();
+return true;
+}
+
+function loadFromLocal() {
+const d = localStorage.getItem('lx_data_ul_v3');
+const st = localStorage.getItem('lx_style_ul_v3');
+if(d && d !== "{}") appData = JSON.parse(d);
+if(st && st !== "{}") appStyles = JSON.parse(st);
+}
+
+function clearData() {
+if(confirm("Clear all data and formatting?")) {
+appData = {};
+appStyles = {};
+localStorage.removeItem('lx_data_ul_v3');
+localStorage.removeItem('lx_style_ul_v3');
+renderPage();
+showToast("Cleared successfully");
+}
+}
+
+function handleKey(e, r, c) {
+if (['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
+e.preventDefault();
+const tbl = document.querySelector('.lx-index');
+let trg = r;
+if (e.key === 'ArrowUp' && r > 1) trg--;
+if ((e.key === 'ArrowDown' || e.key === 'Enter') && r < 50) trg++;
+if (trg !== r) {
+const td = tbl.children[trg - 1].children[(c * 2) + 1];
+if (td) td.focus();
+}
+}
+}
+
+function applyCellDomStyle(td, id) {
+let s = appStyles[id];
+if(!s) {
+td.style.removeProperty('font-weight');
+td.style.removeProperty('font-style');
+td.style.removeProperty('text-decoration');
+td.style.removeProperty('color');
+td.dataset.cSize = '';
+return;
+}
+if(s.b) td.style.setProperty('font-weight', '700', 'important'); else td.style.removeProperty('font-weight');
+if(s.i) td.style.setProperty('font-style', 'italic', 'important'); else td.style.removeProperty('font-style');
+if(s.u) td.style.setProperty('text-decoration', 'underline', 'important'); else td.style.removeProperty('text-decoration');
+if(s.c) td.style.setProperty('color', s.c, 'important'); else td.style.removeProperty('color');
+
+td.dataset.cSize = s.s || '';
+}
+
+function autoFitText(el) {
+if(el.dataset.cSize) {
+el.style.setProperty('font-size', el.dataset.cSize, 'important');
+el.style.letterSpacing = 'normal';
+return;
+}
+
+el.style.removeProperty('font-size');
+el.style.letterSpacing = 'normal';
+let baseSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size'));
+let maxW = el.clientWidth - 8;
+
+if (el.scrollWidth > maxW && maxW > 0) {
+let ratio = maxW / el.scrollWidth;
+let newSize = Math.max(9, baseSize * ratio);
+el.style.setProperty('font-size', newSize + 'px', 'important');
+if(newSize <= 9) el.style.letterSpacing = '-0.5px';
+}
+}
+
+function renderPage() {
+const cont = document.getElementById('page-container');
+cont.innerHTML = '';
+const tbl = document.createElement('table');
+tbl.className = 'lx-index';
+
+for (let r = 1; r <= 50; r++) {
+const tr = document.createElement('tr');
+for (let c = 0; c < 4; c++) {
+const id = (c * 50) + r;
+
+const tdId = document.createElement('td');
+tdId.textContent = id;
+
+const tdVal = document.createElement('td');
+tdVal.contentEditable = "true";
+tdVal.setAttribute("dir", "auto");
+tdVal.dataset.id = id;
+
+let val = appData[id] || "";
+tdVal.innerHTML = val;
+
+applyCellDomStyle(tdVal, id);
+
+tdVal.addEventListener('focus', () => activateCell(id, tdVal));
+
+tdVal.addEventListener('input', (e) => {
+const v = e.target.innerHTML.trim();
+if(v && v !== '<br>') appData[id] = v; else delete appData[id];
+autoFitText(e.target);
+triggerAutoSave();
+});
+
+tdVal.addEventListener('paste', (e) => {
+e.preventDefault();
+let text = (e.originalEvent || e).clipboardData.getData('text/plain');
+document.execCommand('insertText', false, text);
+autoFitText(e.target);
+});
+
+tdVal.addEventListener('keydown', (e) => handleKey(e, r, c));
+
+tr.appendChild(tdId);
+tr.appendChild(tdVal);
+}
+tbl.appendChild(tr);
+}
+cont.appendChild(tbl);
+
+setTimeout(() => {
+document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => autoFitText(td));
+checkDuplicates();
+}, 50);
+}
+
+function activateCell(id, td) {
+activeCellId = id;
+document.getElementById('cell-panel').classList.remove('disabled');
+document.getElementById('cell-panel-title').innerHTML = `★ Cell Override <span style="color:#64748b; font-size:10px;">(ID: ${id})</span>`;
+let s = appStyles[id] || {};
+
+document.getElementById('btn-bold').classList.toggle('active', !!s.b);
+document.getElementById('btn-italic').classList.toggle('active', !!s.i);
+document.getElementById('btn-under').classList.toggle('active', !!s.u);
+
+document.getElementById('cell-size').value = s.s || "";
+
+if(s.c) {
+document.getElementById('cell-hex').value = s.c.replace('#','');
+document.getElementById('cell-color').value = s.c;
+} else {
+document.getElementById('cell-hex').value = "";
+document.getElementById('cell-color').value = "#000000";
+}
+}
+
+function disableCellPanel() {
+document.getElementById('cell-panel').classList.add('disabled');
+document.getElementById('cell-panel-title').innerHTML = `★ Selected Cell Override`;
+activeCellId = null;
+}
+
+function toggleStyle(prop) {
+if(!activeCellId) return;
+if(!appStyles[activeCellId]) appStyles[activeCellId] = {};
+
+let s = appStyles[activeCellId];
+if(prop === 'bold') s.b = !s.b;
+if(prop === 'italic') s.i = !s.i;
+if(prop === 'underline') s.u = !s.u;
+
+triggerAutoSave();
+let td = document.querySelector(`td[data-id="${activeCellId}"]`);
+if(td) {
+applyCellDomStyle(td, activeCellId);
+activateCell(activeCellId, td);
+autoFitText(td);
+}
+}
+
+function applyCellSize() {
+if(!activeCellId) return;
+if(!appStyles[activeCellId]) appStyles[activeCellId] = {};
+appStyles[activeCellId].s = document.getElementById('cell-size').value;
+triggerAutoSave();
+let td = document.querySelector(`td[data-id="${activeCellId}"]`);
+if(td) {
+applyCellDomStyle(td, activeCellId);
+autoFitText(td);
+}
+}
+
+function syncCellHex() {
+let h = document.getElementById('cell-hex').value.trim();
+if(!h) { updateCellColor(""); return; }
+if(/^[0-9A-F]{6}$/i.test(h)) {
+document.getElementById('cell-color').value = '#' + h;
+updateCellColor('#' + h);
+}
+}
+
+function syncCellCol() {
+let v = document.getElementById('cell-color').value;
+document.getElementById('cell-hex').value = v.replace('#', '');
+updateCellColor(v);
+}
+
+function updateCellColor(hex) {
+if(!activeCellId) return;
+if(!appStyles[activeCellId]) appStyles[activeCellId] = {};
+appStyles[activeCellId].c = hex;
+triggerAutoSave();
+let td = document.querySelector(`td[data-id="${activeCellId}"]`);
+if(td) applyCellDomStyle(td, activeCellId);
+}
+
+function copyFormat() {
+if(!activeCellId) return;
+clipboardFormat = appStyles[activeCellId] ? JSON.parse(JSON.stringify(appStyles[activeCellId])) : {};
+showToast("Style copied");
+}
+
+function pasteFormat() {
+if(!activeCellId || !clipboardFormat) return;
+appStyles[activeCellId] = JSON.parse(JSON.stringify(clipboardFormat));
+triggerAutoSave();
+let td = document.querySelector(`td[data-id="${activeCellId}"]`);
+if(td) {
+applyCellDomStyle(td, activeCellId);
+activateCell(activeCellId, td);
+autoFitText(td);
+}
+}
+
+function clearCellFormat() {
+if(!activeCellId) return;
+delete appStyles[activeCellId];
+triggerAutoSave();
+let td = document.querySelector(`td[data-id="${activeCellId}"]`);
+if(td) {
+applyCellDomStyle(td, activeCellId);
+activateCell(activeCellId, td);
+autoFitText(td);
+}
+}
+
+function syncCol(t) {
+document.getElementById(`hex-${t}`).value = document.getElementById(`c-${t}`).value.replace('#', '');
+updateCSS();
+}
+
+function syncHex(t) {
+let h = document.getElementById(`hex-${t}`).value.trim();
+if(/^[0-9A-F]{6}$/i.test(h)) {
+document.getElementById(`c-${t}`).value = '#' + h;
+updateCSS();
+}
+}
+
+function updateSizeLabel() {
+document.getElementById('f-size-lbl').textContent = document.getElementById('f-size').value + 'px';
+}
+
+function updateCSS() {
+const r = document.documentElement;
+
+r.style.setProperty('--font-family', document.getElementById('f-family').value);
+r.style.setProperty('--font-weight', document.getElementById('f-weight').value);
+r.style.setProperty('--font-size', document.getElementById('f-size').value + 'px');
+
+const bgO = document.getElementById('c-odd').value;
+const bgE = document.getElementById('c-even').value;
+const txt = document.getElementById('c-text').value;
+
+r.style.setProperty('--row-odd', bgO);
+r.style.setProperty('--row-even', bgE);
+r.style.setProperty('--text-col', txt);
+
+r.style.setProperty('--out-rad', document.getElementById('b-rad').value + 'px');
+r.style.setProperty('--out-bd-w', document.getElementById('b-out-w').value + 'px');
+r.style.setProperty('--out-bd-s', document.getElementById('b-out-s').value);
+r.style.setProperty('--out-bd-c', document.getElementById('b-out-c').value);
+
+r.style.setProperty('--in-h-w', document.getElementById('b-in-hw').value + 'px');
+r.style.setProperty('--in-v-w', document.getElementById('b-in-vw').value + 'px');
+r.style.setProperty('--in-h-c', document.getElementById('b-in-c').value);
+r.style.setProperty('--in-v-c', document.getElementById('b-in-c').value);
+
+r.style.setProperty('--div-bd-w', document.getElementById('b-div-w').value + 'px');
+r.style.setProperty('--div-bd-s', document.getElementById('b-div-s').value);
+r.style.setProperty('--div-bd-c', document.getElementById('b-div-c').value);
+
+r.style.setProperty('--page-pad', document.getElementById('p-margin').value);
+
+checkA11y(bgO, bgE, txt);
+document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => autoFitText(td));
+}
+
+function getLum(hex) {
+let rgb = parseInt(hex.slice(1), 16);
+let a = [(rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff].map(v => {
+v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+});
+return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+}
+
+function checkA11y(ho, he, ht) {
+let lt = getLum(ht), lo = getLum(ho), le = getLum(he);
+let ro = lo > lt ? ((lo + 0.05) / (lt + 0.05)) : ((lt + 0.05) / (lo + 0.05));
+let re = le > lt ? ((le + 0.05) / (lt + 0.05)) : ((lt + 0.05) / (le + 0.05));
+
+const b = document.getElementById('contrast-badge');
+if (ro < 4.5 || re < 4.5) {
+b.textContent = "Low Contrast";
+b.className = "contrast-badge c-fail";
+} else {
+b.textContent = "Good Contrast";
+b.className = "contrast-badge c-pass";
+}
+}
+
+function applyStyle(id) {
+document.querySelectorAll('.theme-box').forEach(b => b.classList.remove('active'));
+document.getElementById('theme-' + id).classList.add('active');
+
+const t = themeDefs[id];
+
+document.getElementById('f-family').value = t.f;
+document.getElementById('f-weight').value = t.fw;
+document.getElementById('f-size').value = t.fz;
+
+document.getElementById('hex-odd').value = t.ro; document.getElementById('c-odd').value = '#' + t.ro;
+document.getElementById('hex-even').value = t.re; document.getElementById('c-even').value = '#' + t.re;
+document.getElementById('hex-text').value = t.tx; document.getElementById('c-text').value = '#' + t.tx;
+
+document.getElementById('b-rad').value = t.orad;
+document.getElementById('b-out-w').value = t.ow;
+document.getElementById('b-out-s').value = t.os;
+document.getElementById('b-out-c').value = t.oc;
+
+document.getElementById('b-in-hw').value = t.ihw;
+document.getElementById('b-in-vw').value = t.ivw;
+document.getElementById('b-in-c').value = t.ic;
+
+document.getElementById('b-div-w').value = t.dw;
+document.getElementById('b-div-s').value = t.ds;
+document.getElementById('b-div-c').value = t.dc;
+
+document.getElementById('p-margin').value = t.pm;
+
+updateSizeLabel();
+saveSettings();
+}
+
+function handleFileUpload(e) {
+const f = e.target.files[0];
+if (!f) return;
+const r = new FileReader();
+r.onload = function(evt) {
+const wb = XLSX.read(evt.target.result, {type: 'binary'});
+const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header: 1});
+appData = {}; appStyles = {};
+rows.forEach(row => {
+const id = parseInt(row[0]);
+const name = row[1];
+if (!isNaN(id) && name && id >= 1 && id <= 200) {
+appData[id] = name.toString().trim();
+}
+});
+triggerAutoSave();
+renderPage();
+showToast("Data imported");
+};
+r.readAsBinaryString(f);
+}
+
+function downloadTemplate() {
+let d = [["ID", "Item Name"]];
+for (let i = 1; i <= 200; i++) d.push([i, ""]);
+const ws = XLSX.utils.aoa_to_sheet(d);
+const wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws, "Template");
+XLSX.writeFile(wb, "LX_Template_200.xlsx");
+showToast("Template downloaded");
+}
+
+function exportCSV() {
+let r = [["ID", "Item Name"]];
+for(let i=1; i<=200; i++) {
+if(appData[i]) {
+let div = document.createElement("div");
+div.innerHTML = appData[i];
+r.push([i, div.textContent || div.innerText || ""]);
+}
+}
+const ws = XLSX.utils.aoa_to_sheet(r);
+const wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws, "Data");
+XLSX.writeFile(wb, "LX_Data.csv");
+showToast("Data saved successfully");
+}
+
+function loadDemoData() {
+appData = {
+1: "A.Viton",
+2: "Hydroxychloroquine 200mg",
+3: "Acyclovir 200",
+51: "Aubajeo"
+};
+appStyles = {
+2: { b: true, c: "#1d4ed8" },
+152: { b: true, s: "14px", c: "#047857" }
+};
+}
+</script>
+
+</body>
+</html>
