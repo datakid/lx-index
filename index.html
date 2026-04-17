@@ -37,7 +37,6 @@
 --cell-pad: 0 4px;
 --page-pad: 8mm;
 }
-
 html.dark {
 --app-bg: #0f172a;
 --panel-bg: #1e293b;
@@ -46,44 +45,45 @@ html.dark {
 --accent: #3b82f6;
 --accent-hover: #60a5fa;
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
-
 body { display: flex; height: 100dvh; background: var(--app-bg); color: var(--text-main); overflow: hidden; transition: background 0.3s, color 0.3s; }
-
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
 #sidebar { width: 380px; background: var(--panel-bg); display: flex; flex-direction: column; border-right: 1px solid var(--panel-bd); z-index: 100; flex-shrink: 0; box-shadow: 4px 0 15px rgba(0,0,0,0.03); transition: background 0.3s, border-color 0.3s, transform 0.3s; }
-
 .header { padding: 20px; border-bottom: 1px solid var(--panel-bd); display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); position: sticky; top: 0; z-index: 20; transition: background 0.3s, border-color 0.3s; }
 .header h1 { font-size: 18px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
-
 .theme-toggle { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 20px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #475569; transition: all 0.2s; }
 .theme-toggle:hover { background: #e2e8f0; color: #0f172a; transform: scale(1.05); }
-
 .status-badge { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; color: #64748b; }
 .status-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; transition: all 0.3s; }
-
+.stats-bar { display: flex; border-bottom: 1px solid var(--panel-bd); background: var(--panel-bg); }
+.stat-box { flex: 1; padding: 12px 0; text-align: center; position: relative; }
+.stat-box + .stat-box::before { content: ''; position: absolute; left: 0; top: 20%; height: 60%; width: 1px; background: var(--panel-bd); }
+.stat-v { font-size: 18px; font-weight: 600; line-height: 1; transition: color 0.3s; }
+.stat-v.acc { color: var(--accent); }
+.stat-l { font-size: 10px; color: #64748b; font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.search-bar { padding: 16px 20px; border-bottom: 1px solid var(--panel-bd); background: var(--panel-bg); }
+.search-wrap { display: flex; align-items: center; gap: 8px; background: var(--app-bg); border: 1px solid var(--panel-bd); border-radius: 6px; padding: 8px 12px; transition: all 0.2s; }
+.search-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); background: var(--panel-bg); }
+.search-wrap input { background: none; border: none; outline: none; color: var(--text-main); font-size: 13px; width: 100%; }
+.search-wrap input::placeholder { color: #94a3b8; }
+.s-hint { font-size: 10px; color: #64748b; background: var(--panel-bd); padding: 2px 6px; border-radius: 4px; user-select: none; }
+.s-clear { background: none; border: none; cursor: pointer; color: #64748b; font-size: 14px; display: none; }
+.s-clear.vis { display: block; }
 .scroll-area { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
-
 details.panel { border: 1px solid var(--panel-bd); border-radius: 8px; background: var(--panel-bg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: opacity 0.2s, background 0.3s, border-color 0.3s; }
 details.panel[open] { border-color: #cbd5e1; }
 details.panel.disabled { opacity: 0.4; pointer-events: none; }
-
 summary.panel-title { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: space-between; align-items: center; padding: 16px; cursor: pointer; list-style: none; user-select: none; margin: 0; transition: color 0.3s; }
 summary.panel-title::-webkit-details-marker { display: none; }
 summary.panel-title::after { content: "▼"; font-size: 10px; color: #94a3b8; transition: transform 0.2s; }
 details.panel[open] summary.panel-title::after { transform: rotate(180deg); }
-
 .panel-content { padding: 0 16px 16px 16px; }
-
 .ctrl-group { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .ctrl-group:last-child { margin-bottom: 0; }
 .ctrl-label { font-size: 13px; font-weight: 500; color: #334155; transition: color 0.3s; }
-
 .unified-color-input { display: flex; align-items: center; gap: 6px; border: 1px solid #cbd5e1; border-radius: 6px; padding: 4px 8px; background: #f8fafc; width: 130px; transition: all 0.2s; }
 .unified-color-input:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15); background: #ffffff; }
 .unified-color-input .hash { color: #94a3b8; font-family: 'JetBrains Mono', monospace; font-size: 12px; user-select: none; }
@@ -91,15 +91,12 @@ details.panel[open] summary.panel-title::after { transform: rotate(180deg); }
 .unified-color-input input[type="color"] { width: 20px; height: 20px; padding: 0; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; background: transparent; flex-shrink: 0; }
 .unified-color-input input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
 .unified-color-input input[type="color"]::-webkit-color-swatch { border: none; border-radius: 3px; }
-
 input[type="range"] { width: 100px; accent-color: var(--accent); cursor: pointer; }
-
 select { width: 100%; background: var(--panel-bg); border: 1px solid #cbd5e1; color: var(--text-main); padding: 8px 10px; border-radius: 6px; font-size: 13px; outline: none; cursor: pointer; transition: background 0.3s, color 0.3s, border-color 0.3s; }
 select:focus { border-color: var(--accent); }
 select.mini { width: 120px; padding: 6px; font-size: 12px; }
 input[type="number"] { outline: none; transition: 0.2s; background: var(--panel-bg); color: var(--text-main); }
 input[type="number"]:focus { border-color: var(--accent); }
-
 .btn { width: 100%; padding: 10px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
 .btn-primary { background: var(--accent); color: white; }
 .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 6px rgba(37,99,235,0.2); }
@@ -110,82 +107,39 @@ input[type="number"]:focus { border-color: var(--accent); }
 .btn-icon { width: 32px; height: 32px; padding: 0; border-radius: 6px; border: 1px solid #cbd5e1; background: var(--panel-bg); color: var(--text-main); cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; transition: 0.1s; }
 .btn-icon:hover { background: #f1f5f9; }
 .btn-icon.active { background: #e0e7ff; border-color: var(--accent); color: var(--accent); }
-
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .toolbar-row { display: flex; gap: 6px; align-items: center; }
-
 .file-wrap { position: relative; overflow: hidden; display: block; }
 .file-wrap input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
-
 .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
 .theme-box { border: 1px solid #cbd5e1; padding: 10px; border-radius: 6px; cursor: pointer; transition: 0.2s; background: #f8fafc; text-align: center; }
 .theme-box:hover { border-color: var(--accent); background: #eff6ff; }
 .theme-box.active { border-color: var(--accent); background: #eff6ff; font-weight: 600; }
 .theme-name { font-size: 12px; color: #0f172a; margin-bottom: 2px; transition: color 0.3s; }
 .theme-desc { font-size: 10px; color: #64748b; font-weight: 400; transition: color 0.3s; }
-
 .contrast-badge { font-size: 10px; padding: 4px 8px; border-radius: 12px; font-weight: 600; }
 .c-pass { background: #dcfce7; color: #166534; }
 .c-fail { background: #fee2e2; color: #991b1b; }
-
 .divider { height: 1px; background: var(--panel-bd); margin: 16px 0; transition: background 0.3s; }
-
 #workspace { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; position: relative; }
-
 .page-wrapper { width: 210mm; height: 297mm; background: white; box-shadow: 0 20px 40px rgba(0,0,0,0.1); padding: var(--page-pad); flex-shrink: 0; box-sizing: border-box; position: relative; transition: all 0.2s; }
-
 .table-container { width: 100%; height: 100%; border-width: var(--out-bd-w); border-style: var(--out-bd-s); border-color: var(--out-bd-c); border-radius: var(--out-rad); overflow: hidden; box-sizing: border-box; }
-
 table.lx-index { width: 100%; height: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; background: var(--row-even); }
 table.lx-index tr { height: calc(100% / 50); }
 table.lx-index tr:nth-child(odd) { background-color: var(--row-odd); }
-
-table.lx-index td {
-padding: var(--cell-pad);
-font-family: var(--font-family);
-font-size: var(--font-size);
-font-weight: var(--font-weight);
-color: var(--text-col);
-border-bottom-width: var(--in-h-w);
-border-bottom-style: var(--in-h-s);
-border-bottom-color: var(--in-h-c);
-border-right-width: var(--in-v-w);
-border-right-style: var(--in-v-s);
-border-right-color: var(--in-v-c);
-white-space: nowrap;
-overflow: hidden;
-line-height: 1.2;
-vertical-align: middle;
-}
-
+table.lx-index td { padding: var(--cell-pad); font-family: var(--font-family); font-size: var(--font-size); font-weight: var(--font-weight); color: var(--text-col); border-bottom-width: var(--in-h-w); border-bottom-style: var(--in-h-s); border-bottom-color: var(--in-h-c); border-right-width: var(--in-v-w); border-right-style: var(--in-v-s); border-right-color: var(--in-v-c); white-space: nowrap; overflow: hidden; line-height: 1.2; vertical-align: middle; }
 table.lx-index tr:last-child td { border-bottom: none; }
 table.lx-index td:last-child { border-right: none !important; }
-table.lx-index td:nth-child(odd) {
-width: 24px;
-text-align: right;
-padding-right: 4px;
-padding-left: 0;
-font-weight: 600;
-opacity: 0.5;
-user-select: none;
-font-size: 11px;
-}
-
+table.lx-index td:nth-child(odd) { width: 24px; text-align: right; padding-right: 4px; padding-left: 0; font-weight: 600; opacity: 0.5; user-select: none; font-size: 11px; }
 table.lx-index td:nth-child(even) { outline: none; cursor: text; transition: background 0.1s, box-shadow 0.1s; position: relative; }
 table.lx-index td:nth-child(even):focus { background: #fff8dc; box-shadow: inset 0 0 0 2px var(--accent); border-radius: 2px; z-index: 5; }
-
-table.lx-index td:nth-child(2), table.lx-index td:nth-child(4), table.lx-index td:nth-child(6) {
-border-right-width: var(--div-bd-w); border-right-style: var(--div-bd-s); border-right-color: var(--div-bd-c);
-}
-
+table.lx-index td:nth-child(2), table.lx-index td:nth-child(4), table.lx-index td:nth-child(6) { border-right-width: var(--div-bd-w); border-right-style: var(--div-bd-s); border-right-color: var(--div-bd-c); }
+table.lx-index td.smatch { background: rgba(234, 179, 8, 0.2) !important; box-shadow: inset 0 0 0 2px #eab308; border-radius: 2px; }
 .dup-warn { background-image: linear-gradient(135deg, transparent 85%, #fca5a5 85%, #ef4444 100%) !important; }
-
 #toast { position: fixed; bottom: 24px; right: 24px; background: #1e293b; color: white; padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 500; box-shadow: 0 10px 15px rgba(0,0,0,0.1); opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; z-index: 110; }
 #toast.show { opacity: 1; transform: translateY(0); }
-
 .mobile-tog { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 95; width: 50px; height: 50px; border-radius: 25px; background: var(--accent); color: #fff; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 24px; align-items: center; justify-content: center; cursor: pointer; }
 .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 90; opacity: 0; transition: opacity 0.3s; }
-
 html.dark .status-badge { color: #94a3b8; }
 html.dark details.panel[open] { border-color: #475569; }
 html.dark summary.panel-title { color: #cbd5e1; }
@@ -212,7 +166,12 @@ html.dark .theme-toggle:hover { background: #1e293b; color: #f8fafc; }
 html.dark #toast { background: #334155; color: #f8fafc; box-shadow: 0 10px 15px rgba(0,0,0,0.5); }
 html.dark table.lx-index td:nth-child(even):focus { background: rgba(59, 130, 246, 0.15) !important; box-shadow: inset 0 0 0 2px var(--accent); }
 html.dark table.lx-index td:nth-child(even):hover:not(:focus) { background: rgba(255, 255, 255, 0.05); }
-
+html.dark .stats-bar { border-color: var(--panel-bd); background: var(--panel-bg); }
+html.dark .stat-box + .stat-box::before { background: var(--panel-bd); }
+html.dark .stat-v { color: var(--text-main); }
+html.dark .stat-v.acc { color: var(--accent); }
+html.dark .search-wrap { background: var(--app-bg); border-color: var(--panel-bd); }
+html.dark .s-hint { color: #94a3b8; background: #334155; }
 @media(max-width: 768px) {
 #sidebar { position: fixed; top: 0; bottom: 0; left: 0; transform: translateX(-100%); }
 #sidebar.open { transform: translateX(0); }
@@ -224,7 +183,6 @@ table.lx-index { height: auto; }
 table.lx-index tr { height: auto; }
 table.lx-index td { padding: 4px; }
 }
-
 @media print {
 @page { size: A4 portrait; margin: 0; }
 * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
@@ -247,8 +205,20 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 </div>
 <div class="status-badge"><span class="status-dot" id="save-dot"></span>Saved</div>
 </div>
+<div class="stats-bar">
+<div class="stat-box"><div class="stat-v acc" id="st-f">0</div><div class="stat-l">Filled</div></div>
+<div class="stat-box"><div class="stat-v" id="st-e">200</div><div class="stat-l">Empty</div></div>
+<div class="stat-box"><div class="stat-v" id="st-d">0</div><div class="stat-l">Dupes</div></div>
+</div>
+<div class="search-bar">
+<div class="search-wrap">
+<span style="font-size:14px;color:var(--text-main)">🔍</span>
+<input type="text" id="sinp" placeholder="Search..." oninput="runSearch(this.value)">
+<span class="s-hint">/</span>
+<button class="s-clear" id="sclr" onclick="clearSearch()">✕</button>
+</div>
+</div>
 <div class="scroll-area">
-
 <details class="panel" open>
 <summary class="panel-title">1. Data Management</summary>
 <div class="panel-content">
@@ -262,7 +232,6 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 <button class="btn btn-secondary" onclick="downloadTemplate()">📥 Blank Template</button>
 </div>
 </details>
-
 <details class="panel disabled" id="cell-panel">
 <summary class="panel-title" id="cell-panel-title" style="color:var(--accent);">★ Selected Cell Override</summary>
 <div class="panel-content">
@@ -274,7 +243,6 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 <button class="btn-icon" id="btn-under" onmousedown="event.preventDefault(); toggleStyle('underline')">U</button>
 </div>
 </div>
-
 <div class="ctrl-group">
 <span class="ctrl-label">Specific Size</span>
 <div style="display:flex; gap:6px;">
@@ -291,7 +259,6 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 </select>
 </div>
 </div>
-
 <div class="ctrl-group">
 <span class="ctrl-label">Specific Color</span>
 <div class="unified-color-input" style="width: 100px;">
@@ -300,7 +267,6 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 <input type="color" id="cell-color" oninput="syncCellCol()">
 </div>
 </div>
-
 <div class="grid-2" style="margin-top:12px;">
 <button class="btn btn-secondary" onmousedown="event.preventDefault(); copyFormat()">📋 Copy Style</button>
 <button class="btn btn-secondary" onmousedown="event.preventDefault(); pasteFormat()">🖌️ Paste</button>
@@ -308,7 +274,6 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 <button class="btn btn-secondary" style="margin-top:8px;" onclick="clearCellFormat()">🧹 Clear Override</button>
 </div>
 </details>
-
 <details class="panel" open>
 <summary class="panel-title">2. Global Themes</summary>
 <div class="panel-content">
@@ -332,7 +297,6 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 </div>
 </div>
 </details>
-
 <details class="panel">
 <summary class="panel-title">
 3. Global Typography & Colors
@@ -351,7 +315,6 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 <option value="'JetBrains Mono', monospace">Mono (Code)</option>
 </select>
 </div>
-
 <div class="ctrl-group">
 <span class="ctrl-label">Base Size & Wt.</span>
 <div style="display:flex; align-items:center; gap:6px;">
@@ -364,9 +327,7 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 <span id="f-size-lbl" style="font-size:11px; width:26px; text-align:right;">13px</span>
 </div>
 </div>
-
 <div class="divider"></div>
-
 <div class="ctrl-group">
 <span class="ctrl-label">Odd Row Base</span>
 <div class="unified-color-input">
@@ -375,7 +336,6 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 <input type="color" id="c-odd" value="#f8fafc" oninput="syncCol('odd')" onchange="saveSettings()">
 </div>
 </div>
-
 <div class="ctrl-group" style="margin-top:12px;">
 <span class="ctrl-label">Even Row Base</span>
 <div class="unified-color-input">
@@ -384,7 +344,6 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 <input type="color" id="c-even" value="#ffffff" oninput="syncCol('even')" onchange="saveSettings()">
 </div>
 </div>
-
 <div class="ctrl-group" style="margin-top:12px;">
 <span class="ctrl-label">Text Color</span>
 <div class="unified-color-input">
@@ -395,7 +354,6 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 </div>
 </div>
 </details>
-
 <details class="panel">
 <summary class="panel-title">4. Layout & Grid Control</summary>
 <div class="panel-content">
@@ -408,12 +366,10 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 <option value="12mm">Wide (12mm)</option>
 </select>
 </div>
-
 <div class="ctrl-group">
 <span class="ctrl-label">Outer Radius</span>
 <input type="range" id="b-rad" min="0" max="20" value="12" oninput="updateCSS()" onchange="saveSettings()">
 </div>
-
 <div class="ctrl-group">
 <span class="ctrl-label">Outer Line</span>
 <div style="display:flex; gap:6px;">
@@ -428,9 +384,7 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 <span class="ctrl-label">Outer Color</span>
 <input type="color" id="b-out-c" value="#94a3b8" oninput="updateCSS()" onchange="saveSettings()">
 </div>
-
 <div class="divider"></div>
-
 <div class="ctrl-group">
 <span class="ctrl-label">Row Line (H)</span>
 <input type="range" id="b-in-hw" min="0" max="3" value="1" oninput="updateCSS()" onchange="saveSettings()">
@@ -443,9 +397,7 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 <span class="ctrl-label">Inner Grid Color</span>
 <input type="color" id="b-in-c" value="#e2e8f0" oninput="updateCSS()" onchange="saveSettings()">
 </div>
-
 <div class="divider"></div>
-
 <div class="ctrl-group">
 <span class="ctrl-label">Column Divider</span>
 <div style="display:flex; gap:6px;">
@@ -463,7 +415,6 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 </div>
 </div>
 </details>
-
 <details class="panel" open>
 <summary class="panel-title">5. Export & Print</summary>
 <div class="panel-content">
@@ -473,42 +424,34 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 </div>
 </div>
 </details>
-
 </div>
 </aside>
-
 <main id="workspace">
 <div class="page-wrapper">
 <div class="table-container" id="page-container"></div>
 </div>
 </main>
-
 <button class="mobile-tog" onclick="toggleMobileSB()">☰</button>
 <div class="overlay" id="sb-ov" onclick="toggleMobileSB()"></div>
-
 <div id="toast">Notification</div>
-
 <script>
 let appData = {};
 let appStyles = {};
 let saveTimeout;
-let dupTimeout;
 let activeCellId = null;
 let clipboardFormat = null;
 let dupWarned = false;
-
+let qStr = '';
 const themeDefs = {
 modern: { f: "'Inter', system-ui, sans-serif", fw: "400", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "12", ow: "2", os: "solid", oc: "#cbd5e1", ihw: "1", ivw: "0", ic: "#f1f5f9", dw: "2", ds: "solid", dc: "#94a3b8", pm: "8mm" },
 classic: { f: "Arial, Helvetica, sans-serif", fw: "400", fz: "12", ro: "f3f4f6", re: "ffffff", tx: "000000", orad: "0", ow: "1", os: "solid", oc: "#000000", ihw: "1", ivw: "1", ic: "#000000", dw: "2", ds: "solid", dc: "#000000", pm: "8mm" },
 ledger: { f: "'Lora', Georgia, serif", fw: "400", fz: "13", ro: "f0fdf4", re: "ffffff", tx: "1e293b", orad: "0", ow: "1", os: "solid", oc: "#94a3b8", ihw: "1", ivw: "1", ic: "#cbd5e1", dw: "3", ds: "double", dc: "#64748b", pm: "8mm" },
 bleed: { f: "system-ui, -apple-system, sans-serif", fw: "500", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "0", ow: "0", os: "solid", oc: "#ffffff", ihw: "1", ivw: "1", ic: "#e2e8f0", dw: "2", ds: "solid", dc: "#94a3b8", pm: "0mm" }
 };
-
 function initThm() {
 let m = localStorage.getItem('lx_tm') || 'auto';
 applyAppTheme(m);
 }
-
 function cycleTheme() {
 let m = localStorage.getItem('lx_tm') || 'auto';
 const n = m === 'auto' ? 'light' : m === 'light' ? 'dark' : 'auto';
@@ -516,7 +459,6 @@ localStorage.setItem('lx_tm', n);
 applyAppTheme(n);
 showToast(`Theme: ${n}`);
 }
-
 function applyAppTheme(m) {
 const d = document.documentElement;
 d.classList.remove('dark', 'light');
@@ -535,21 +477,23 @@ document.querySelector('.theme-toggle .sun').style.display = 'block';
 document.querySelector('.theme-toggle .moon').style.display = 'none';
 }
 }
-
 function toggleMobileSB() {
 document.getElementById('sidebar').classList.toggle('open');
 document.getElementById('sb-ov').classList.toggle('vis');
 }
-
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => initThm());
-
 document.getElementById('fileUpload').addEventListener('change', handleFileUpload);
 document.addEventListener('mousedown', (e) => {
 if(e.target.id === 'workspace' || e.target.classList.contains('page-wrapper')) {
 disableCellPanel();
 }
 });
-
+window.addEventListener('keydown', e => {
+if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && !document.activeElement.isContentEditable) {
+e.preventDefault();
+document.getElementById('sinp').focus();
+}
+});
 window.onload = () => {
 initThm();
 loadFromLocal();
@@ -557,54 +501,78 @@ if (Object.keys(appData).length === 0) loadDemoData();
 if (!loadSettings()) applyStyle('modern');
 renderPage();
 };
-
 function showToast(msg) {
 const t = document.getElementById('toast');
 t.textContent = msg;
 t.classList.add('show');
 setTimeout(() => t.classList.remove('show'), 3000);
 }
-
 function triggerAutoSave() {
 const dot = document.getElementById('save-dot');
 dot.style.background = '#f59e0b';
 dot.style.boxShadow = '0 0 8px #f59e0b';
-
 clearTimeout(saveTimeout);
 saveTimeout = setTimeout(() => {
 localStorage.setItem('lx_data_ul_v3', JSON.stringify(appData));
 localStorage.setItem('lx_style_ul_v3', JSON.stringify(appStyles));
 dot.style.background = '#22c55e';
 dot.style.boxShadow = '0 0 8px #22c55e';
-checkDuplicates();
+updateStats();
 }, 600);
 }
-
-function checkDuplicates() {
+function updateStats() {
 let counts = {};
+let filledCount = 0;
 document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => {
 td.classList.remove('dup-warn');
 let txt = td.textContent.trim().toLowerCase();
 if(txt) {
+filledCount++;
 if(!counts[txt]) counts[txt] = [];
 counts[txt].push(td);
 }
 });
-
 let dupFound = false;
+let dCount = 0;
 for(let k in counts) {
 if(counts[k].length > 1) {
 dupFound = true;
+dCount++;
 counts[k].forEach(td => td.classList.add('dup-warn'));
 }
 }
-
+document.getElementById('st-f').textContent = filledCount;
+document.getElementById('st-e').textContent = 200 - filledCount;
+document.getElementById('st-d').textContent = dCount;
+document.getElementById('st-d').style.color = dCount > 0 ? '#ef4444' : 'inherit';
 if(dupFound && !dupWarned) {
 showToast("Duplicate values detected");
 dupWarned = true;
 }
 }
-
+function fuzzyMatch(pattern, str) {
+pattern = pattern.toLowerCase().replace(/\s+/g, '');
+str = str.toLowerCase();
+let pIdx = 0;
+for (let i = 0; i < str.length && pIdx < pattern.length; i++) {
+if (str[i] === pattern[pIdx]) pIdx++;
+}
+return pIdx === pattern.length;
+}
+function runSearch(q) {
+qStr = q.trim();
+document.getElementById('sclr').classList.toggle('vis', !!qStr);
+document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => {
+const txt = td.textContent.trim();
+td.classList.toggle('smatch', !!(qStr && txt && fuzzyMatch(qStr, txt)));
+});
+const f = document.querySelector('.lx-index td.smatch');
+if(f) f.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+}
+function clearSearch() {
+document.getElementById('sinp').value = '';
+runSearch('');
+}
 function saveSettings() {
 const s = {
 f: document.getElementById('f-family').value,
@@ -628,46 +596,37 @@ pm: document.getElementById('p-margin').value
 localStorage.setItem('lx_settings_ul_v3', JSON.stringify(s));
 updateCSS();
 }
-
 function loadSettings() {
 const saved = localStorage.getItem('lx_settings_ul_v3');
 if (!saved) return false;
 const s = JSON.parse(saved);
-
 document.getElementById('f-family').value = s.f;
 document.getElementById('f-weight').value = s.fw;
 document.getElementById('f-size').value = s.fz;
-
 document.getElementById('hex-odd').value = s.ro; document.getElementById('c-odd').value = '#' + s.ro;
 document.getElementById('hex-even').value = s.re; document.getElementById('c-even').value = '#' + s.re;
 document.getElementById('hex-text').value = s.tx; document.getElementById('c-text').value = '#' + s.tx;
-
 document.getElementById('b-rad').value = s.orad;
 document.getElementById('b-out-w').value = s.ow;
 document.getElementById('b-out-s').value = s.os;
 document.getElementById('b-out-c').value = s.oc;
-
 document.getElementById('b-in-hw').value = s.ihw;
 document.getElementById('b-in-vw').value = s.ivw;
 document.getElementById('b-in-c').value = s.ic;
-
 document.getElementById('b-div-w').value = s.dw;
 document.getElementById('b-div-s').value = s.ds;
 document.getElementById('b-div-c').value = s.dc;
 document.getElementById('p-margin').value = s.pm || "8mm";
-
 updateSizeLabel();
 updateCSS();
 return true;
 }
-
 function loadFromLocal() {
 const d = localStorage.getItem('lx_data_ul_v3');
 const st = localStorage.getItem('lx_style_ul_v3');
 if(d && d !== "{}") appData = JSON.parse(d);
 if(st && st !== "{}") appStyles = JSON.parse(st);
 }
-
 function clearData() {
 if(confirm("Clear all data and formatting?")) {
 appData = {};
@@ -678,7 +637,6 @@ renderPage();
 showToast("Cleared successfully");
 }
 }
-
 function handleKey(e, r, c) {
 if (['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
 e.preventDefault();
@@ -692,7 +650,6 @@ if (td) td.focus();
 }
 }
 }
-
 function applyCellDomStyle(td, id) {
 let s = appStyles[id];
 if(!s) {
@@ -707,22 +664,18 @@ if(s.b) td.style.setProperty('font-weight', '700', 'important'); else td.style.r
 if(s.i) td.style.setProperty('font-style', 'italic', 'important'); else td.style.removeProperty('font-style');
 if(s.u) td.style.setProperty('text-decoration', 'underline', 'important'); else td.style.removeProperty('text-decoration');
 if(s.c) td.style.setProperty('color', s.c, 'important'); else td.style.removeProperty('color');
-
 td.dataset.cSize = s.s || '';
 }
-
 function autoFitText(el) {
 if(el.dataset.cSize) {
 el.style.setProperty('font-size', el.dataset.cSize, 'important');
 el.style.letterSpacing = 'normal';
 return;
 }
-
 el.style.removeProperty('font-size');
 el.style.letterSpacing = 'normal';
 let baseSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size'));
 let maxW = el.clientWidth - 8;
-
 if (el.scrollWidth > maxW && maxW > 0) {
 let ratio = maxW / el.scrollWidth;
 let newSize = Math.max(9, baseSize * ratio);
@@ -730,75 +683,60 @@ el.style.setProperty('font-size', newSize + 'px', 'important');
 if(newSize <= 9) el.style.letterSpacing = '-0.5px';
 }
 }
-
 function renderPage() {
 const cont = document.getElementById('page-container');
 cont.innerHTML = '';
 const tbl = document.createElement('table');
 tbl.className = 'lx-index';
-
 for (let r = 1; r <= 50; r++) {
 const tr = document.createElement('tr');
 for (let c = 0; c < 4; c++) {
 const id = (c * 50) + r;
-
 const tdId = document.createElement('td');
 tdId.textContent = id;
-
 const tdVal = document.createElement('td');
 tdVal.contentEditable = "true";
 tdVal.setAttribute("dir", "auto");
 tdVal.dataset.id = id;
-
-let val = appData[id] || "";
-tdVal.innerHTML = val;
-
+tdVal.textContent = appData[id] || "";
 applyCellDomStyle(tdVal, id);
-
 tdVal.addEventListener('focus', () => activateCell(id, tdVal));
-
 tdVal.addEventListener('input', (e) => {
-const v = e.target.innerHTML.trim();
-if(v && v !== '<br>') appData[id] = v; else delete appData[id];
+const v = e.target.textContent.trim();
+if(v) appData[id] = v; else delete appData[id];
 autoFitText(e.target);
 triggerAutoSave();
+if(qStr) runSearch(qStr);
 });
-
 tdVal.addEventListener('paste', (e) => {
 e.preventDefault();
 let text = (e.originalEvent || e).clipboardData.getData('text/plain');
 document.execCommand('insertText', false, text);
 autoFitText(e.target);
 });
-
 tdVal.addEventListener('keydown', (e) => handleKey(e, r, c));
-
 tr.appendChild(tdId);
 tr.appendChild(tdVal);
 }
 tbl.appendChild(tr);
 }
 cont.appendChild(tbl);
-
 setTimeout(() => {
 document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => autoFitText(td));
-checkDuplicates();
+updateStats();
+if(qStr) runSearch(qStr);
 }, 50);
 }
-
 function activateCell(id, td) {
 activeCellId = id;
 document.getElementById('cell-panel').classList.remove('disabled');
 document.getElementById('cell-panel').open = true;
 document.getElementById('cell-panel-title').innerHTML = `★ Cell Override <span style="color:#64748b; font-size:10px;">(ID: ${id})</span>`;
 let s = appStyles[id] || {};
-
 document.getElementById('btn-bold').classList.toggle('active', !!s.b);
 document.getElementById('btn-italic').classList.toggle('active', !!s.i);
 document.getElementById('btn-under').classList.toggle('active', !!s.u);
-
 document.getElementById('cell-size').value = s.s || "";
-
 if(s.c) {
 document.getElementById('cell-hex').value = s.c.replace('#','');
 document.getElementById('cell-color').value = s.c;
@@ -807,23 +745,19 @@ document.getElementById('cell-hex').value = "";
 document.getElementById('cell-color').value = "#000000";
 }
 }
-
 function disableCellPanel() {
 document.getElementById('cell-panel').classList.add('disabled');
 document.getElementById('cell-panel').open = false;
 document.getElementById('cell-panel-title').innerHTML = `★ Selected Cell Override`;
 activeCellId = null;
 }
-
 function toggleStyle(prop) {
 if(!activeCellId) return;
 if(!appStyles[activeCellId]) appStyles[activeCellId] = {};
-
 let s = appStyles[activeCellId];
 if(prop === 'bold') s.b = !s.b;
 if(prop === 'italic') s.i = !s.i;
 if(prop === 'underline') s.u = !s.u;
-
 triggerAutoSave();
 let td = document.querySelector(`td[data-id="${activeCellId}"]`);
 if(td) {
@@ -832,7 +766,6 @@ activateCell(activeCellId, td);
 autoFitText(td);
 }
 }
-
 function applyCellSize() {
 if(!activeCellId) return;
 if(!appStyles[activeCellId]) appStyles[activeCellId] = {};
@@ -844,7 +777,6 @@ applyCellDomStyle(td, activeCellId);
 autoFitText(td);
 }
 }
-
 function syncCellHex() {
 let h = document.getElementById('cell-hex').value.trim();
 if(!h) { updateCellColor(""); return; }
@@ -853,13 +785,11 @@ document.getElementById('cell-color').value = '#' + h;
 updateCellColor('#' + h);
 }
 }
-
 function syncCellCol() {
 let v = document.getElementById('cell-color').value;
 document.getElementById('cell-hex').value = v.replace('#', '');
 updateCellColor(v);
 }
-
 function updateCellColor(hex) {
 if(!activeCellId) return;
 if(!appStyles[activeCellId]) appStyles[activeCellId] = {};
@@ -868,13 +798,11 @@ triggerAutoSave();
 let td = document.querySelector(`td[data-id="${activeCellId}"]`);
 if(td) applyCellDomStyle(td, activeCellId);
 }
-
 function copyFormat() {
 if(!activeCellId) return;
 clipboardFormat = appStyles[activeCellId] ? JSON.parse(JSON.stringify(appStyles[activeCellId])) : {};
 showToast("Style copied");
 }
-
 function pasteFormat() {
 if(!activeCellId || !clipboardFormat) return;
 appStyles[activeCellId] = JSON.parse(JSON.stringify(clipboardFormat));
@@ -886,7 +814,6 @@ activateCell(activeCellId, td);
 autoFitText(td);
 }
 }
-
 function clearCellFormat() {
 if(!activeCellId) return;
 delete appStyles[activeCellId];
@@ -898,12 +825,10 @@ activateCell(activeCellId, td);
 autoFitText(td);
 }
 }
-
 function syncCol(t) {
 document.getElementById(`hex-${t}`).value = document.getElementById(`c-${t}`).value.replace('#', '');
 updateCSS();
 }
-
 function syncHex(t) {
 let h = document.getElementById(`hex-${t}`).value.trim();
 if(/^[0-9A-F]{6}$/i.test(h)) {
@@ -911,46 +836,35 @@ document.getElementById(`c-${t}`).value = '#' + h;
 updateCSS();
 }
 }
-
 function updateSizeLabel() {
 document.getElementById('f-size-lbl').textContent = document.getElementById('f-size').value + 'px';
 }
-
 function updateCSS() {
 const r = document.documentElement;
-
 r.style.setProperty('--font-family', document.getElementById('f-family').value);
 r.style.setProperty('--font-weight', document.getElementById('f-weight').value);
 r.style.setProperty('--font-size', document.getElementById('f-size').value + 'px');
-
 const bgO = document.getElementById('c-odd').value;
 const bgE = document.getElementById('c-even').value;
 const txt = document.getElementById('c-text').value;
-
 r.style.setProperty('--row-odd', bgO);
 r.style.setProperty('--row-even', bgE);
 r.style.setProperty('--text-col', txt);
-
 r.style.setProperty('--out-rad', document.getElementById('b-rad').value + 'px');
 r.style.setProperty('--out-bd-w', document.getElementById('b-out-w').value + 'px');
 r.style.setProperty('--out-bd-s', document.getElementById('b-out-s').value);
 r.style.setProperty('--out-bd-c', document.getElementById('b-out-c').value);
-
 r.style.setProperty('--in-h-w', document.getElementById('b-in-hw').value + 'px');
 r.style.setProperty('--in-v-w', document.getElementById('b-in-vw').value + 'px');
 r.style.setProperty('--in-h-c', document.getElementById('b-in-c').value);
 r.style.setProperty('--in-v-c', document.getElementById('b-in-c').value);
-
 r.style.setProperty('--div-bd-w', document.getElementById('b-div-w').value + 'px');
 r.style.setProperty('--div-bd-s', document.getElementById('b-div-s').value);
 r.style.setProperty('--div-bd-c', document.getElementById('b-div-c').value);
-
 r.style.setProperty('--page-pad', document.getElementById('p-margin').value);
-
 checkA11y(bgO, bgE, txt);
 document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => autoFitText(td));
 }
-
 function getLum(hex) {
 let rgb = parseInt(hex.slice(1), 16);
 let a = [(rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff].map(v => {
@@ -958,12 +872,10 @@ v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
 });
 return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 }
-
 function checkA11y(ho, he, ht) {
 let lt = getLum(ht), lo = getLum(ho), le = getLum(he);
 let ro = lo > lt ? ((lo + 0.05) / (lt + 0.05)) : ((lt + 0.05) / (lo + 0.05));
 let re = le > lt ? ((le + 0.05) / (lt + 0.05)) : ((lt + 0.05) / (le + 0.05));
-
 const b = document.getElementById('contrast-badge');
 if (ro < 4.5 || re < 4.5) {
 b.textContent = "Low Contrast";
@@ -973,40 +885,30 @@ b.textContent = "Good Contrast";
 b.className = "contrast-badge c-pass";
 }
 }
-
 function applyStyle(id) {
 document.querySelectorAll('.theme-box').forEach(b => b.classList.remove('active'));
 document.getElementById('theme-' + id).classList.add('active');
-
 const t = themeDefs[id];
-
 document.getElementById('f-family').value = t.f;
 document.getElementById('f-weight').value = t.fw;
 document.getElementById('f-size').value = t.fz;
-
 document.getElementById('hex-odd').value = t.ro; document.getElementById('c-odd').value = '#' + t.ro;
 document.getElementById('hex-even').value = t.re; document.getElementById('c-even').value = '#' + t.re;
 document.getElementById('hex-text').value = t.tx; document.getElementById('c-text').value = '#' + t.tx;
-
 document.getElementById('b-rad').value = t.orad;
 document.getElementById('b-out-w').value = t.ow;
 document.getElementById('b-out-s').value = t.os;
 document.getElementById('b-out-c').value = t.oc;
-
 document.getElementById('b-in-hw').value = t.ihw;
 document.getElementById('b-in-vw').value = t.ivw;
 document.getElementById('b-in-c').value = t.ic;
-
 document.getElementById('b-div-w').value = t.dw;
 document.getElementById('b-div-s').value = t.ds;
 document.getElementById('b-div-c').value = t.dc;
-
 document.getElementById('p-margin').value = t.pm;
-
 updateSizeLabel();
 saveSettings();
 }
-
 function handleFileUpload(e) {
 const f = e.target.files[0];
 if (!f) return;
@@ -1028,7 +930,6 @@ showToast("Data imported");
 };
 r.readAsBinaryString(f);
 }
-
 function downloadTemplate() {
 let d = [["ID", "Item Name"]];
 for (let i = 1; i <= 200; i++) d.push([i, ""]);
@@ -1038,14 +939,11 @@ XLSX.utils.book_append_sheet(wb, ws, "Template");
 XLSX.writeFile(wb, "LX_Template_200.xlsx");
 showToast("Template downloaded");
 }
-
 function exportCSV() {
 let r = [["ID", "Item Name"]];
 for(let i=1; i<=200; i++) {
 if(appData[i]) {
-let div = document.createElement("div");
-div.innerHTML = appData[i];
-r.push([i, div.textContent || div.innerText || ""]);
+r.push([i, appData[i]]);
 }
 }
 const ws = XLSX.utils.aoa_to_sheet(r);
@@ -1054,7 +952,6 @@ XLSX.utils.book_append_sheet(wb, ws, "Data");
 XLSX.writeFile(wb, "LX_Data.csv");
 showToast("Data saved successfully");
 }
-
 function loadDemoData() {
 appData = {
 1: "A.Viton",
