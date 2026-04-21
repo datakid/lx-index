@@ -110,12 +110,10 @@ input[type="number"]:focus { border-color: var(--accent); }
 .btn-icon.active { background: #e0e7ff; border-color: var(--accent); color: var(--accent); }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .toolbar-row { display: flex; gap: 6px; align-items: center; }
-
 .file-wrap { position: relative; overflow: hidden; display: block; }
 .file-wrap input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; z-index: 2; }
 .file-wrap:hover .btn-secondary { background: #f8fafc; border-color: #94a3b8; }
 .file-wrap:active .btn-secondary { background: #f1f5f9; transform: translateY(1px); }
-
 .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
 .theme-box { border: 1px solid #cbd5e1; padding: 10px; border-radius: 6px; cursor: pointer; transition: 0.2s; background: #f8fafc; text-align: center; }
 .theme-box:hover { border-color: var(--accent); background: #eff6ff; }
@@ -126,8 +124,6 @@ input[type="number"]:focus { border-color: var(--accent); }
 .c-pass { background: #dcfce7; color: #166534; }
 .c-fail { background: #fee2e2; color: #991b1b; }
 .divider { height: 1px; background: var(--panel-bd); margin: 16px 0; transition: background 0.3s; }
-
-/* Version History UI */
 .version-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--panel-bd); border-radius: 6px; margin-bottom: 8px; background: var(--app-bg); font-size: 12px; transition: all 0.2s; cursor: pointer; }
 .version-item:last-child { margin-bottom: 0; }
 .version-item:hover { border-color: var(--accent); background: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
@@ -135,7 +131,6 @@ input[type="number"]:focus { border-color: var(--accent); }
 .version-time { color: var(--text-main); font-weight: 500; }
 .version-action { color: #64748b; font-weight: 600; font-size: 11px; transition: color 0.2s; }
 .version-item:hover .version-action { color: var(--accent); }
-
 #workspace { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; position: relative; }
 .page-wrapper { width: 210mm; height: 297mm; background: white; box-shadow: 0 20px 40px rgba(0,0,0,0.1); padding: var(--page-pad); flex-shrink: 0; box-sizing: border-box; position: relative; transition: all 0.2s; }
 .table-container { width: 100%; height: 100%; border-width: var(--out-bd-w); border-style: var(--out-bd-s); border-color: var(--out-bd-c); border-radius: var(--out-rad); overflow: hidden; box-sizing: border-box; }
@@ -157,7 +152,6 @@ table.lx-index td.smatch { background: rgba(234, 179, 8, 0.2) !important; box-sh
 .mobile-tog { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 95; width: 50px; height: 50px; border-radius: 25px; background: var(--accent); color: #fff; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 24px; align-items: center; justify-content: center; cursor: pointer; }
 .desk-tog { position: absolute; top: 20px; left: 20px; width: 36px; height: 36px; border-radius: 8px; background: var(--panel-bg); border: 1px solid var(--panel-bd); color: var(--text-main); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); z-index: 50; transition: all 0.2s; }
 .desk-tog:hover { background: var(--app-bg); transform: scale(1.05); }
-
 .custom-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); z-index: 200; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
 .custom-modal-overlay.vis { display: flex; opacity: 1; }
 .custom-modal-box { background: var(--panel-bg); border: 1px solid var(--panel-bd); border-radius: 12px; width: 90%; max-width: 380px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); transform: scale(0.95) translateY(10px); transition: transform 0.2s; }
@@ -166,7 +160,6 @@ table.lx-index td.smatch { background: rgba(234, 179, 8, 0.2) !important; box-sh
 .custom-modal-msg { font-size: 13px; color: #64748b; margin-bottom: 24px; line-height: 1.5; }
 .custom-modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
 .custom-modal-actions .btn { width: auto; padding: 8px 16px; }
-
 .preview-banner { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: var(--panel-bg); border: 2px solid var(--accent); padding: 12px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 60; display: none; align-items: center; gap: 20px; color: var(--text-main); font-size: 13px; font-weight: 500; }
 .preview-banner.vis { display: flex; animation: slideDown 0.3s ease; }
 @keyframes slideDown { from { transform: translate(-50%, -20px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
@@ -211,29 +204,34 @@ html.dark .version-item { background: #0f172a; border-color: #334155; }
 html.dark .version-item:hover { background: #1e293b; border-color: var(--accent); }
 html.dark .version-item.active-preview { background: #1e3a8a; border-color: var(--accent); }
 html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-color: var(--accent); }
-
 .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 90; opacity: 0; transition: opacity 0.3s; }
 
 @media(max-width: 768px) {
-#sidebar { position: fixed; top: 0; bottom: 0; left: 0; transform: translateX(-100%); margin-left: 0 !important; }
-#sidebar.open { transform: translateX(0); }
-.mobile-tog { display: flex; }
-.desk-tog { display: none; }
-.overlay.vis { display: block; opacity: 1; }
-#workspace { padding: 16px 12px 80px; }
-.page-wrapper { width: 100%; height: auto; min-height: auto; }
-table.lx-index { height: auto; }
-table.lx-index tr { height: auto; }
-table.lx-index td { padding: 4px; }
-.preview-banner { width: 90%; flex-direction: column; text-align: center; gap: 10px; }
+  #sidebar { position: fixed; top: 0; bottom: 0; left: 0; transform: translateX(-100%); margin-left: 0 !important; }
+  #sidebar.open { transform: translateX(0); }
+  .mobile-tog { display: flex; }
+  .desk-tog { display: none; }
+  .overlay.vis { display: block; opacity: 1; }
+  #workspace { padding: 16px 12px 80px; }
+  .page-wrapper { width: 100%; height: auto; min-height: auto; }
+  table.lx-index { height: auto; }
+  table.lx-index tr { height: auto; }
+  table.lx-index td { padding: 4px; }
+  .preview-banner { width: 90%; flex-direction: column; text-align: center; gap: 10px; }
 }
+
 @media print {
-@page { size: A4 portrait; margin: 0; }
-* { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
-body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; display: block; overflow: hidden; transition: none; }
-#sidebar, #toast, .mobile-tog, .desk-tog, .overlay, .custom-modal-overlay, .preview-banner { display: none !important; }
-#workspace { padding: 0; display: block; overflow: hidden; background: none; }
-.page-wrapper { box-shadow: none; margin: 0; width: 210mm; height: 297mm; max-width: 100vw; max-height: 100vh; box-sizing: border-box; page-break-after: avoid; page-break-before: avoid; transform: none; transition: none; }
+  @page { size: A4 portrait; margin: 0; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+  body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; display: block; overflow: hidden; transition: none; }
+  #sidebar, #toast, .mobile-tog, .desk-tog, .overlay, .custom-modal-overlay, .preview-banner { display: none !important; }
+  #workspace { padding: 0; margin: 0; display: block; overflow: hidden; width: 210mm; height: 297mm; background: none; }
+  .page-wrapper { box-shadow: none; margin: 0; width: 210mm; height: 297mm; overflow: hidden; box-sizing: border-box; page-break-after: avoid; page-break-before: avoid; page-break-inside: avoid; transform: none; transition: none; position: relative; }
+  .table-container { width: 100%; overflow: hidden; box-sizing: border-box; }
+  table.lx-index { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; page-break-inside: avoid; }
+  table.lx-index td { overflow: hidden !important; white-space: nowrap !important; line-height: 1 !important; vertical-align: middle !important; }
+  table.lx-index td.smatch { background: inherit !important; box-shadow: none !important; }
+  table.lx-index td.dup-warn { background-image: none !important; }
 }
 </style>
 </head>
@@ -474,7 +472,7 @@ body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; di
 <div class="panel-content">
 <div class="grid-2">
 <button class="btn btn-secondary" onclick="exportCSV()">💾 Save CSV</button>
-<button class="btn btn-primary" onclick="window.print()">🖨️ Print PDF</button>
+<button class="btn btn-primary" onclick="doPrint()">🖨️ Print PDF</button>
 </div>
 </div>
 </details>
@@ -523,702 +521,778 @@ let activeCellId = null;
 let clipboardFormat = null;
 let dupWarned = false;
 let qStr = '';
-
 let versions = [];
-let hasUnsavedChanges = false; 
+let hasUnsavedChanges = false;
 let modalConfirmAction = null;
-
 let backupData = null;
 let backupStyles = null;
 let isPreviewing = false;
 
 const themeDefs = {
-modern: { f: "'Inter', system-ui, sans-serif", fw: "400", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "12", ow: "2", os: "solid", oc: "#cbd5e1", ihw: "1", ivw: "0", ic: "#f1f5f9", dw: "2", ds: "solid", dc: "#94a3b8", pm: "8mm" },
-classic: { f: "Arial, Helvetica, sans-serif", fw: "400", fz: "12", ro: "f3f4f6", re: "ffffff", tx: "000000", orad: "0", ow: "1", os: "solid", oc: "#000000", ihw: "1", ivw: "1", ic: "#000000", dw: "2", ds: "solid", dc: "#000000", pm: "8mm" },
-ledger: { f: "'Lora', Georgia, serif", fw: "400", fz: "13", ro: "f0fdf4", re: "ffffff", tx: "1e293b", orad: "0", ow: "1", os: "solid", oc: "#94a3b8", ihw: "1", ivw: "1", ic: "#cbd5e1", dw: "3", ds: "double", dc: "#64748b", pm: "8mm" },
-bleed: { f: "system-ui, -apple-system, sans-serif", fw: "500", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "0", ow: "0", os: "solid", oc: "#ffffff", ihw: "1", ivw: "1", ic: "#e2e8f0", dw: "2", ds: "solid", dc: "#94a3b8", pm: "0mm" }
+  modern:  { f: "'Inter', system-ui, sans-serif", fw: "400", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "12", ow: "2", os: "solid", oc: "#cbd5e1", ihw: "1", ivw: "0", ic: "#f1f5f9", dw: "2", ds: "solid", dc: "#94a3b8", pm: "8mm" },
+  classic: { f: "Arial, Helvetica, sans-serif",   fw: "400", fz: "12", ro: "f3f4f6", re: "ffffff", tx: "000000", orad: "0", ow: "1", os: "solid", oc: "#000000", ihw: "1", ivw: "1", ic: "#000000", dw: "2", ds: "solid", dc: "#000000", pm: "8mm" },
+  ledger:  { f: "'Lora', Georgia, serif",          fw: "400", fz: "13", ro: "f0fdf4", re: "ffffff", tx: "1e293b", orad: "0", ow: "1", os: "solid", oc: "#94a3b8", ihw: "1", ivw: "1", ic: "#cbd5e1", dw: "3", ds: "double", dc: "#64748b", pm: "8mm" },
+  bleed:   { f: "system-ui, -apple-system, sans-serif", fw: "500", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "0", ow: "0", os: "solid", oc: "#ffffff", ihw: "1", ivw: "1", ic: "#e2e8f0", dw: "2", ds: "solid", dc: "#94a3b8", pm: "0mm" }
 };
 
-function openModal(title, msg, confirmText, confirmClass, action) {
-document.getElementById('modal-title').textContent = title;
-document.getElementById('modal-msg').textContent = msg;
-const confirmBtn = document.getElementById('modal-confirm');
-confirmBtn.textContent = confirmText;
-confirmBtn.className = 'btn ' + confirmClass;
-modalConfirmAction = action;
+function getPrintPadMm() {
+  const map = { "0mm": 0, "4mm": 4, "8mm": 8, "12mm": 12 };
+  return map[document.getElementById('p-margin').value] ?? 8;
+}
 
-const overlay = document.getElementById('custom-modal');
-overlay.style.display = 'flex';
-overlay.offsetHeight; 
-overlay.classList.add('vis');
+function preparePrint() {
+  const root = document.documentElement;
+  const cs = getComputedStyle(root);
+  const get = v => cs.getPropertyValue(v).trim();
+
+  const pad = getPrintPadMm();
+  const tableH = 297 - pad * 2;
+  const outBorderPx = parseFloat(get('--out-bd-w')) || 0;
+  const outBorderMm = outBorderPx * 25.4 / 96;
+  const contentH = tableH - outBorderMm * 2;
+  const rowH = (contentH / 50).toFixed(4);
+
+  const ff  = get('--font-family') || "'Inter', system-ui, sans-serif";
+  const fw  = get('--font-weight') || '400';
+  const fs  = get('--font-size')   || '13px';
+  const ro  = get('--row-odd')     || '#f8fafc';
+  const re  = get('--row-even')    || '#ffffff';
+  const tc  = get('--text-col')    || '#0f172a';
+  const cp  = get('--cell-pad')    || '0 4px';
+  const outW = get('--out-bd-w')   || '2px';
+  const outS = get('--out-bd-s')   || 'solid';
+  const outC = get('--out-bd-c')   || '#94a3b8';
+  const outR = get('--out-rad')    || '12px';
+  const ihW  = get('--in-h-w')     || '1px';
+  const ihC  = get('--in-h-c')     || '#e2e8f0';
+  const ivW  = get('--in-v-w')     || '1px';
+  const ivC  = get('--in-v-c')     || '#e2e8f0';
+  const dvW  = get('--div-bd-w')   || '2px';
+  const dvS  = get('--div-bd-s')   || 'solid';
+  const dvC  = get('--div-bd-c')   || '#64748b';
+
+  let el = document.getElementById('lx-print-dynamic');
+  if (!el) {
+    el = document.createElement('style');
+    el.id = 'lx-print-dynamic';
+    document.head.appendChild(el);
+  }
+
+  el.textContent = `
+    @media print {
+      .page-wrapper {
+        padding: ${pad}mm !important;
+      }
+      .table-container {
+        height: ${tableH}mm !important;
+        border: ${outW} ${outS} ${outC} !important;
+        border-radius: ${outR} !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+      }
+      table.lx-index {
+        height: ${contentH.toFixed(4)}mm !important;
+        background: ${re} !important;
+      }
+      table.lx-index tr {
+        height: ${rowH}mm !important;
+        max-height: ${rowH}mm !important;
+        overflow: hidden !important;
+      }
+      table.lx-index tr:nth-child(odd) {
+        background-color: ${ro} !important;
+      }
+      table.lx-index td {
+        height: ${rowH}mm !important;
+        max-height: ${rowH}mm !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        line-height: 1 !important;
+        vertical-align: middle !important;
+        padding: ${cp} !important;
+        font-family: ${ff} !important;
+        font-size: ${fs} !important;
+        font-weight: ${fw} !important;
+        color: ${tc} !important;
+        border-bottom: ${ihW} solid ${ihC} !important;
+        border-right: ${ivW} solid ${ivC} !important;
+      }
+      table.lx-index tr:last-child td {
+        border-bottom: none !important;
+      }
+      table.lx-index td:last-child {
+        border-right: none !important;
+      }
+      table.lx-index td:nth-child(odd) {
+        width: 24px !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        opacity: 0.5 !important;
+        text-align: right !important;
+        padding-right: 4px !important;
+        padding-left: 0 !important;
+      }
+      table.lx-index td:nth-child(2),
+      table.lx-index td:nth-child(4),
+      table.lx-index td:nth-child(6) {
+        border-right: ${dvW} ${dvS} ${dvC} !important;
+      }
+    }
+  `;
+
+  document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => autoFitText(td));
+}
+
+function doPrint() {
+  preparePrint();
+  window.print();
+}
+
+window.addEventListener('beforeprint', preparePrint);
+
+function openModal(title, msg, confirmText, confirmClass, action) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-msg').textContent = msg;
+  const confirmBtn = document.getElementById('modal-confirm');
+  confirmBtn.textContent = confirmText;
+  confirmBtn.className = 'btn ' + confirmClass;
+  modalConfirmAction = action;
+  const overlay = document.getElementById('custom-modal');
+  overlay.style.display = 'flex';
+  overlay.offsetHeight;
+  overlay.classList.add('vis');
 }
 
 function closeModal() {
-const overlay = document.getElementById('custom-modal');
-overlay.classList.remove('vis');
-setTimeout(() => overlay.style.display = 'none', 200);
+  const overlay = document.getElementById('custom-modal');
+  overlay.classList.remove('vis');
+  setTimeout(() => overlay.style.display = 'none', 200);
 }
 
 document.getElementById('modal-cancel').addEventListener('click', closeModal);
 document.getElementById('modal-confirm').addEventListener('click', () => {
-if(modalConfirmAction) modalConfirmAction();
-closeModal();
+  if (modalConfirmAction) modalConfirmAction();
+  closeModal();
 });
 
-// --- Core Initialization ---
 function initThm() {
-let m = localStorage.getItem('lx_tm') || 'auto';
-applyAppTheme(m);
+  let m = localStorage.getItem('lx_tm') || 'auto';
+  applyAppTheme(m);
 }
+
 function cycleTheme() {
-let m = localStorage.getItem('lx_tm') || 'auto';
-const n = m === 'auto' ? 'light' : m === 'light' ? 'dark' : 'auto';
-localStorage.setItem('lx_tm', n);
-applyAppTheme(n);
-showToast(`Theme: ${n}`);
+  let m = localStorage.getItem('lx_tm') || 'auto';
+  const n = m === 'auto' ? 'light' : m === 'light' ? 'dark' : 'auto';
+  localStorage.setItem('lx_tm', n);
+  applyAppTheme(n);
+  showToast(`Theme: ${n}`);
 }
+
 function applyAppTheme(m) {
-const d = document.documentElement;
-d.classList.remove('dark', 'light');
-let isD = false;
-if(m === 'auto') {
-isD = window.matchMedia('(prefers-color-scheme: dark)').matches;
-} else {
-isD = m === 'dark';
+  const d = document.documentElement;
+  d.classList.remove('dark', 'light');
+  let isD = m === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : m === 'dark';
+  if (isD) {
+    d.classList.add('dark');
+    document.querySelector('.theme-toggle .sun').style.display = 'none';
+    document.querySelector('.theme-toggle .moon').style.display = 'block';
+  } else {
+    document.querySelector('.theme-toggle .sun').style.display = 'block';
+    document.querySelector('.theme-toggle .moon').style.display = 'none';
+  }
 }
-if(isD) {
-d.classList.add('dark');
-document.querySelector('.theme-toggle .sun').style.display = 'none';
-document.querySelector('.theme-toggle .moon').style.display = 'block';
-} else {
-document.querySelector('.theme-toggle .sun').style.display = 'block';
-document.querySelector('.theme-toggle .moon').style.display = 'none';
-}
-}
+
 function toggleMobileSB() {
-document.getElementById('sidebar').classList.toggle('open');
-document.getElementById('sb-ov').classList.toggle('vis');
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sb-ov').classList.toggle('vis');
 }
+
 function toggleDeskSB() {
-document.getElementById('sidebar').classList.toggle('closed');
+  document.getElementById('sidebar').classList.toggle('closed');
 }
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => initThm());
 document.getElementById('fileUpload').addEventListener('change', handleFileUpload);
 document.addEventListener('mousedown', (e) => {
-if(e.target.id === 'workspace' || e.target.classList.contains('page-wrapper')) {
-disableCellPanel();
-}
+  if (e.target.id === 'workspace' || e.target.classList.contains('page-wrapper')) {
+    disableCellPanel();
+  }
 });
 window.addEventListener('keydown', e => {
-if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && !document.activeElement.isContentEditable) {
-e.preventDefault();
-document.getElementById('sinp').focus();
-}
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && !document.activeElement.isContentEditable) {
+    e.preventDefault();
+    document.getElementById('sinp').focus();
+  }
 });
+
 window.onload = () => {
-initThm();
-loadFromLocal();
-loadVersions();
-if (Object.keys(appData).length === 0) loadDemoData();
-if (!loadSettings()) applyStyle('modern');
-renderPage();
+  initThm();
+  loadFromLocal();
+  loadVersions();
+  if (Object.keys(appData).length === 0) loadDemoData();
+  if (!loadSettings()) applyStyle('modern');
+  renderPage();
 };
 
 function showToast(msg) {
-const t = document.getElementById('toast');
-t.textContent = msg;
-t.classList.add('show');
-setTimeout(() => t.classList.remove('show'), 3000);
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 function triggerAutoSave() {
-if (isPreviewing) return; 
-const dot = document.getElementById('save-dot');
-dot.style.background = '#f59e0b';
-dot.style.boxShadow = '0 0 8px #f59e0b';
-clearTimeout(saveTimeout);
-saveTimeout = setTimeout(() => {
-localStorage.setItem('lx_data_ul_v3', JSON.stringify(appData));
-localStorage.setItem('lx_style_ul_v3', JSON.stringify(appStyles));
-dot.style.background = '#22c55e';
-dot.style.boxShadow = '0 0 8px #22c55e';
-updateStats();
-pushVersion();
-}, 600);
+  if (isPreviewing) return;
+  const dot = document.getElementById('save-dot');
+  dot.style.background = '#f59e0b';
+  dot.style.boxShadow = '0 0 8px #f59e0b';
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    localStorage.setItem('lx_data_ul_v3', JSON.stringify(appData));
+    localStorage.setItem('lx_style_ul_v3', JSON.stringify(appStyles));
+    dot.style.background = '#22c55e';
+    dot.style.boxShadow = '0 0 8px #22c55e';
+    updateStats();
+    pushVersion();
+  }, 600);
 }
 
 function loadVersions() {
-const vStr = localStorage.getItem('lx_versions_v3');
-if (vStr) versions = JSON.parse(vStr);
-renderVersions();
+  const vStr = localStorage.getItem('lx_versions_v3');
+  if (vStr) versions = JSON.parse(vStr);
+  renderVersions();
 }
 
 function pushVersion() {
-const stateStr = JSON.stringify({d: appData, s: appStyles});
-const lastStr = versions.length ? JSON.stringify({d: versions[0].d, s: versions[0].s}) : "";
-// Only store if there's a distinct structural change 
-if(stateStr !== lastStr && Object.keys(appData).length > 0) {
-versions.unshift({
-ts: Date.now(),
-d: JSON.parse(JSON.stringify(appData)),
-s: JSON.parse(JSON.stringify(appStyles))
-});
-if(versions.length > 10) versions.pop();
-localStorage.setItem('lx_versions_v3', JSON.stringify(versions));
-renderVersions();
-}
+  const stateStr = JSON.stringify({ d: appData, s: appStyles });
+  const lastStr = versions.length ? JSON.stringify({ d: versions[0].d, s: versions[0].s }) : "";
+  if (stateStr !== lastStr && Object.keys(appData).length > 0) {
+    versions.unshift({ ts: Date.now(), d: JSON.parse(JSON.stringify(appData)), s: JSON.parse(JSON.stringify(appStyles)) });
+    if (versions.length > 10) versions.pop();
+    localStorage.setItem('lx_versions_v3', JSON.stringify(versions));
+    renderVersions();
+  }
 }
 
 function renderVersions() {
-const cont = document.getElementById('version-list');
-if(!versions.length) {
-cont.innerHTML = '<div style="font-size:11px; color:#64748b; text-align:center;">No history yet.</div>';
-return;
-}
-cont.innerHTML = '';
-versions.forEach((v, i) => {
-const d = new Date(v.ts);
-const timeStr = d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
-const div = document.createElement('div');
-div.className = 'version-item';
-div.onclick = () => previewVersion(i);
-
-const timeSpan = document.createElement('span');
-timeSpan.className = 'version-time';
-timeSpan.textContent = i === 0 ? `Latest (${timeStr})` : timeStr;
-
-const actSpan = document.createElement('span');
-actSpan.className = 'version-action';
-actSpan.textContent = 'Preview';
-
-div.appendChild(timeSpan);
-div.appendChild(actSpan);
-cont.appendChild(div);
-});
+  const cont = document.getElementById('version-list');
+  if (!versions.length) {
+    cont.innerHTML = '<div style="font-size:11px; color:#64748b; text-align:center;">No history yet.</div>';
+    return;
+  }
+  cont.innerHTML = '';
+  versions.forEach((v, i) => {
+    const d = new Date(v.ts);
+    const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const div = document.createElement('div');
+    div.className = 'version-item';
+    div.onclick = () => previewVersion(i);
+    const timeSpan = document.createElement('span');
+    timeSpan.className = 'version-time';
+    timeSpan.textContent = i === 0 ? `Latest (${timeStr})` : timeStr;
+    const actSpan = document.createElement('span');
+    actSpan.className = 'version-action';
+    actSpan.textContent = 'Preview';
+    div.appendChild(timeSpan);
+    div.appendChild(actSpan);
+    cont.appendChild(div);
+  });
 }
 
 function previewVersion(idx) {
-if (!isPreviewing) {
-backupData = JSON.parse(JSON.stringify(appData));
-backupStyles = JSON.parse(JSON.stringify(appStyles));
-}
-isPreviewing = true;
-appData = JSON.parse(JSON.stringify(versions[idx].d));
-appStyles = JSON.parse(JSON.stringify(versions[idx].s));
-
-document.querySelectorAll('.version-item').forEach((el, i) => el.classList.toggle('active-preview', i === idx));
-const d = new Date(versions[idx].ts);
-document.getElementById('pb-text').innerHTML = `Previewing version from <b>${d.toLocaleTimeString()}</b>`;
-document.getElementById('preview-banner').classList.add('vis');
-disableCellPanel();
-
-renderPage(true); 
+  if (!isPreviewing) {
+    backupData = JSON.parse(JSON.stringify(appData));
+    backupStyles = JSON.parse(JSON.stringify(appStyles));
+  }
+  isPreviewing = true;
+  appData = JSON.parse(JSON.stringify(versions[idx].d));
+  appStyles = JSON.parse(JSON.stringify(versions[idx].s));
+  document.querySelectorAll('.version-item').forEach((el, i) => el.classList.toggle('active-preview', i === idx));
+  const d = new Date(versions[idx].ts);
+  document.getElementById('pb-text').innerHTML = `Previewing version from <b>${d.toLocaleTimeString()}</b>`;
+  document.getElementById('preview-banner').classList.add('vis');
+  disableCellPanel();
+  renderPage(true);
 }
 
 function cancelPreview() {
-if (!isPreviewing) return;
-appData = backupData;
-appStyles = backupStyles;
-isPreviewing = false;
-
-document.querySelectorAll('.version-item').forEach(el => el.classList.remove('active-preview'));
-document.getElementById('preview-banner').classList.remove('vis');
-renderPage();
-showToast("Preview canceled");
+  if (!isPreviewing) return;
+  appData = backupData;
+  appStyles = backupStyles;
+  isPreviewing = false;
+  document.querySelectorAll('.version-item').forEach(el => el.classList.remove('active-preview'));
+  document.getElementById('preview-banner').classList.remove('vis');
+  renderPage();
+  showToast("Preview canceled");
 }
 
 function confirmRestore() {
-if (!isPreviewing) return;
-isPreviewing = false;
-hasUnsavedChanges = true;
-document.querySelectorAll('.version-item').forEach(el => el.classList.remove('active-preview'));
-document.getElementById('preview-banner').classList.remove('vis');
-triggerAutoSave();
-renderPage();
-showToast("Version state permanently restored.");
+  if (!isPreviewing) return;
+  isPreviewing = false;
+  hasUnsavedChanges = true;
+  document.querySelectorAll('.version-item').forEach(el => el.classList.remove('active-preview'));
+  document.getElementById('preview-banner').classList.remove('vis');
+  triggerAutoSave();
+  renderPage();
+  showToast("Version state permanently restored.");
 }
 
 function updateStats() {
-let counts = {};
-let filledCount = 0;
-document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => {
-td.classList.remove('dup-warn');
-let txt = td.textContent.trim().toLowerCase();
-if(txt) {
-filledCount++;
-if(!counts[txt]) counts[txt] = [];
-counts[txt].push(td);
-}
-});
-let dupFound = false;
-let dCount = 0;
-for(let k in counts) {
-if(counts[k].length > 1) {
-dupFound = true;
-dCount++;
-counts[k].forEach(td => td.classList.add('dup-warn'));
-}
-}
-document.getElementById('st-f').textContent = filledCount;
-document.getElementById('st-e').textContent = 200 - filledCount;
-document.getElementById('st-d').textContent = dCount;
-document.getElementById('st-d').style.color = dCount > 0 ? '#ef4444' : 'inherit';
-if(dupFound && !dupWarned) {
-showToast("Duplicate values detected");
-dupWarned = true;
-}
+  let counts = {};
+  let filledCount = 0;
+  document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => {
+    td.classList.remove('dup-warn');
+    let txt = td.textContent.trim().toLowerCase();
+    if (txt) {
+      filledCount++;
+      if (!counts[txt]) counts[txt] = [];
+      counts[txt].push(td);
+    }
+  });
+  let dupFound = false;
+  let dCount = 0;
+  for (let k in counts) {
+    if (counts[k].length > 1) {
+      dupFound = true;
+      dCount++;
+      counts[k].forEach(td => td.classList.add('dup-warn'));
+    }
+  }
+  document.getElementById('st-f').textContent = filledCount;
+  document.getElementById('st-e').textContent = 200 - filledCount;
+  document.getElementById('st-d').textContent = dCount;
+  document.getElementById('st-d').style.color = dCount > 0 ? '#ef4444' : 'inherit';
+  if (dupFound && !dupWarned) { showToast("Duplicate values detected"); dupWarned = true; }
 }
 
 function fuzzyMatch(pattern, str) {
-pattern = pattern.toLowerCase().replace(/\s+/g, '');
-str = str.toLowerCase();
-let pIdx = 0;
-for (let i = 0; i < str.length && pIdx < pattern.length; i++) {
-if (str[i] === pattern[pIdx]) pIdx++;
+  pattern = pattern.toLowerCase().replace(/\s+/g, '');
+  str = str.toLowerCase();
+  let pIdx = 0;
+  for (let i = 0; i < str.length && pIdx < pattern.length; i++) {
+    if (str[i] === pattern[pIdx]) pIdx++;
+  }
+  return pIdx === pattern.length;
 }
-return pIdx === pattern.length;
-}
+
 function runSearch(q) {
-qStr = q.trim();
-document.getElementById('sclr').classList.toggle('vis', !!qStr);
-document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => {
-const txt = td.textContent.trim();
-td.classList.toggle('smatch', !!(qStr && txt && fuzzyMatch(qStr, txt)));
-});
-const f = document.querySelector('.lx-index td.smatch');
-if(f) f.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  qStr = q.trim();
+  document.getElementById('sclr').classList.toggle('vis', !!qStr);
+  document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => {
+    const txt = td.textContent.trim();
+    td.classList.toggle('smatch', !!(qStr && txt && fuzzyMatch(qStr, txt)));
+  });
+  const f = document.querySelector('.lx-index td.smatch');
+  if (f) f.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
+
 function clearSearch() {
-document.getElementById('sinp').value = '';
-runSearch('');
+  document.getElementById('sinp').value = '';
+  runSearch('');
 }
+
 function saveSettings() {
-const s = {
-f: document.getElementById('f-family').value,
-fw: document.getElementById('f-weight').value,
-fz: document.getElementById('f-size').value,
-ro: document.getElementById('hex-odd').value,
-re: document.getElementById('hex-even').value,
-tx: document.getElementById('hex-text').value,
-orad: document.getElementById('b-rad').value,
-ow: document.getElementById('b-out-w').value,
-os: document.getElementById('b-out-s').value,
-oc: document.getElementById('b-out-c').value,
-ihw: document.getElementById('b-in-hw').value,
-ivw: document.getElementById('b-in-vw').value,
-ic: document.getElementById('b-in-c').value,
-dw: document.getElementById('b-div-w').value,
-ds: document.getElementById('b-div-s').value,
-dc: document.getElementById('b-div-c').value,
-pm: document.getElementById('p-margin').value
-};
-localStorage.setItem('lx_settings_ul_v3', JSON.stringify(s));
-updateCSS();
+  const s = {
+    f: document.getElementById('f-family').value,
+    fw: document.getElementById('f-weight').value,
+    fz: document.getElementById('f-size').value,
+    ro: document.getElementById('hex-odd').value,
+    re: document.getElementById('hex-even').value,
+    tx: document.getElementById('hex-text').value,
+    orad: document.getElementById('b-rad').value,
+    ow: document.getElementById('b-out-w').value,
+    os: document.getElementById('b-out-s').value,
+    oc: document.getElementById('b-out-c').value,
+    ihw: document.getElementById('b-in-hw').value,
+    ivw: document.getElementById('b-in-vw').value,
+    ic: document.getElementById('b-in-c').value,
+    dw: document.getElementById('b-div-w').value,
+    ds: document.getElementById('b-div-s').value,
+    dc: document.getElementById('b-div-c').value,
+    pm: document.getElementById('p-margin').value
+  };
+  localStorage.setItem('lx_settings_ul_v3', JSON.stringify(s));
+  updateCSS();
 }
+
 function loadSettings() {
-const saved = localStorage.getItem('lx_settings_ul_v3');
-if (!saved) return false;
-const s = JSON.parse(saved);
-document.getElementById('f-family').value = s.f;
-document.getElementById('f-weight').value = s.fw;
-document.getElementById('f-size').value = s.fz;
-document.getElementById('hex-odd').value = s.ro; document.getElementById('c-odd').value = '#' + s.ro;
-document.getElementById('hex-even').value = s.re; document.getElementById('c-even').value = '#' + s.re;
-document.getElementById('hex-text').value = s.tx; document.getElementById('c-text').value = '#' + s.tx;
-document.getElementById('b-rad').value = s.orad;
-document.getElementById('b-out-w').value = s.ow;
-document.getElementById('b-out-s').value = s.os;
-document.getElementById('b-out-c').value = s.oc;
-document.getElementById('b-in-hw').value = s.ihw;
-document.getElementById('b-in-vw').value = s.ivw;
-document.getElementById('b-in-c').value = s.ic;
-document.getElementById('b-div-w').value = s.dw;
-document.getElementById('b-div-s').value = s.ds;
-document.getElementById('b-div-c').value = s.dc;
-document.getElementById('p-margin').value = s.pm || "8mm";
-updateSizeLabel();
-updateCSS();
-return true;
+  const saved = localStorage.getItem('lx_settings_ul_v3');
+  if (!saved) return false;
+  const s = JSON.parse(saved);
+  document.getElementById('f-family').value = s.f;
+  document.getElementById('f-weight').value = s.fw;
+  document.getElementById('f-size').value = s.fz;
+  document.getElementById('hex-odd').value = s.ro; document.getElementById('c-odd').value = '#' + s.ro;
+  document.getElementById('hex-even').value = s.re; document.getElementById('c-even').value = '#' + s.re;
+  document.getElementById('hex-text').value = s.tx; document.getElementById('c-text').value = '#' + s.tx;
+  document.getElementById('b-rad').value = s.orad;
+  document.getElementById('b-out-w').value = s.ow;
+  document.getElementById('b-out-s').value = s.os;
+  document.getElementById('b-out-c').value = s.oc;
+  document.getElementById('b-in-hw').value = s.ihw;
+  document.getElementById('b-in-vw').value = s.ivw;
+  document.getElementById('b-in-c').value = s.ic;
+  document.getElementById('b-div-w').value = s.dw;
+  document.getElementById('b-div-s').value = s.ds;
+  document.getElementById('b-div-c').value = s.dc;
+  document.getElementById('p-margin').value = s.pm || "8mm";
+  updateSizeLabel();
+  updateCSS();
+  return true;
 }
+
 function loadFromLocal() {
-const d = localStorage.getItem('lx_data_ul_v3');
-const st = localStorage.getItem('lx_style_ul_v3');
-if(d && d !== "{}") appData = JSON.parse(d);
-if(st && st !== "{}") appStyles = JSON.parse(st);
+  const d = localStorage.getItem('lx_data_ul_v3');
+  const st = localStorage.getItem('lx_style_ul_v3');
+  if (d && d !== "{}") appData = JSON.parse(d);
+  if (st && st !== "{}") appStyles = JSON.parse(st);
 }
 
 function requestClearData() {
-if (isPreviewing) {
-showToast("Cannot clear data while previewing history.");
-return;
-}
-openModal("Clear All Data", "Are you entirely sure you want to delete all entries and formatting? This action can only be undone via the Version History panel.", "Clear Data", "btn-danger", () => {
-appData = {};
-appStyles = {};
-hasUnsavedChanges = true;
-triggerAutoSave();
-renderPage();
-showToast("Cleared successfully");
-});
+  if (isPreviewing) { showToast("Cannot clear data while previewing history."); return; }
+  openModal("Clear All Data", "Are you entirely sure you want to delete all entries and formatting? This action can only be undone via the Version History panel.", "Clear Data", "btn-danger", () => {
+    appData = {};
+    appStyles = {};
+    hasUnsavedChanges = true;
+    triggerAutoSave();
+    renderPage();
+    showToast("Cleared successfully");
+  });
 }
 
 window.addEventListener('beforeunload', (e) => {
-if(hasUnsavedChanges && !isPreviewing) {
-e.preventDefault();
-e.returnValue = ''; 
-}
+  if (hasUnsavedChanges && !isPreviewing) { e.preventDefault(); e.returnValue = ''; }
 });
 
 function handleKey(e, r, c) {
-if (['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
-e.preventDefault();
-const tbl = document.querySelector('.lx-index');
-let trg = r;
-if (e.key === 'ArrowUp' && r > 1) trg--;
-if ((e.key === 'ArrowDown' || e.key === 'Enter') && r < 50) trg++;
-if (trg !== r) {
-const td = tbl.children[trg - 1].children[(c * 2) + 1];
-if (td) td.focus();
+  if (['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
+    e.preventDefault();
+    const tbl = document.querySelector('.lx-index');
+    let trg = r;
+    if (e.key === 'ArrowUp' && r > 1) trg--;
+    if ((e.key === 'ArrowDown' || e.key === 'Enter') && r < 50) trg++;
+    if (trg !== r) {
+      const td = tbl.children[trg - 1].children[(c * 2) + 1];
+      if (td) td.focus();
+    }
+  }
 }
-}
-}
+
 function applyCellDomStyle(td, id) {
-let s = appStyles[id];
-if(!s) {
-td.style.removeProperty('font-weight');
-td.style.removeProperty('font-style');
-td.style.removeProperty('text-decoration');
-td.style.removeProperty('color');
-td.dataset.cSize = '';
-return;
+  let s = appStyles[id];
+  if (!s) {
+    td.style.removeProperty('font-weight');
+    td.style.removeProperty('font-style');
+    td.style.removeProperty('text-decoration');
+    td.style.removeProperty('color');
+    td.dataset.cSize = '';
+    return;
+  }
+  if (s.b) td.style.setProperty('font-weight', '700', 'important'); else td.style.removeProperty('font-weight');
+  if (s.i) td.style.setProperty('font-style', 'italic', 'important'); else td.style.removeProperty('font-style');
+  if (s.u) td.style.setProperty('text-decoration', 'underline', 'important'); else td.style.removeProperty('text-decoration');
+  if (s.c) td.style.setProperty('color', s.c, 'important'); else td.style.removeProperty('color');
+  td.dataset.cSize = s.s || '';
 }
-if(s.b) td.style.setProperty('font-weight', '700', 'important'); else td.style.removeProperty('font-weight');
-if(s.i) td.style.setProperty('font-style', 'italic', 'important'); else td.style.removeProperty('font-style');
-if(s.u) td.style.setProperty('text-decoration', 'underline', 'important'); else td.style.removeProperty('text-decoration');
-if(s.c) td.style.setProperty('color', s.c, 'important'); else td.style.removeProperty('color');
-td.dataset.cSize = s.s || '';
-}
+
 function autoFitText(el) {
-if(el.dataset.cSize) {
-el.style.setProperty('font-size', el.dataset.cSize, 'important');
-el.style.letterSpacing = 'normal';
-return;
-}
-el.style.removeProperty('font-size');
-el.style.letterSpacing = 'normal';
-let baseSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size'));
-let maxW = el.clientWidth - 8;
-if (el.scrollWidth > maxW && maxW > 0) {
-let ratio = maxW / el.scrollWidth;
-let newSize = Math.max(9, baseSize * ratio);
-el.style.setProperty('font-size', newSize + 'px', 'important');
-if(newSize <= 9) el.style.letterSpacing = '-0.5px';
-}
+  if (el.dataset.cSize) {
+    el.style.setProperty('font-size', el.dataset.cSize, 'important');
+    el.style.letterSpacing = 'normal';
+    return;
+  }
+  el.style.removeProperty('font-size');
+  el.style.letterSpacing = 'normal';
+  let baseSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size'));
+  let maxW = el.clientWidth - 8;
+  if (el.scrollWidth > maxW && maxW > 0) {
+    let ratio = maxW / el.scrollWidth;
+    let newSize = Math.max(9, baseSize * ratio);
+    el.style.setProperty('font-size', newSize + 'px', 'important');
+    if (newSize <= 9) el.style.letterSpacing = '-0.5px';
+  }
 }
 
 function renderPage(skipSave = false) {
-const cont = document.getElementById('page-container');
-cont.innerHTML = '';
-const tbl = document.createElement('table');
-tbl.className = 'lx-index';
-for (let r = 1; r <= 50; r++) {
-const tr = document.createElement('tr');
-for (let c = 0; c < 4; c++) {
-const id = (c * 50) + r;
-const tdId = document.createElement('td');
-tdId.textContent = id;
-const tdVal = document.createElement('td');
-
-// Lock cells if previewing
-tdVal.contentEditable = isPreviewing ? "false" : "true";
-if (isPreviewing) tdVal.classList.add('preview-locked');
-
-tdVal.setAttribute("dir", "auto");
-tdVal.dataset.id = id;
-tdVal.textContent = appData[id] || "";
-applyCellDomStyle(tdVal, id);
-
-if (!isPreviewing) {
-tdVal.addEventListener('focus', () => activateCell(id, tdVal));
-tdVal.addEventListener('input', (e) => {
-const v = e.target.textContent.trim();
-if(v) appData[id] = v; else delete appData[id];
-hasUnsavedChanges = true;
-autoFitText(e.target);
-if (!skipSave) triggerAutoSave();
-if(qStr) runSearch(qStr);
-});
-tdVal.addEventListener('paste', (e) => {
-e.preventDefault();
-let text = (e.originalEvent || e).clipboardData.getData('text/plain');
-document.execCommand('insertText', false, text);
-autoFitText(e.target);
-});
-tdVal.addEventListener('keydown', (e) => handleKey(e, r, c));
-}
-
-tr.appendChild(tdId);
-tr.appendChild(tdVal);
-}
-tbl.appendChild(tr);
-}
-cont.appendChild(tbl);
-setTimeout(() => {
-document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => autoFitText(td));
-updateStats();
-if(qStr) runSearch(qStr);
-}, 50);
+  const cont = document.getElementById('page-container');
+  cont.innerHTML = '';
+  const tbl = document.createElement('table');
+  tbl.className = 'lx-index';
+  for (let r = 1; r <= 50; r++) {
+    const tr = document.createElement('tr');
+    for (let c = 0; c < 4; c++) {
+      const id = (c * 50) + r;
+      const tdId = document.createElement('td');
+      tdId.textContent = id;
+      const tdVal = document.createElement('td');
+      tdVal.contentEditable = isPreviewing ? "false" : "true";
+      if (isPreviewing) tdVal.classList.add('preview-locked');
+      tdVal.setAttribute("dir", "auto");
+      tdVal.dataset.id = id;
+      tdVal.textContent = appData[id] || "";
+      applyCellDomStyle(tdVal, id);
+      if (!isPreviewing) {
+        tdVal.addEventListener('focus', () => activateCell(id, tdVal));
+        tdVal.addEventListener('input', (e) => {
+          const v = e.target.textContent.trim();
+          if (v) appData[id] = v; else delete appData[id];
+          hasUnsavedChanges = true;
+          autoFitText(e.target);
+          if (!skipSave) triggerAutoSave();
+          if (qStr) runSearch(qStr);
+        });
+        tdVal.addEventListener('paste', (e) => {
+          e.preventDefault();
+          let text = (e.originalEvent || e).clipboardData.getData('text/plain');
+          document.execCommand('insertText', false, text);
+          autoFitText(e.target);
+        });
+        tdVal.addEventListener('keydown', (e) => handleKey(e, r, c));
+      }
+      tr.appendChild(tdId);
+      tr.appendChild(tdVal);
+    }
+    tbl.appendChild(tr);
+  }
+  cont.appendChild(tbl);
+  setTimeout(() => {
+    document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => autoFitText(td));
+    updateStats();
+    if (qStr) runSearch(qStr);
+  }, 50);
 }
 
 function activateCell(id, td) {
-if (isPreviewing) return;
-activeCellId = id;
-document.getElementById('cell-panel').classList.remove('disabled');
-document.getElementById('cell-panel').open = true;
-document.getElementById('cell-panel-title').innerHTML = `★ Cell Override <span style="color:#64748b; font-size:10px;">(ID: ${id})</span>`;
-let s = appStyles[id] || {};
-document.getElementById('btn-bold').classList.toggle('active', !!s.b);
-document.getElementById('btn-italic').classList.toggle('active', !!s.i);
-document.getElementById('btn-under').classList.toggle('active', !!s.u);
-document.getElementById('cell-size').value = s.s || "";
-if(s.c) {
-document.getElementById('cell-hex').value = s.c.replace('#','');
-document.getElementById('cell-color').value = s.c;
-} else {
-document.getElementById('cell-hex').value = "";
-document.getElementById('cell-color').value = "#000000";
+  if (isPreviewing) return;
+  activeCellId = id;
+  document.getElementById('cell-panel').classList.remove('disabled');
+  document.getElementById('cell-panel').open = true;
+  document.getElementById('cell-panel-title').innerHTML = `★ Cell Override <span style="color:#64748b; font-size:10px;">(ID: ${id})</span>`;
+  let s = appStyles[id] || {};
+  document.getElementById('btn-bold').classList.toggle('active', !!s.b);
+  document.getElementById('btn-italic').classList.toggle('active', !!s.i);
+  document.getElementById('btn-under').classList.toggle('active', !!s.u);
+  document.getElementById('cell-size').value = s.s || "";
+  if (s.c) {
+    document.getElementById('cell-hex').value = s.c.replace('#', '');
+    document.getElementById('cell-color').value = s.c;
+  } else {
+    document.getElementById('cell-hex').value = "";
+    document.getElementById('cell-color').value = "#000000";
+  }
 }
-}
+
 function disableCellPanel() {
-document.getElementById('cell-panel').classList.add('disabled');
-document.getElementById('cell-panel').open = false;
-document.getElementById('cell-panel-title').innerHTML = `★ Selected Cell Override`;
-activeCellId = null;
+  document.getElementById('cell-panel').classList.add('disabled');
+  document.getElementById('cell-panel').open = false;
+  document.getElementById('cell-panel-title').innerHTML = `★ Selected Cell Override`;
+  activeCellId = null;
 }
+
 function toggleStyle(prop) {
-if(!activeCellId || isPreviewing) return;
-if(!appStyles[activeCellId]) appStyles[activeCellId] = {};
-let s = appStyles[activeCellId];
-if(prop === 'bold') s.b = !s.b;
-if(prop === 'italic') s.i = !s.i;
-if(prop === 'underline') s.u = !s.u;
-hasUnsavedChanges = true;
-triggerAutoSave();
-let td = document.querySelector(`td[data-id="${activeCellId}"]`);
-if(td) {
-applyCellDomStyle(td, activeCellId);
-activateCell(activeCellId, td);
-autoFitText(td);
+  if (!activeCellId || isPreviewing) return;
+  if (!appStyles[activeCellId]) appStyles[activeCellId] = {};
+  let s = appStyles[activeCellId];
+  if (prop === 'bold') s.b = !s.b;
+  if (prop === 'italic') s.i = !s.i;
+  if (prop === 'underline') s.u = !s.u;
+  hasUnsavedChanges = true;
+  triggerAutoSave();
+  let td = document.querySelector(`td[data-id="${activeCellId}"]`);
+  if (td) { applyCellDomStyle(td, activeCellId); activateCell(activeCellId, td); autoFitText(td); }
 }
-}
+
 function applyCellSize() {
-if(!activeCellId || isPreviewing) return;
-if(!appStyles[activeCellId]) appStyles[activeCellId] = {};
-appStyles[activeCellId].s = document.getElementById('cell-size').value;
-hasUnsavedChanges = true;
-triggerAutoSave();
-let td = document.querySelector(`td[data-id="${activeCellId}"]`);
-if(td) {
-applyCellDomStyle(td, activeCellId);
-autoFitText(td);
+  if (!activeCellId || isPreviewing) return;
+  if (!appStyles[activeCellId]) appStyles[activeCellId] = {};
+  appStyles[activeCellId].s = document.getElementById('cell-size').value;
+  hasUnsavedChanges = true;
+  triggerAutoSave();
+  let td = document.querySelector(`td[data-id="${activeCellId}"]`);
+  if (td) { applyCellDomStyle(td, activeCellId); autoFitText(td); }
 }
-}
+
 function syncCellHex() {
-let h = document.getElementById('cell-hex').value.trim();
-if(!h) { updateCellColor(""); return; }
-if(/^[0-9A-F]{6}$/i.test(h)) {
-document.getElementById('cell-color').value = '#' + h;
-updateCellColor('#' + h);
+  let h = document.getElementById('cell-hex').value.trim();
+  if (!h) { updateCellColor(""); return; }
+  if (/^[0-9A-F]{6}$/i.test(h)) {
+    document.getElementById('cell-color').value = '#' + h;
+    updateCellColor('#' + h);
+  }
 }
-}
+
 function syncCellCol() {
-let v = document.getElementById('cell-color').value;
-document.getElementById('cell-hex').value = v.replace('#', '');
-updateCellColor(v);
+  let v = document.getElementById('cell-color').value;
+  document.getElementById('cell-hex').value = v.replace('#', '');
+  updateCellColor(v);
 }
+
 function updateCellColor(hex) {
-if(!activeCellId || isPreviewing) return;
-if(!appStyles[activeCellId]) appStyles[activeCellId] = {};
-appStyles[activeCellId].c = hex;
-hasUnsavedChanges = true;
-triggerAutoSave();
-let td = document.querySelector(`td[data-id="${activeCellId}"]`);
-if(td) applyCellDomStyle(td, activeCellId);
+  if (!activeCellId || isPreviewing) return;
+  if (!appStyles[activeCellId]) appStyles[activeCellId] = {};
+  appStyles[activeCellId].c = hex;
+  hasUnsavedChanges = true;
+  triggerAutoSave();
+  let td = document.querySelector(`td[data-id="${activeCellId}"]`);
+  if (td) applyCellDomStyle(td, activeCellId);
 }
+
 function copyFormat() {
-if(!activeCellId || isPreviewing) return;
-clipboardFormat = appStyles[activeCellId] ? JSON.parse(JSON.stringify(appStyles[activeCellId])) : {};
-showToast("Style copied");
+  if (!activeCellId || isPreviewing) return;
+  clipboardFormat = appStyles[activeCellId] ? JSON.parse(JSON.stringify(appStyles[activeCellId])) : {};
+  showToast("Style copied");
 }
+
 function pasteFormat() {
-if(!activeCellId || !clipboardFormat || isPreviewing) return;
-appStyles[activeCellId] = JSON.parse(JSON.stringify(clipboardFormat));
-hasUnsavedChanges = true;
-triggerAutoSave();
-let td = document.querySelector(`td[data-id="${activeCellId}"]`);
-if(td) {
-applyCellDomStyle(td, activeCellId);
-activateCell(activeCellId, td);
-autoFitText(td);
+  if (!activeCellId || !clipboardFormat || isPreviewing) return;
+  appStyles[activeCellId] = JSON.parse(JSON.stringify(clipboardFormat));
+  hasUnsavedChanges = true;
+  triggerAutoSave();
+  let td = document.querySelector(`td[data-id="${activeCellId}"]`);
+  if (td) { applyCellDomStyle(td, activeCellId); activateCell(activeCellId, td); autoFitText(td); }
 }
-}
+
 function clearCellFormat() {
-if(!activeCellId || isPreviewing) return;
-delete appStyles[activeCellId];
-hasUnsavedChanges = true;
-triggerAutoSave();
-let td = document.querySelector(`td[data-id="${activeCellId}"]`);
-if(td) {
-applyCellDomStyle(td, activeCellId);
-activateCell(activeCellId, td);
-autoFitText(td);
+  if (!activeCellId || isPreviewing) return;
+  delete appStyles[activeCellId];
+  hasUnsavedChanges = true;
+  triggerAutoSave();
+  let td = document.querySelector(`td[data-id="${activeCellId}"]`);
+  if (td) { applyCellDomStyle(td, activeCellId); activateCell(activeCellId, td); autoFitText(td); }
 }
-}
+
 function syncCol(t) {
-document.getElementById(`hex-${t}`).value = document.getElementById(`c-${t}`).value.replace('#', '');
-updateCSS();
+  document.getElementById(`hex-${t}`).value = document.getElementById(`c-${t}`).value.replace('#', '');
+  updateCSS();
 }
+
 function syncHex(t) {
-let h = document.getElementById(`hex-${t}`).value.trim();
-if(/^[0-9A-F]{6}$/i.test(h)) {
-document.getElementById(`c-${t}`).value = '#' + h;
-updateCSS();
+  let h = document.getElementById(`hex-${t}`).value.trim();
+  if (/^[0-9A-F]{6}$/i.test(h)) {
+    document.getElementById(`c-${t}`).value = '#' + h;
+    updateCSS();
+  }
 }
-}
+
 function updateSizeLabel() {
-document.getElementById('f-size-lbl').textContent = document.getElementById('f-size').value + 'px';
+  document.getElementById('f-size-lbl').textContent = document.getElementById('f-size').value + 'px';
 }
+
 function updateCSS() {
-const r = document.documentElement;
-r.style.setProperty('--font-family', document.getElementById('f-family').value);
-r.style.setProperty('--font-weight', document.getElementById('f-weight').value);
-r.style.setProperty('--font-size', document.getElementById('f-size').value + 'px');
-const bgO = document.getElementById('c-odd').value;
-const bgE = document.getElementById('c-even').value;
-const txt = document.getElementById('c-text').value;
-r.style.setProperty('--row-odd', bgO);
-r.style.setProperty('--row-even', bgE);
-r.style.setProperty('--text-col', txt);
-r.style.setProperty('--out-rad', document.getElementById('b-rad').value + 'px');
-r.style.setProperty('--out-bd-w', document.getElementById('b-out-w').value + 'px');
-r.style.setProperty('--out-bd-s', document.getElementById('b-out-s').value);
-r.style.setProperty('--out-bd-c', document.getElementById('b-out-c').value);
-r.style.setProperty('--in-h-w', document.getElementById('b-in-hw').value + 'px');
-r.style.setProperty('--in-v-w', document.getElementById('b-in-vw').value + 'px');
-r.style.setProperty('--in-h-c', document.getElementById('b-in-c').value);
-r.style.setProperty('--in-v-c', document.getElementById('b-in-c').value);
-r.style.setProperty('--div-bd-w', document.getElementById('b-div-w').value + 'px');
-r.style.setProperty('--div-bd-s', document.getElementById('b-div-s').value);
-r.style.setProperty('--div-bd-c', document.getElementById('b-div-c').value);
-r.style.setProperty('--page-pad', document.getElementById('p-margin').value);
-checkA11y(bgO, bgE, txt);
-document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => autoFitText(td));
+  const r = document.documentElement;
+  r.style.setProperty('--font-family', document.getElementById('f-family').value);
+  r.style.setProperty('--font-weight', document.getElementById('f-weight').value);
+  r.style.setProperty('--font-size', document.getElementById('f-size').value + 'px');
+  const bgO = document.getElementById('c-odd').value;
+  const bgE = document.getElementById('c-even').value;
+  const txt = document.getElementById('c-text').value;
+  r.style.setProperty('--row-odd', bgO);
+  r.style.setProperty('--row-even', bgE);
+  r.style.setProperty('--text-col', txt);
+  r.style.setProperty('--out-rad', document.getElementById('b-rad').value + 'px');
+  r.style.setProperty('--out-bd-w', document.getElementById('b-out-w').value + 'px');
+  r.style.setProperty('--out-bd-s', document.getElementById('b-out-s').value);
+  r.style.setProperty('--out-bd-c', document.getElementById('b-out-c').value);
+  r.style.setProperty('--in-h-w', document.getElementById('b-in-hw').value + 'px');
+  r.style.setProperty('--in-v-w', document.getElementById('b-in-vw').value + 'px');
+  r.style.setProperty('--in-h-c', document.getElementById('b-in-c').value);
+  r.style.setProperty('--in-v-c', document.getElementById('b-in-c').value);
+  r.style.setProperty('--div-bd-w', document.getElementById('b-div-w').value + 'px');
+  r.style.setProperty('--div-bd-s', document.getElementById('b-div-s').value);
+  r.style.setProperty('--div-bd-c', document.getElementById('b-div-c').value);
+  r.style.setProperty('--page-pad', document.getElementById('p-margin').value);
+  checkA11y(bgO, bgE, txt);
+  document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => autoFitText(td));
 }
+
 function getLum(hex) {
-let rgb = parseInt(hex.slice(1), 16);
-let a = [(rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff].map(v => {
-v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-});
-return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+  let rgb = parseInt(hex.slice(1), 16);
+  let a = [(rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff].map(v => {
+    v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 }
+
 function checkA11y(ho, he, ht) {
-let lt = getLum(ht), lo = getLum(ho), le = getLum(he);
-let ro = lo > lt ? ((lo + 0.05) / (lt + 0.05)) : ((lt + 0.05) / (lo + 0.05));
-let re = le > lt ? ((le + 0.05) / (lt + 0.05)) : ((lt + 0.05) / (le + 0.05));
-const b = document.getElementById('contrast-badge');
-if (ro < 4.5 || re < 4.5) {
-b.textContent = "Low Contrast";
-b.className = "contrast-badge c-fail";
-} else {
-b.textContent = "Good Contrast";
-b.className = "contrast-badge c-pass";
+  let lt = getLum(ht), lo = getLum(ho), le = getLum(he);
+  let ro = lo > lt ? ((lo + 0.05) / (lt + 0.05)) : ((lt + 0.05) / (lo + 0.05));
+  let re = le > lt ? ((le + 0.05) / (lt + 0.05)) : ((lt + 0.05) / (le + 0.05));
+  const b = document.getElementById('contrast-badge');
+  if (ro < 4.5 || re < 4.5) { b.textContent = "Low Contrast"; b.className = "contrast-badge c-fail"; }
+  else { b.textContent = "Good Contrast"; b.className = "contrast-badge c-pass"; }
 }
-}
+
 function applyStyle(id) {
-document.querySelectorAll('.theme-box').forEach(b => b.classList.remove('active'));
-document.getElementById('theme-' + id).classList.add('active');
-const t = themeDefs[id];
-document.getElementById('f-family').value = t.f;
-document.getElementById('f-weight').value = t.fw;
-document.getElementById('f-size').value = t.fz;
-document.getElementById('hex-odd').value = t.ro; document.getElementById('c-odd').value = '#' + t.ro;
-document.getElementById('hex-even').value = t.re; document.getElementById('c-even').value = '#' + t.re;
-document.getElementById('hex-text').value = t.tx; document.getElementById('c-text').value = '#' + t.tx;
-document.getElementById('b-rad').value = t.orad;
-document.getElementById('b-out-w').value = t.ow;
-document.getElementById('b-out-s').value = t.os;
-document.getElementById('b-out-c').value = t.oc;
-document.getElementById('b-in-hw').value = t.ihw;
-document.getElementById('b-in-vw').value = t.ivw;
-document.getElementById('b-in-c').value = t.ic;
-document.getElementById('b-div-w').value = t.dw;
-document.getElementById('b-div-s').value = t.ds;
-document.getElementById('b-div-c').value = t.dc;
-document.getElementById('p-margin').value = t.pm;
-updateSizeLabel();
-saveSettings();
+  document.querySelectorAll('.theme-box').forEach(b => b.classList.remove('active'));
+  document.getElementById('theme-' + id).classList.add('active');
+  const t = themeDefs[id];
+  document.getElementById('f-family').value = t.f;
+  document.getElementById('f-weight').value = t.fw;
+  document.getElementById('f-size').value = t.fz;
+  document.getElementById('hex-odd').value = t.ro; document.getElementById('c-odd').value = '#' + t.ro;
+  document.getElementById('hex-even').value = t.re; document.getElementById('c-even').value = '#' + t.re;
+  document.getElementById('hex-text').value = t.tx; document.getElementById('c-text').value = '#' + t.tx;
+  document.getElementById('b-rad').value = t.orad;
+  document.getElementById('b-out-w').value = t.ow;
+  document.getElementById('b-out-s').value = t.os;
+  document.getElementById('b-out-c').value = t.oc;
+  document.getElementById('b-in-hw').value = t.ihw;
+  document.getElementById('b-in-vw').value = t.ivw;
+  document.getElementById('b-in-c').value = t.ic;
+  document.getElementById('b-div-w').value = t.dw;
+  document.getElementById('b-div-s').value = t.ds;
+  document.getElementById('b-div-c').value = t.dc;
+  document.getElementById('p-margin').value = t.pm;
+  updateSizeLabel();
+  saveSettings();
 }
+
 function handleFileUpload(e) {
-if (isPreviewing) {
-showToast("Cannot import data while previewing.");
-return;
+  if (isPreviewing) { showToast("Cannot import data while previewing."); return; }
+  const f = e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = function(evt) {
+    const wb = XLSX.read(evt.target.result, { type: 'binary' });
+    const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1 });
+    appData = {}; appStyles = {};
+    rows.forEach(row => {
+      const id = parseInt(row[0]);
+      const name = row[1];
+      if (!isNaN(id) && name && id >= 1 && id <= 200) appData[id] = name.toString().trim();
+    });
+    hasUnsavedChanges = true;
+    triggerAutoSave();
+    renderPage();
+    showToast("Data imported");
+  };
+  r.readAsBinaryString(f);
 }
-const f = e.target.files[0];
-if (!f) return;
-const r = new FileReader();
-r.onload = function(evt) {
-const wb = XLSX.read(evt.target.result, {type: 'binary'});
-const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header: 1});
-appData = {}; appStyles = {};
-rows.forEach(row => {
-const id = parseInt(row[0]);
-const name = row[1];
-if (!isNaN(id) && name && id >= 1 && id <= 200) {
-appData[id] = name.toString().trim();
-}
-});
-hasUnsavedChanges = true;
-triggerAutoSave();
-renderPage();
-showToast("Data imported");
-};
-r.readAsBinaryString(f);
-}
+
 function downloadTemplate() {
-let d = [["ID", "Item Name"]];
-for (let i = 1; i <= 200; i++) d.push([i, ""]);
-const ws = XLSX.utils.aoa_to_sheet(d);
-const wb = XLSX.utils.book_new();
-XLSX.utils.book_append_sheet(wb, ws, "Template");
-XLSX.writeFile(wb, "LX_Template_200.xlsx");
-showToast("Template downloaded");
+  let d = [["ID", "Item Name"]];
+  for (let i = 1; i <= 200; i++) d.push([i, ""]);
+  const ws = XLSX.utils.aoa_to_sheet(d);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Template");
+  XLSX.writeFile(wb, "LX_Template_200.xlsx");
+  showToast("Template downloaded");
 }
+
 function exportCSV() {
-let r = [["ID", "Item Name"]];
-for(let i=1; i<=200; i++) {
-if(appData[i]) {
-r.push([i, appData[i]]);
+  let r = [["ID", "Item Name"]];
+  for (let i = 1; i <= 200; i++) { if (appData[i]) r.push([i, appData[i]]); }
+  const ws = XLSX.utils.aoa_to_sheet(r);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Data");
+  XLSX.writeFile(wb, "LX_Data.csv");
+  hasUnsavedChanges = false;
+  showToast("Data saved successfully");
 }
-}
-const ws = XLSX.utils.aoa_to_sheet(r);
-const wb = XLSX.utils.book_new();
-XLSX.utils.book_append_sheet(wb, ws, "Data");
-XLSX.writeFile(wb, "LX_Data.csv");
-hasUnsavedChanges = false;
-showToast("Data saved successfully");
-}
+
 function loadDemoData() {
-appData = {
-1: "A.Viton",
-2: "Hydroxychloroquine 200mg",
-3: "Acyclovir 200",
-51: "Aubajeo"
-};
-appStyles = {
-2: { b: true, c: "#1d4ed8" },
-152: { b: true, s: "14px", c: "#047857" }
-};
+  appData = { 1: "A.Viton", 2: "Hydroxychloroquine 200mg", 3: "Acyclovir 200", 51: "Aubajeo" };
+  appStyles = { 2: { b: true, c: "#1d4ed8" }, 152: { b: true, s: "14px", c: "#047857" } };
 }
 </script>
 </body>
