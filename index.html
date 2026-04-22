@@ -333,8 +333,8 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 <div class="theme-desc">Accounting Look</div>
 </div>
 <div class="theme-box" id="theme-bleed" onclick="applyStyle('bleed')">
-<div class="theme-name">Full Bleed</div>
-<div class="theme-desc">Maximum Space</div>
+<div class="theme-name">Compact</div>
+<div class="theme-desc">Min. Safe Margin</div>
 </div>
 </div>
 </div>
@@ -402,8 +402,7 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 <div class="ctrl-group">
 <span class="ctrl-label">Page Margin</span>
 <select id="p-margin" style="width:120px; padding:4px;" onchange="updateCSS(); saveSettings()">
-<option value="0mm">None (0mm)</option>
-<option value="4mm">Tight (4mm)</option>
+<option value="4mm">Compact (4mm)</option>
 <option value="8mm">Standard (8mm)</option>
 <option value="12mm">Wide (12mm)</option>
 </select>
@@ -532,11 +531,11 @@ const themeDefs = {
   modern:  { f: "'Inter', system-ui, sans-serif", fw: "400", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "12", ow: "2", os: "solid", oc: "#cbd5e1", ihw: "1", ivw: "0", ic: "#f1f5f9", dw: "2", ds: "solid", dc: "#94a3b8", pm: "8mm" },
   classic: { f: "Arial, Helvetica, sans-serif",   fw: "400", fz: "12", ro: "f3f4f6", re: "ffffff", tx: "000000", orad: "0", ow: "1", os: "solid", oc: "#000000", ihw: "1", ivw: "1", ic: "#000000", dw: "2", ds: "solid", dc: "#000000", pm: "8mm" },
   ledger:  { f: "'Lora', Georgia, serif",          fw: "400", fz: "13", ro: "f0fdf4", re: "ffffff", tx: "1e293b", orad: "0", ow: "1", os: "solid", oc: "#94a3b8", ihw: "1", ivw: "1", ic: "#cbd5e1", dw: "3", ds: "double", dc: "#64748b", pm: "8mm" },
-  bleed:   { f: "system-ui, -apple-system, sans-serif", fw: "500", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "0", ow: "0", os: "solid", oc: "#ffffff", ihw: "1", ivw: "1", ic: "#e2e8f0", dw: "2", ds: "solid", dc: "#94a3b8", pm: "0mm" }
+  bleed:   { f: "system-ui, -apple-system, sans-serif", fw: "500", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "0", ow: "0", os: "solid", oc: "#ffffff", ihw: "1", ivw: "1", ic: "#e2e8f0", dw: "2", ds: "solid", dc: "#94a3b8", pm: "4mm" }
 };
 
 function getPrintPadMm() {
-  const map = { "0mm": 0, "4mm": 4, "8mm": 8, "12mm": 12 };
+  const map = { "4mm": 4, "8mm": 8, "12mm": 12 };
   return map[document.getElementById('p-margin').value] ?? 8;
 }
 
@@ -935,7 +934,8 @@ function loadSettings() {
   document.getElementById('b-div-w').value = s.dw;
   document.getElementById('b-div-s').value = s.ds;
   document.getElementById('b-div-c').value = s.dc;
-  document.getElementById('p-margin').value = s.pm || "8mm";
+  const pm = s.pm;
+  document.getElementById('p-margin').value = (pm === "0mm") ? "4mm" : (pm || "8mm");
   updateSizeLabel();
   updateCSS();
   return true;
