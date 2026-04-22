@@ -147,6 +147,16 @@ table.lx-index td:nth-child(even).preview-locked { cursor: not-allowed; backgrou
 table.lx-index td:nth-child(2), table.lx-index td:nth-child(4), table.lx-index td:nth-child(6) { border-right-width: var(--div-bd-w); border-right-style: var(--div-bd-s); border-right-color: var(--div-bd-c); }
 table.lx-index td.smatch { background: rgba(234, 179, 8, 0.2) !important; box-shadow: inset 0 0 0 2px #eab308; border-radius: 2px; }
 .dup-warn { background-image: linear-gradient(135deg, transparent 85%, #fca5a5 85%, #ef4444 100%) !important; }
+
+table.lx-index td.cell-selected { background: rgba(37, 99, 235, 0.08) !important; box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.4) !important; border-radius: 2px; }
+table.lx-index td.cell-selected:focus { background: #fff8dc !important; box-shadow: inset 0 0 0 2px var(--accent) !important; }
+
+#workspace.paint-mode { cursor: cell !important; }
+#workspace.paint-mode .lx-index td:nth-child(even) { cursor: cell !important; }
+
+#btn-copy-fmt.painting { background: #fef9c3 !important; color: #854d0e !important; border-color: #fbbf24 !important; animation: pulse-paint 1.8s ease-in-out infinite; }
+@keyframes pulse-paint { 0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); } 50% { box-shadow: 0 0 0 5px rgba(251, 191, 36, 0.12); } }
+
 #toast { position: fixed; bottom: 24px; right: 24px; background: #1e293b; color: white; padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 500; box-shadow: 0 10px 15px rgba(0,0,0,0.1); opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; z-index: 110; }
 #toast.show { opacity: 1; transform: translateY(0); }
 .mobile-tog { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 95; width: 50px; height: 50px; border-radius: 25px; background: var(--accent); color: #fff; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 24px; align-items: center; justify-content: center; cursor: pointer; }
@@ -193,6 +203,9 @@ html.dark #toast { background: #334155; color: #f8fafc; box-shadow: 0 10px 15px 
 html.dark table.lx-index td:nth-child(even):focus { background: rgba(59, 130, 246, 0.15) !important; box-shadow: inset 0 0 0 2px var(--accent); }
 html.dark table.lx-index td:nth-child(even):hover:not(:focus) { background: rgba(255, 255, 255, 0.05); }
 html.dark table.lx-index td:nth-child(even).preview-locked { background: #0f172a; color: #475569; }
+html.dark table.lx-index td.cell-selected { background: rgba(59, 130, 246, 0.12) !important; box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.45) !important; }
+html.dark table.lx-index td.cell-selected:focus { background: rgba(59, 130, 246, 0.15) !important; box-shadow: inset 0 0 0 2px var(--accent) !important; }
+html.dark #btn-copy-fmt.painting { background: rgba(251, 191, 36, 0.12) !important; color: #fbbf24 !important; border-color: #fbbf24 !important; }
 html.dark .stats-bar { border-color: var(--panel-bd); background: var(--panel-bg); }
 html.dark .stat-box + .stat-box::before { background: var(--panel-bd); }
 html.dark .stat-v { color: var(--text-main); }
@@ -232,6 +245,7 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
   table.lx-index td { overflow: hidden !important; white-space: nowrap !important; line-height: 1 !important; vertical-align: middle !important; }
   table.lx-index td.smatch { background: inherit !important; box-shadow: none !important; }
   table.lx-index td.dup-warn { background-image: none !important; }
+  table.lx-index td.cell-selected { background: inherit !important; box-shadow: none !important; }
 }
 </style>
 </head>
@@ -274,6 +288,7 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 <button class="btn btn-secondary" onclick="downloadTemplate()">📥 Blank Template</button>
 </div>
 </details>
+
 <details class="panel disabled" id="cell-panel">
 <summary class="panel-title" id="cell-panel-title" style="color:var(--accent);">★ Selected Cell Override</summary>
 <div class="panel-content">
@@ -309,13 +324,11 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 <input type="color" id="cell-color" oninput="syncCellCol()">
 </div>
 </div>
-<div class="grid-2" style="margin-top:12px;">
-<button class="btn btn-secondary" onmousedown="event.preventDefault(); copyFormat()">📋 Copy Style</button>
-<button class="btn btn-secondary" onmousedown="event.preventDefault(); pasteFormat()">🖌️ Paste</button>
-</div>
+<button id="btn-copy-fmt" class="btn btn-secondary" style="margin-top:12px;" onmousedown="event.preventDefault(); copyFormat()">🖌️ Paint Style</button>
 <button class="btn btn-secondary" style="margin-top:8px;" onclick="clearCellFormat()">🧹 Clear Override</button>
 </div>
 </details>
+
 <details class="panel" open>
 <summary class="panel-title">2. Global Themes</summary>
 <div class="panel-content">
@@ -339,6 +352,7 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 </div>
 </div>
 </details>
+
 <details class="panel">
 <summary class="panel-title">
 3. Global Typography & Colors
@@ -396,6 +410,7 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 </div>
 </div>
 </details>
+
 <details class="panel">
 <summary class="panel-title">4. Layout & Grid Control</summary>
 <div class="panel-content">
@@ -498,7 +513,6 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 
 <button class="mobile-tog" onclick="toggleMobileSB()">☰</button>
 <div class="overlay" id="sb-ov" onclick="toggleMobileSB()"></div>
-
 <div id="toast">Notification</div>
 
 <div id="custom-modal" class="custom-modal-overlay">
@@ -526,6 +540,9 @@ let modalConfirmAction = null;
 let backupData = null;
 let backupStyles = null;
 let isPreviewing = false;
+let isPainting = false;
+let selectedCells = new Set();
+let lastClickedId = null;
 
 const themeDefs = {
   modern:  { f: "'Inter', system-ui, sans-serif", fw: "400", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "12", ow: "2", os: "solid", oc: "#cbd5e1", ihw: "1", ivw: "0", ic: "#f1f5f9", dw: "2", ds: "solid", dc: "#94a3b8", pm: "8mm" },
@@ -533,6 +550,69 @@ const themeDefs = {
   ledger:  { f: "'Lora', Georgia, serif",          fw: "400", fz: "13", ro: "f0fdf4", re: "ffffff", tx: "1e293b", orad: "0", ow: "1", os: "solid", oc: "#94a3b8", ihw: "1", ivw: "1", ic: "#cbd5e1", dw: "3", ds: "double", dc: "#64748b", pm: "8mm" },
   bleed:   { f: "system-ui, -apple-system, sans-serif", fw: "500", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "0", ow: "0", os: "solid", oc: "#ffffff", ihw: "1", ivw: "1", ic: "#e2e8f0", dw: "2", ds: "solid", dc: "#94a3b8", pm: "4mm" }
 };
+
+function getTargetIds() {
+  if (selectedCells.size > 0) return [...selectedCells];
+  if (activeCellId !== null) return [activeCellId];
+  return [];
+}
+
+function clearMultiSelect() {
+  selectedCells.forEach(id => {
+    const td = document.querySelector(`td[data-id="${id}"]`);
+    if (td) td.classList.remove('cell-selected');
+  });
+  selectedCells.clear();
+}
+
+function updateMultiSelectPanel() {
+  const count = selectedCells.size;
+  if (count === 0) {
+    disableCellPanel();
+    return;
+  }
+  document.getElementById('cell-panel').classList.remove('disabled');
+  document.getElementById('cell-panel').open = true;
+  document.getElementById('cell-panel-title').innerHTML = `★ Style Override <span style="color:#64748b;font-size:10px;">(${count} cell${count > 1 ? 's' : ''} selected)</span>`;
+  activeCellId = null;
+  const ids = [...selectedCells];
+  const allBold   = ids.every(id => appStyles[id]?.b);
+  const allItalic = ids.every(id => appStyles[id]?.i);
+  const allUnder  = ids.every(id => appStyles[id]?.u);
+  document.getElementById('btn-bold').classList.toggle('active', allBold);
+  document.getElementById('btn-italic').classList.toggle('active', allItalic);
+  document.getElementById('btn-under').classList.toggle('active', allUnder);
+  const sizes = new Set(ids.map(id => appStyles[id]?.s || ''));
+  document.getElementById('cell-size').value = sizes.size === 1 ? [...sizes][0] : '';
+  const colors = new Set(ids.map(id => appStyles[id]?.c || ''));
+  if (colors.size === 1) {
+    const c = [...colors][0];
+    document.getElementById('cell-hex').value = c ? c.replace('#', '') : '';
+    document.getElementById('cell-color').value = c || '#000000';
+  } else {
+    document.getElementById('cell-hex').value = '';
+    document.getElementById('cell-color').value = '#000000';
+  }
+  const paintBtn = document.getElementById('btn-copy-fmt');
+  if (paintBtn) { paintBtn.disabled = true; paintBtn.style.opacity = '0.4'; }
+}
+
+function rangeSelect(fromId, toId) {
+  const allCells = [...document.querySelectorAll('.lx-index td[data-id]')];
+  const allIds = allCells.map(td => parseInt(td.dataset.id));
+  const fromIdx = allIds.indexOf(fromId);
+  const toIdx = allIds.indexOf(toId);
+  if (fromIdx === -1 || toIdx === -1) return;
+  const lo = Math.min(fromIdx, toIdx);
+  const hi = Math.max(fromIdx, toIdx);
+  clearMultiSelect();
+  for (let i = lo; i <= hi; i++) {
+    selectedCells.add(allIds[i]);
+    allCells[i].classList.add('cell-selected');
+  }
+  lastClickedId = toId;
+  updateMultiSelectPanel();
+}
 
 function getPrintPadMm() {
   const map = { "4mm": 4, "8mm": 8, "12mm": 12 };
@@ -543,14 +623,12 @@ function preparePrint() {
   const root = document.documentElement;
   const cs = getComputedStyle(root);
   const get = v => cs.getPropertyValue(v).trim();
-
   const pad = getPrintPadMm();
   const tableH = 297 - pad * 2;
   const outBorderPx = parseFloat(get('--out-bd-w')) || 0;
   const outBorderMm = outBorderPx * 25.4 / 96;
   const contentH = tableH - outBorderMm * 2;
   const rowH = (contentH / 50).toFixed(4);
-
   const ff  = get('--font-family') || "'Inter', system-ui, sans-serif";
   const fw  = get('--font-weight') || '400';
   const fs  = get('--font-size')   || '13px';
@@ -569,76 +647,22 @@ function preparePrint() {
   const dvW  = get('--div-bd-w')   || '2px';
   const dvS  = get('--div-bd-s')   || 'solid';
   const dvC  = get('--div-bd-c')   || '#64748b';
-
   let el = document.getElementById('lx-print-dynamic');
-  if (!el) {
-    el = document.createElement('style');
-    el.id = 'lx-print-dynamic';
-    document.head.appendChild(el);
-  }
-
+  if (!el) { el = document.createElement('style'); el.id = 'lx-print-dynamic'; document.head.appendChild(el); }
   el.textContent = `
     @media print {
-      .page-wrapper {
-        padding: ${pad}mm !important;
-      }
-      .table-container {
-        height: ${tableH}mm !important;
-        border: ${outW} ${outS} ${outC} !important;
-        border-radius: ${outR} !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-      }
-      table.lx-index {
-        height: ${contentH.toFixed(4)}mm !important;
-        background: ${re} !important;
-      }
-      table.lx-index tr {
-        height: ${rowH}mm !important;
-        max-height: ${rowH}mm !important;
-        overflow: hidden !important;
-      }
-      table.lx-index tr:nth-child(odd) {
-        background-color: ${ro} !important;
-      }
-      table.lx-index td {
-        height: ${rowH}mm !important;
-        max-height: ${rowH}mm !important;
-        overflow: hidden !important;
-        white-space: nowrap !important;
-        line-height: 1 !important;
-        vertical-align: middle !important;
-        padding: ${cp} !important;
-        font-family: ${ff} !important;
-        font-size: ${fs} !important;
-        font-weight: ${fw} !important;
-        color: ${tc} !important;
-        border-bottom: ${ihW} solid ${ihC} !important;
-        border-right: ${ivW} solid ${ivC} !important;
-      }
-      table.lx-index tr:last-child td {
-        border-bottom: none !important;
-      }
-      table.lx-index td:last-child {
-        border-right: none !important;
-      }
-      table.lx-index td:nth-child(odd) {
-        width: 24px !important;
-        font-size: 11px !important;
-        font-weight: 600 !important;
-        opacity: 0.5 !important;
-        text-align: right !important;
-        padding-right: 4px !important;
-        padding-left: 0 !important;
-      }
-      table.lx-index td:nth-child(2),
-      table.lx-index td:nth-child(4),
-      table.lx-index td:nth-child(6) {
-        border-right: ${dvW} ${dvS} ${dvC} !important;
-      }
+      .page-wrapper { padding: ${pad}mm !important; }
+      .table-container { height: ${tableH}mm !important; border: ${outW} ${outS} ${outC} !important; border-radius: ${outR} !important; overflow: hidden !important; box-sizing: border-box !important; }
+      table.lx-index { height: ${contentH.toFixed(4)}mm !important; background: ${re} !important; }
+      table.lx-index tr { height: ${rowH}mm !important; max-height: ${rowH}mm !important; overflow: hidden !important; }
+      table.lx-index tr:nth-child(odd) { background-color: ${ro} !important; }
+      table.lx-index td { height: ${rowH}mm !important; max-height: ${rowH}mm !important; overflow: hidden !important; white-space: nowrap !important; line-height: 1 !important; vertical-align: middle !important; padding: ${cp} !important; font-family: ${ff} !important; font-size: ${fs} !important; font-weight: ${fw} !important; color: ${tc} !important; border-bottom: ${ihW} solid ${ihC} !important; border-right: ${ivW} solid ${ivC} !important; }
+      table.lx-index tr:last-child td { border-bottom: none !important; }
+      table.lx-index td:last-child { border-right: none !important; }
+      table.lx-index td:nth-child(odd) { width: 24px !important; font-size: 11px !important; font-weight: 600 !important; opacity: 0.5 !important; text-align: right !important; padding-right: 4px !important; padding-left: 0 !important; }
+      table.lx-index td:nth-child(2), table.lx-index td:nth-child(4), table.lx-index td:nth-child(6) { border-right: ${dvW} ${dvS} ${dvC} !important; }
     }
   `;
-
   document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td => autoFitText(td));
 }
 
@@ -712,12 +736,20 @@ function toggleDeskSB() {
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => initThm());
 document.getElementById('fileUpload').addEventListener('change', handleFileUpload);
+
 document.addEventListener('mousedown', (e) => {
   if (e.target.id === 'workspace' || e.target.classList.contains('page-wrapper')) {
     disableCellPanel();
+    if (isPainting) cancelPaintMode();
   }
 });
+
 window.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && isPainting) {
+    cancelPaintMode();
+    showToast("Paint mode canceled");
+    return;
+  }
   if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && !document.activeElement.isContentEditable) {
     e.preventDefault();
     document.getElementById('sinp').focus();
@@ -848,8 +880,8 @@ function updateStats() {
       counts[txt].push(td);
     }
   });
-  let dupFound = false;
   let dCount = 0;
+  let dupFound = false;
   for (let k in counts) {
     if (counts[k].length > 1) {
       dupFound = true;
@@ -1032,6 +1064,41 @@ function renderPage(skipSave = false) {
       tdVal.textContent = appData[id] || "";
       applyCellDomStyle(tdVal, id);
       if (!isPreviewing) {
+        tdVal.addEventListener('mousedown', (e) => {
+          if (isPainting) {
+            e.preventDefault();
+            applyPaint(id, tdVal);
+            return;
+          }
+          if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            if (selectedCells.size === 0 && activeCellId !== null && activeCellId !== id) {
+              const prevTd = document.querySelector(`td[data-id="${activeCellId}"]`);
+              selectedCells.add(activeCellId);
+              if (prevTd) prevTd.classList.add('cell-selected');
+              lastClickedId = activeCellId;
+              activeCellId = null;
+            }
+            if (selectedCells.has(id)) {
+              selectedCells.delete(id);
+              tdVal.classList.remove('cell-selected');
+            } else {
+              selectedCells.add(id);
+              tdVal.classList.add('cell-selected');
+            }
+            lastClickedId = id;
+            updateMultiSelectPanel();
+            return;
+          }
+          if (e.shiftKey && (lastClickedId !== null || activeCellId !== null)) {
+            e.preventDefault();
+            const anchor = lastClickedId !== null ? lastClickedId : activeCellId;
+            rangeSelect(anchor, id);
+            return;
+          }
+          clearMultiSelect();
+          lastClickedId = id;
+        });
         tdVal.addEventListener('focus', () => activateCell(id, tdVal));
         tdVal.addEventListener('input', (e) => {
           const v = e.target.textContent.trim();
@@ -1065,9 +1132,12 @@ function renderPage(skipSave = false) {
 function activateCell(id, td) {
   if (isPreviewing) return;
   activeCellId = id;
+  lastClickedId = id;
   document.getElementById('cell-panel').classList.remove('disabled');
   document.getElementById('cell-panel').open = true;
   document.getElementById('cell-panel-title').innerHTML = `★ Cell Override <span style="color:#64748b; font-size:10px;">(ID: ${id})</span>`;
+  const paintBtn = document.getElementById('btn-copy-fmt');
+  if (paintBtn) { paintBtn.disabled = false; paintBtn.style.opacity = ''; }
   let s = appStyles[id] || {};
   document.getElementById('btn-bold').classList.toggle('active', !!s.b);
   document.getElementById('btn-italic').classList.toggle('active', !!s.i);
@@ -1083,33 +1153,83 @@ function activateCell(id, td) {
 }
 
 function disableCellPanel() {
+  clearMultiSelect();
+  activeCellId = null;
+  lastClickedId = null;
   document.getElementById('cell-panel').classList.add('disabled');
   document.getElementById('cell-panel').open = false;
   document.getElementById('cell-panel-title').innerHTML = `★ Selected Cell Override`;
-  activeCellId = null;
+  const paintBtn = document.getElementById('btn-copy-fmt');
+  if (paintBtn) { paintBtn.disabled = false; paintBtn.style.opacity = ''; }
+}
+
+function copyFormat() {
+  if (isPreviewing) return;
+  if (isPainting) { cancelPaintMode(); return; }
+  if (!activeCellId) return;
+  clipboardFormat = appStyles[activeCellId] ? JSON.parse(JSON.stringify(appStyles[activeCellId])) : {};
+  isPainting = true;
+  document.getElementById('workspace').classList.add('paint-mode');
+  const btn = document.getElementById('btn-copy-fmt');
+  btn.classList.add('painting');
+  btn.textContent = '✕ Cancel Paint';
+  showToast("Click any cell to apply style — Esc to cancel");
+}
+
+function cancelPaintMode() {
+  isPainting = false;
+  document.getElementById('workspace').classList.remove('paint-mode');
+  const btn = document.getElementById('btn-copy-fmt');
+  btn.classList.remove('painting');
+  btn.textContent = '🖌️ Paint Style';
+}
+
+function applyPaint(id, td) {
+  if (!clipboardFormat) return;
+  appStyles[id] = JSON.parse(JSON.stringify(clipboardFormat));
+  applyCellDomStyle(td, id);
+  autoFitText(td);
+  hasUnsavedChanges = true;
+  triggerAutoSave();
+  cancelPaintMode();
+  showToast("Style applied");
 }
 
 function toggleStyle(prop) {
-  if (!activeCellId || isPreviewing) return;
-  if (!appStyles[activeCellId]) appStyles[activeCellId] = {};
-  let s = appStyles[activeCellId];
-  if (prop === 'bold') s.b = !s.b;
-  if (prop === 'italic') s.i = !s.i;
-  if (prop === 'underline') s.u = !s.u;
+  const ids = getTargetIds();
+  if (!ids.length || isPreviewing) return;
+  const key = prop === 'bold' ? 'b' : prop === 'italic' ? 'i' : 'u';
+  const allHave = ids.every(id => appStyles[id]?.[key]);
+  const newVal = !allHave;
+  ids.forEach(id => {
+    if (!appStyles[id]) appStyles[id] = {};
+    if (newVal) appStyles[id][key] = true;
+    else delete appStyles[id][key];
+    const td = document.querySelector(`td[data-id="${id}"]`);
+    if (td) { applyCellDomStyle(td, id); autoFitText(td); }
+  });
+  if (selectedCells.size > 0) {
+    updateMultiSelectPanel();
+  } else if (activeCellId !== null) {
+    const td = document.querySelector(`td[data-id="${activeCellId}"]`);
+    if (td) activateCell(activeCellId, td);
+  }
   hasUnsavedChanges = true;
   triggerAutoSave();
-  let td = document.querySelector(`td[data-id="${activeCellId}"]`);
-  if (td) { applyCellDomStyle(td, activeCellId); activateCell(activeCellId, td); autoFitText(td); }
 }
 
 function applyCellSize() {
-  if (!activeCellId || isPreviewing) return;
-  if (!appStyles[activeCellId]) appStyles[activeCellId] = {};
-  appStyles[activeCellId].s = document.getElementById('cell-size').value;
+  const ids = getTargetIds();
+  if (!ids.length || isPreviewing) return;
+  const val = document.getElementById('cell-size').value;
+  ids.forEach(id => {
+    if (!appStyles[id]) appStyles[id] = {};
+    appStyles[id].s = val;
+    const td = document.querySelector(`td[data-id="${id}"]`);
+    if (td) { applyCellDomStyle(td, id); autoFitText(td); }
+  });
   hasUnsavedChanges = true;
   triggerAutoSave();
-  let td = document.querySelector(`td[data-id="${activeCellId}"]`);
-  if (td) { applyCellDomStyle(td, activeCellId); autoFitText(td); }
 }
 
 function syncCellHex() {
@@ -1128,37 +1248,34 @@ function syncCellCol() {
 }
 
 function updateCellColor(hex) {
-  if (!activeCellId || isPreviewing) return;
-  if (!appStyles[activeCellId]) appStyles[activeCellId] = {};
-  appStyles[activeCellId].c = hex;
+  const ids = getTargetIds();
+  if (!ids.length || isPreviewing) return;
+  ids.forEach(id => {
+    if (!appStyles[id]) appStyles[id] = {};
+    appStyles[id].c = hex;
+    const td = document.querySelector(`td[data-id="${id}"]`);
+    if (td) applyCellDomStyle(td, id);
+  });
   hasUnsavedChanges = true;
   triggerAutoSave();
-  let td = document.querySelector(`td[data-id="${activeCellId}"]`);
-  if (td) applyCellDomStyle(td, activeCellId);
-}
-
-function copyFormat() {
-  if (!activeCellId || isPreviewing) return;
-  clipboardFormat = appStyles[activeCellId] ? JSON.parse(JSON.stringify(appStyles[activeCellId])) : {};
-  showToast("Style copied");
-}
-
-function pasteFormat() {
-  if (!activeCellId || !clipboardFormat || isPreviewing) return;
-  appStyles[activeCellId] = JSON.parse(JSON.stringify(clipboardFormat));
-  hasUnsavedChanges = true;
-  triggerAutoSave();
-  let td = document.querySelector(`td[data-id="${activeCellId}"]`);
-  if (td) { applyCellDomStyle(td, activeCellId); activateCell(activeCellId, td); autoFitText(td); }
 }
 
 function clearCellFormat() {
-  if (!activeCellId || isPreviewing) return;
-  delete appStyles[activeCellId];
+  const ids = getTargetIds();
+  if (!ids.length || isPreviewing) return;
+  ids.forEach(id => {
+    delete appStyles[id];
+    const td = document.querySelector(`td[data-id="${id}"]`);
+    if (td) { applyCellDomStyle(td, id); autoFitText(td); }
+  });
+  if (selectedCells.size > 0) {
+    updateMultiSelectPanel();
+  } else if (activeCellId !== null) {
+    const td = document.querySelector(`td[data-id="${activeCellId}"]`);
+    if (td) activateCell(activeCellId, td);
+  }
   hasUnsavedChanges = true;
   triggerAutoSave();
-  let td = document.querySelector(`td[data-id="${activeCellId}"]`);
-  if (td) { applyCellDomStyle(td, activeCellId); activateCell(activeCellId, td); autoFitText(td); }
 }
 
 function syncCol(t) {
