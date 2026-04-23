@@ -497,6 +497,7 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 <button class="desk-tog" onclick="toggleDeskSB()" title="Toggle Sidebar">
 <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
 </button>
+<button onclick="openShortcuts()" title="Keyboard Shortcuts" style="position:absolute; top:20px; right:20px; width:36px; height:36px; border-radius:8px; background:var(--panel-bg); border:1px solid var(--panel-bd); color:var(--text-main); font-size:15px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 5px rgba(0,0,0,0.05); z-index:50; transition:all 0.2s; font-family:monospace;">?</button>
 
 <div id="preview-banner" class="preview-banner">
 <span id="pb-text">Previewing version...</span>
@@ -514,6 +515,17 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 <button class="mobile-tog" onclick="toggleMobileSB()">☰</button>
 <div class="overlay" id="sb-ov" onclick="toggleMobileSB()"></div>
 <div id="toast">Notification</div>
+
+<div id="shortcuts-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); backdrop-filter:blur(4px); z-index:300; align-items:center; justify-content:center;">
+<div style="background:var(--panel-bg); border:1px solid var(--panel-bd); border-radius:14px; padding:28px; width:90%; max-width:420px; box-shadow:0 24px 40px rgba(0,0,0,0.15);">
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+<span style="font-size:15px; font-weight:700; color:var(--text-main);">⌨ Keyboard Shortcuts</span>
+<button onclick="closeShortcuts()" style="background:none; border:none; cursor:pointer; color:#64748b; font-size:18px; line-height:1; padding:2px 6px;">✕</button>
+</div>
+<div id="sc-list" style="display:flex; flex-direction:column; gap:6px;"></div>
+<div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--panel-bd); font-size:11px; color:#94a3b8; text-align:center;">Press <kbd style="background:var(--app-bg); border:1px solid var(--panel-bd); border-radius:4px; padding:1px 6px; font-family:monospace;">?</kbd> anytime to open this panel</div>
+</div>
+</div>
 
 <div id="custom-modal" class="custom-modal-overlay">
 <div class="custom-modal-box">
@@ -598,17 +610,13 @@ function updateMultiSelectPanel() {
 }
 
 function rangeSelect(fromId, toId) {
-  const allCells = [...document.querySelectorAll('.lx-index td[data-id]')];
-  const allIds = allCells.map(td => parseInt(td.dataset.id));
-  const fromIdx = allIds.indexOf(fromId);
-  const toIdx = allIds.indexOf(toId);
-  if (fromIdx === -1 || toIdx === -1) return;
-  const lo = Math.min(fromIdx, toIdx);
-  const hi = Math.max(fromIdx, toIdx);
+  const lo = Math.min(fromId, toId);
+  const hi = Math.max(fromId, toId);
   clearMultiSelect();
-  for (let i = lo; i <= hi; i++) {
-    selectedCells.add(allIds[i]);
-    allCells[i].classList.add('cell-selected');
+  for (let id = lo; id <= hi; id++) {
+    selectedCells.add(id);
+    const td = document.querySelector(`td[data-id="${id}"]`);
+    if (td) td.classList.add('cell-selected');
   }
   lastClickedId = toId;
   updateMultiSelectPanel();
@@ -745,15 +753,66 @@ document.addEventListener('mousedown', (e) => {
 });
 
 window.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && isPainting) {
-    cancelPaintMode();
-    showToast("Paint mode canceled");
-    return;
+  const inEdit = document.activeElement.tagName === 'INPUT' || document.activeElement.isContentEditable;
+  if (e.key === 'Escape') {
+    if (isPainting) { cancelPaintMode(); showToast("Paint mode canceled"); return; }
+    if (document.getElementById('shortcuts-overlay').style.display === 'flex') { closeShortcuts(); return; }
+    if (selectedCells.size > 0) { clearMultiSelect(); disableCellPanel(); return; }
   }
-  if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && !document.activeElement.isContentEditable) {
-    e.preventDefault();
-    document.getElementById('sinp').focus();
+  if (e.key === '?' && !inEdit) { e.preventDefault(); openShortcuts(); return; }
+  if (e.key === '/' && !inEdit) { e.preventDefault(); document.getElementById('sinp').focus(); return; }
+  if ((e.ctrlKey || e.metaKey) && !e.shiftKey) {
+    const ids = getTargetIds();
+    if (!ids.length) return;
+    if (e.key === 'b' || e.key === 'B') { e.preventDefault(); toggleStyle('bold'); return; }
+    if (e.key === 'i' || e.key === 'I') { e.preventDefault(); toggleStyle('italic'); return; }
+    if (e.key === 'u' || e.key === 'U') { e.preventDefault(); toggleStyle('underline'); return; }
   }
+});
+
+const SHORTCUTS = [
+  { keys: ['Ctrl+B'], desc: 'Bold — focused or selected cells' },
+  { keys: ['Ctrl+I'], desc: 'Italic — focused or selected cells' },
+  { keys: ['Ctrl+U'], desc: 'Underline — focused or selected cells' },
+  { keys: ['Ctrl+Click'], desc: 'Add / remove cell from selection' },
+  { keys: ['Shift+Click'], desc: 'Range select (sequential IDs)' },
+  { keys: ['/'], desc: 'Focus search' },
+  { keys: ['?'], desc: 'Open this shortcuts panel' },
+  { keys: ['Esc'], desc: 'Cancel paint · clear selection · close panel' },
+  { keys: ['↑ ↓', 'Enter'], desc: 'Navigate between cells' },
+];
+
+function openShortcuts() {
+  const list = document.getElementById('sc-list');
+  list.innerHTML = '';
+  SHORTCUTS.forEach(sc => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-radius:6px; background:var(--app-bg);';
+    const keys = document.createElement('div');
+    keys.style.cssText = 'display:flex; gap:4px; flex-shrink:0;';
+    sc.keys.forEach(k => {
+      const kbd = document.createElement('kbd');
+      kbd.textContent = k;
+      kbd.style.cssText = 'background:var(--panel-bg); border:1px solid var(--panel-bd); border-radius:5px; padding:2px 8px; font-family:monospace; font-size:11px; font-weight:600; color:var(--text-main); box-shadow:0 1px 2px rgba(0,0,0,0.08);';
+      keys.appendChild(kbd);
+    });
+    const desc = document.createElement('span');
+    desc.textContent = sc.desc;
+    desc.style.cssText = 'font-size:12px; color:#64748b; text-align:right; padding-left:12px;';
+    row.appendChild(keys);
+    row.appendChild(desc);
+    list.appendChild(row);
+  });
+  const ov = document.getElementById('shortcuts-overlay');
+  ov.style.display = 'flex';
+}
+
+function closeShortcuts() {
+  document.getElementById('shortcuts-overlay').style.display = 'none';
+}
+
+document.getElementById('shortcuts-overlay').addEventListener('mousedown', e => {
+  if (e.target === document.getElementById('shortcuts-overlay')) closeShortcuts();
 });
 
 window.onload = () => {
@@ -818,14 +877,24 @@ function renderVersions() {
     const div = document.createElement('div');
     div.className = 'version-item';
     div.onclick = () => previewVersion(i);
+    const styleCount = Object.keys(v.s || {}).length;
     const timeSpan = document.createElement('span');
     timeSpan.className = 'version-time';
     timeSpan.textContent = i === 0 ? `Latest (${timeStr})` : timeStr;
+    const metaSpan = document.createElement('span');
+    metaSpan.style.cssText = 'display:flex;gap:6px;align-items:center;';
+    if (styleCount > 0) {
+      const badge = document.createElement('span');
+      badge.textContent = `${styleCount} styled`;
+      badge.style.cssText = 'font-size:10px;background:#eff6ff;color:#2563eb;padding:2px 6px;border-radius:10px;font-weight:600;';
+      metaSpan.appendChild(badge);
+    }
     const actSpan = document.createElement('span');
     actSpan.className = 'version-action';
     actSpan.textContent = 'Preview';
+    metaSpan.appendChild(actSpan);
     div.appendChild(timeSpan);
-    div.appendChild(actSpan);
+    div.appendChild(metaSpan);
     cont.appendChild(div);
   });
 }
