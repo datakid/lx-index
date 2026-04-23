@@ -51,7 +51,7 @@ body { display: flex; height: 100dvh; background: var(--app-bg); color: var(--te
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-#sidebar { width: 380px; background: var(--panel-bg); display: flex; flex-direction: column; border-right: 1px solid var(--panel-bd); z-index: 100; flex-shrink: 0; box-shadow: 4px 0 15px rgba(0,0,0,0.03); transition: margin-left 0.3s ease, background 0.3s, border-color 0.3s; }
+#sidebar { width: 380px; background: var(--panel-bg); display: flex; flex-direction: column; border-right: 1px solid var(--panel-bd); z-index: 100; flex-shrink: 0; box-shadow: 4px 0 15px rgba(0,0,0,0.03); transition: margin-left 0.3s ease, background 0.3s, border-color 0.3s; } #sidebar::before { content: ""; display: block; height: 3px; background: linear-gradient(90deg, var(--accent), #7c3aed 60%, #06b6d4); flex-shrink: 0; }
 #sidebar.closed { margin-left: -380px; }
 .header { padding: 20px; border-bottom: 1px solid var(--panel-bd); display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); position: sticky; top: 0; z-index: 20; transition: background 0.3s, border-color 0.3s; }
 .header h1 { font-size: 18px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
@@ -75,7 +75,7 @@ body { display: flex; height: 100dvh; background: var(--app-bg); color: var(--te
 .s-clear.vis { display: block; }
 .scroll-area { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
 details.panel { border: 1px solid var(--panel-bd); border-radius: 8px; background: var(--panel-bg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: opacity 0.2s, background 0.3s, border-color 0.3s; }
-details.panel[open] { border-color: #cbd5e1; }
+details.panel[open] { border-color: var(--accent); border-left-width: 3px; border-left-color: var(--accent); }
 details.panel.disabled { opacity: 0.4; pointer-events: none; }
 summary.panel-title { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: space-between; align-items: center; padding: 16px; cursor: pointer; list-style: none; user-select: none; margin: 0; transition: color 0.3s; }
 summary.panel-title::-webkit-details-marker { display: none; }
@@ -131,8 +131,8 @@ input[type="number"]:focus { border-color: var(--accent); }
 .version-time { color: var(--text-main); font-weight: 500; }
 .version-action { color: #64748b; font-weight: 600; font-size: 11px; transition: color 0.2s; }
 .version-item:hover .version-action { color: var(--accent); }
-#workspace { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; position: relative; }
-.page-wrapper { width: 210mm; height: 297mm; background: white; box-shadow: 0 20px 40px rgba(0,0,0,0.1); padding: var(--page-pad); flex-shrink: 0; box-sizing: border-box; position: relative; transition: all 0.2s; }
+#workspace { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; position: relative; background-color: var(--app-bg); background-image: radial-gradient(var(--panel-bd) 1.2px, transparent 1.2px); background-size: 24px 24px; }
+.page-wrapper { width: 210mm; height: 297mm; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 20px rgba(0,0,0,0.08), 0 32px 64px rgba(0,0,0,0.10); padding: var(--page-pad); flex-shrink: 0; box-sizing: border-box; position: relative; transition: all 0.2s; }
 .table-container { width: 100%; height: 100%; border-width: var(--out-bd-w); border-style: var(--out-bd-s); border-color: var(--out-bd-c); border-radius: var(--out-rad); overflow: hidden; box-sizing: border-box; }
 table.lx-index { width: 100%; height: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; background: var(--row-even); }
 table.lx-index tr { height: calc(100% / 50); }
@@ -141,7 +141,7 @@ table.lx-index td { padding: var(--cell-pad); font-family: var(--font-family); f
 table.lx-index tr:last-child td { border-bottom: none; }
 table.lx-index td:last-child { border-right: none !important; }
 table.lx-index td:nth-child(odd) { width: 24px; text-align: right; padding-right: 4px; padding-left: 0; font-weight: 600; opacity: 0.5; user-select: none; font-size: 11px; }
-table.lx-index td:nth-child(even) { outline: none; cursor: text; transition: background 0.1s, box-shadow 0.1s; position: relative; }
+table.lx-index td:nth-child(even) { outline: none; cursor: text; transition: background 0.12s, box-shadow 0.12s; position: relative; } table.lx-index td:nth-child(even):hover:not(:focus):not(.cell-selected):not(.smatch) { background: rgba(37,99,235,0.04); }
 table.lx-index td:nth-child(even):focus { background: #fff8dc; box-shadow: inset 0 0 0 2px var(--accent); border-radius: 2px; z-index: 5; }
 table.lx-index td:nth-child(even).preview-locked { cursor: not-allowed; background: #f8fafc; color: #64748b; }
 table.lx-index td:nth-child(2), table.lx-index td:nth-child(4), table.lx-index td:nth-child(6) { border-right-width: var(--div-bd-w); border-right-style: var(--div-bd-s); border-right-color: var(--div-bd-c); }
@@ -157,8 +157,8 @@ table.lx-index td.cell-selected:focus { background: #fff8dc !important; box-shad
 #btn-copy-fmt.painting { background: #fef9c3 !important; color: #854d0e !important; border-color: #fbbf24 !important; animation: pulse-paint 1.8s ease-in-out infinite; }
 @keyframes pulse-paint { 0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); } 50% { box-shadow: 0 0 0 5px rgba(251, 191, 36, 0.12); } }
 
-#toast { position: fixed; bottom: 24px; right: 24px; background: #1e293b; color: white; padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 500; box-shadow: 0 10px 15px rgba(0,0,0,0.1); opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; z-index: 110; }
-#toast.show { opacity: 1; transform: translateY(0); }
+#toast { position: fixed; bottom: 24px; right: 24px; background: #1e293b; color: white; padding: 12px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; box-shadow: 0 10px 24px rgba(0,0,0,0.18); opacity: 0; transform: translateY(12px); transition: opacity 0.25s, transform 0.25s; pointer-events: none; z-index: 110; display: flex; align-items: center; gap: 10px; border-left: 4px solid #3b82f6; min-width: 220px; }
+#toast.show { opacity: 1; transform: translateY(0); } #toast .toast-icon { font-size: 16px; flex-shrink: 0; }
 .mobile-tog { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 95; width: 50px; height: 50px; border-radius: 25px; background: var(--accent); color: #fff; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 24px; align-items: center; justify-content: center; cursor: pointer; }
 .desk-tog { position: absolute; top: 20px; left: 20px; width: 36px; height: 36px; border-radius: 8px; background: var(--panel-bg); border: 1px solid var(--panel-bd); color: var(--text-main); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); z-index: 50; transition: all 0.2s; }
 .desk-tog:hover { background: var(--app-bg); transform: scale(1.05); }
@@ -205,7 +205,7 @@ html.dark table.lx-index td:nth-child(even):hover:not(:focus) { background: rgba
 html.dark table.lx-index td:nth-child(even).preview-locked { background: #0f172a; color: #475569; }
 html.dark table.lx-index td.cell-selected { background: rgba(59, 130, 246, 0.12) !important; box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.45) !important; }
 html.dark table.lx-index td.cell-selected:focus { background: rgba(59, 130, 246, 0.15) !important; box-shadow: inset 0 0 0 2px var(--accent) !important; }
-html.dark #btn-copy-fmt.painting { background: rgba(251, 191, 36, 0.12) !important; color: #fbbf24 !important; border-color: #fbbf24 !important; }
+html.dark #btn-copy-fmt.painting { background: rgba(251, 191, 36, 0.12) !important; color: #fbbf24 !important; border-color: #fbbf24 !important; } #sel-toolbar { position: fixed; bottom: 36px; left: 50%; transform: translateX(-50%) translateY(6px); background: var(--panel-bg); border: 1px solid var(--panel-bd); border-radius: 12px; padding: 8px 14px; box-shadow: 0 8px 28px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.06); z-index: 90; display: none; align-items: center; gap: 6px; opacity: 0; transition: opacity 0.2s, transform 0.2s; } #sel-toolbar.vis { opacity: 1; transform: translateX(-50%) translateY(0); } #sel-toolbar .sep { width: 1px; height: 20px; background: var(--panel-bd); margin: 0 4px; } #sel-toolbar .sel-btn { width: 30px; height: 30px; border-radius: 6px; border: 1px solid transparent; background: transparent; color: var(--text-main); cursor: pointer; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; transition: 0.15s; } #sel-toolbar .sel-btn:hover { background: var(--app-bg); border-color: var(--panel-bd); } #sel-toolbar .sel-btn.on { background: #e0e7ff; color: var(--accent); border-color: var(--accent); } #sel-toolbar .sel-count { font-size: 12px; font-weight: 600; color: var(--accent); background: rgba(37,99,235,0.08); padding: 3px 10px; border-radius: 20px; margin-right: 4px; white-space: nowrap; } html.dark #sel-toolbar .sel-btn.on { background: #1e3a8a; color: #93c5fd; border-color: var(--accent); } html.dark #sel-toolbar .sel-count { background: rgba(59,130,246,0.12); }
 html.dark .stats-bar { border-color: var(--panel-bd); background: var(--panel-bg); }
 html.dark .stat-box + .stat-box::before { background: var(--panel-bd); }
 html.dark .stat-v { color: var(--text-main); }
@@ -237,7 +237,7 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
   @page { size: A4 portrait; margin: 0; }
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
   body { background: white; margin: 0; padding: 0; width: 210mm; height: 297mm; display: block; overflow: hidden; transition: none; }
-  #sidebar, #toast, .mobile-tog, .desk-tog, .overlay, .custom-modal-overlay, .preview-banner { display: none !important; }
+  #sidebar, #toast, .mobile-tog, .desk-tog, .overlay, .custom-modal-overlay, .preview-banner, #sel-toolbar, #shortcuts-overlay { display: none !important; }
   #workspace { padding: 0; margin: 0; display: block; overflow: hidden; width: 210mm; height: 297mm; background: none; }
   .page-wrapper { box-shadow: none; margin: 0; width: 210mm; height: 297mm; overflow: hidden; box-sizing: border-box; page-break-after: avoid; page-break-before: avoid; page-break-inside: avoid; transform: none; transition: none; position: relative; }
   .table-container { width: 100%; overflow: hidden; box-sizing: border-box; }
@@ -341,13 +341,13 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 <div class="theme-name">Classic</div>
 <div class="theme-desc">Sharp Grid</div>
 </div>
-<div class="theme-box" id="theme-ledger" onclick="applyStyle('ledger')">
-<div class="theme-name">Ledger</div>
-<div class="theme-desc">Accounting Look</div>
+<div class="theme-box" id="theme-parchment" onclick="applyStyle('parchment')">
+<div class="theme-name">Parchment</div>
+<div class="theme-desc">Warm & Inked</div>
 </div>
-<div class="theme-box" id="theme-bleed" onclick="applyStyle('bleed')">
-<div class="theme-name">Compact</div>
-<div class="theme-desc">Min. Safe Margin</div>
+<div class="theme-box" id="theme-slate" onclick="applyStyle('slate')">
+<div class="theme-name">Slate</div>
+<div class="theme-desc">Mono · Tight</div>
 </div>
 </div>
 </div>
@@ -507,6 +507,16 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 </div>
 </div>
 
+<div id="sel-toolbar" style="display:none;">
+  <span class="sel-count" id="sel-count-label">0 cells selected</span>
+  <div class="sep"></div>
+  <button class="sel-btn" id="stb-bold" onmousedown="event.preventDefault(); toggleStyle('bold')" title="Bold (Ctrl+B)"><b>B</b></button>
+  <button class="sel-btn" id="stb-italic" onmousedown="event.preventDefault(); toggleStyle('italic')" title="Italic (Ctrl+I)"><i>I</i></button>
+  <button class="sel-btn" id="stb-under" onmousedown="event.preventDefault(); toggleStyle('underline')" title="Underline (Ctrl+U)" style="text-decoration:underline;">U</button>
+  <div class="sep"></div>
+  <button class="sel-btn" onmousedown="event.preventDefault(); clearCellFormat()" title="Clear style" style="font-size:14px;">🧹</button>
+  <button class="sel-btn" onclick="clearMultiSelect(); disableCellPanel();" title="Dismiss (Esc)" style="font-size:14px; color:#94a3b8;">✕</button>
+</div>
 <div class="page-wrapper">
 <div class="table-container" id="page-container"></div>
 </div>
@@ -559,9 +569,27 @@ let lastClickedId = null;
 const themeDefs = {
   modern:  { f: "'Inter', system-ui, sans-serif", fw: "400", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "12", ow: "2", os: "solid", oc: "#cbd5e1", ihw: "1", ivw: "0", ic: "#f1f5f9", dw: "2", ds: "solid", dc: "#94a3b8", pm: "8mm" },
   classic: { f: "Arial, Helvetica, sans-serif",   fw: "400", fz: "12", ro: "f3f4f6", re: "ffffff", tx: "000000", orad: "0", ow: "1", os: "solid", oc: "#000000", ihw: "1", ivw: "1", ic: "#000000", dw: "2", ds: "solid", dc: "#000000", pm: "8mm" },
-  ledger:  { f: "'Lora', Georgia, serif",          fw: "400", fz: "13", ro: "f0fdf4", re: "ffffff", tx: "1e293b", orad: "0", ow: "1", os: "solid", oc: "#94a3b8", ihw: "1", ivw: "1", ic: "#cbd5e1", dw: "3", ds: "double", dc: "#64748b", pm: "8mm" },
-  bleed:   { f: "system-ui, -apple-system, sans-serif", fw: "500", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "0", ow: "0", os: "solid", oc: "#ffffff", ihw: "1", ivw: "1", ic: "#e2e8f0", dw: "2", ds: "solid", dc: "#94a3b8", pm: "4mm" }
+  parchment:{ f: "'Lora', Georgia, serif",          fw: "400", fz: "12", ro: "fdf5e4", re: "fff9f3", tx: "3d2b1f", orad: "2", ow: "1", os: "solid", oc: "#c4a47c", ihw: "1", ivw: "0", ic: "#e8d5b4", dw: "2", ds: "solid", dc: "#b8955a", pm: "8mm" },
+  slate:    { f: "'JetBrains Mono', monospace",         fw: "400", fz: "11", ro: "f4f6f8", re: "ffffff", tx: "1a1a2e", orad: "0", ow: "1", os: "solid", oc: "#8892a4", ihw: "1", ivw: "0", ic: "#dde1e8", dw: "1", ds: "solid", dc: "#8892a4", pm: "4mm" }
 };
+
+function syncSelToolbar() {
+  const bar = document.getElementById('sel-toolbar');
+  if (!bar) return;
+  const count = selectedCells.size;
+  if (count >= 1) {
+    bar.style.display = 'flex';
+    requestAnimationFrame(() => bar.classList.add('vis'));
+    document.getElementById('sel-count-label').textContent = count + ' cell' + (count > 1 ? 's' : '') + ' selected';
+    const ids = [...selectedCells];
+    document.getElementById('stb-bold').classList.toggle('on', ids.every(id => appStyles[id]?.b));
+    document.getElementById('stb-italic').classList.toggle('on', ids.every(id => appStyles[id]?.i));
+    document.getElementById('stb-under').classList.toggle('on', ids.every(id => appStyles[id]?.u));
+  } else {
+    bar.classList.remove('vis');
+    setTimeout(() => { if (!selectedCells.size) bar.style.display = 'none'; }, 200);
+  }
+}
 
 function getTargetIds() {
   if (selectedCells.size > 0) return [...selectedCells];
@@ -607,6 +635,7 @@ function updateMultiSelectPanel() {
   }
   const paintBtn = document.getElementById('btn-copy-fmt');
   if (paintBtn) { paintBtn.disabled = true; paintBtn.style.opacity = '0.4'; }
+  syncSelToolbar();
 }
 
 function rangeSelect(fromId, toId) {
@@ -716,7 +745,7 @@ function cycleTheme() {
   const n = m === 'auto' ? 'light' : m === 'light' ? 'dark' : 'auto';
   localStorage.setItem('lx_tm', n);
   applyAppTheme(n);
-  showToast(`Theme: ${n}`);
+  showToast(`Theme: ${n}`, 'info');
 }
 
 function applyAppTheme(m) {
@@ -755,13 +784,14 @@ document.addEventListener('mousedown', (e) => {
 window.addEventListener('keydown', e => {
   const inEdit = document.activeElement.tagName === 'INPUT' || document.activeElement.isContentEditable;
   if (e.key === 'Escape') {
-    if (isPainting) { cancelPaintMode(); showToast("Paint mode canceled"); return; }
+    if (isPainting) { cancelPaintMode(); showToast("Paint mode canceled", "warn"); return; }
     if (document.getElementById('shortcuts-overlay').style.display === 'flex') { closeShortcuts(); return; }
     if (selectedCells.size > 0) { clearMultiSelect(); disableCellPanel(); return; }
   }
   if (e.key === '?' && !inEdit) { e.preventDefault(); openShortcuts(); return; }
   if (e.key === '/' && !inEdit) { e.preventDefault(); document.getElementById('sinp').focus(); return; }
   if ((e.ctrlKey || e.metaKey) && !e.shiftKey) {
+    if ((e.key === 'a' || e.key === 'A') && !inEdit) { e.preventDefault(); clearMultiSelect(); for (let id = 1; id <= 200; id++) { selectedCells.add(id); const td = document.querySelector(`td[data-id="${id}"]`); if (td) td.classList.add('cell-selected'); } lastClickedId = 1; updateMultiSelectPanel(); showToast('All 200 cells selected', 'info'); return; }
     const ids = getTargetIds();
     if (!ids.length) return;
     if (e.key === 'b' || e.key === 'B') { e.preventDefault(); toggleStyle('bold'); return; }
@@ -774,6 +804,7 @@ const SHORTCUTS = [
   { keys: ['Ctrl+B'], desc: 'Bold — focused or selected cells' },
   { keys: ['Ctrl+I'], desc: 'Italic — focused or selected cells' },
   { keys: ['Ctrl+U'], desc: 'Underline — focused or selected cells' },
+  { keys: ['Ctrl+A'], desc: 'Select all 200 cells' },
   { keys: ['Ctrl+Click'], desc: 'Add / remove cell from selection' },
   { keys: ['Shift+Click'], desc: 'Range select (sequential IDs)' },
   { keys: ['/'], desc: 'Focus search' },
@@ -824,11 +855,15 @@ window.onload = () => {
   renderPage();
 };
 
-function showToast(msg) {
+function showToast(msg, type = 'info') {
   const t = document.getElementById('toast');
-  t.textContent = msg;
+  const icons = { success: '✓', error: '✕', warn: '⚠', info: 'ℹ' };
+  const colors = { success: '#22c55e', error: '#ef4444', warn: '#f59e0b', info: '#3b82f6' };
+  t.innerHTML = '<span class="toast-icon" style="color:' + colors[type] + '">' + icons[type] + '</span><span>' + msg + '</span>';
+  t.style.borderLeftColor = colors[type];
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 function triggerAutoSave() {
@@ -878,15 +913,24 @@ function renderVersions() {
     div.className = 'version-item';
     div.onclick = () => previewVersion(i);
     const styleCount = Object.keys(v.s || {}).length;
+    const fillCount = Object.keys(v.d || {}).length;
     const timeSpan = document.createElement('span');
     timeSpan.className = 'version-time';
     timeSpan.textContent = i === 0 ? `Latest (${timeStr})` : timeStr;
     const metaSpan = document.createElement('span');
     metaSpan.style.cssText = 'display:flex;gap:6px;align-items:center;';
+    if (fillCount > 0) {
+      const fbadge = document.createElement('span');
+      fbadge.textContent = `${fillCount}`;
+      fbadge.title = `${fillCount} filled`;
+      fbadge.style.cssText = 'font-size:10px;background:#f1f5f9;color:#64748b;padding:2px 7px;border-radius:10px;font-weight:600;';
+      metaSpan.appendChild(fbadge);
+    }
     if (styleCount > 0) {
       const badge = document.createElement('span');
-      badge.textContent = `${styleCount} styled`;
-      badge.style.cssText = 'font-size:10px;background:#eff6ff;color:#2563eb;padding:2px 6px;border-radius:10px;font-weight:600;';
+      badge.textContent = `${styleCount}✦`;
+      badge.title = `${styleCount} styled cells`;
+      badge.style.cssText = 'font-size:10px;background:#eff6ff;color:#2563eb;padding:2px 7px;border-radius:10px;font-weight:600;';
       metaSpan.appendChild(badge);
     }
     const actSpan = document.createElement('span');
@@ -923,7 +967,7 @@ function cancelPreview() {
   document.querySelectorAll('.version-item').forEach(el => el.classList.remove('active-preview'));
   document.getElementById('preview-banner').classList.remove('vis');
   renderPage();
-  showToast("Preview canceled");
+  showToast("Preview canceled", "info");
 }
 
 function confirmRestore() {
@@ -934,7 +978,7 @@ function confirmRestore() {
   document.getElementById('preview-banner').classList.remove('vis');
   triggerAutoSave();
   renderPage();
-  showToast("Version state permanently restored.");
+  showToast("Version state permanently restored.", "success");
 }
 
 function updateStats() {
@@ -962,7 +1006,7 @@ function updateStats() {
   document.getElementById('st-e').textContent = 200 - filledCount;
   document.getElementById('st-d').textContent = dCount;
   document.getElementById('st-d').style.color = dCount > 0 ? '#ef4444' : 'inherit';
-  if (dupFound && !dupWarned) { showToast("Duplicate values detected"); dupWarned = true; }
+  if (dupFound && !dupWarned) { showToast("Duplicate values detected", "warn"); dupWarned = true; }
 }
 
 function fuzzyMatch(pattern, str) {
@@ -1050,14 +1094,14 @@ function loadFromLocal() {
 }
 
 function requestClearData() {
-  if (isPreviewing) { showToast("Cannot clear data while previewing history."); return; }
+  if (isPreviewing) { showToast("Cannot clear data while previewing history.", "warn"); return; }
   openModal("Clear All Data", "Are you entirely sure you want to delete all entries and formatting? This action can only be undone via the Version History panel.", "Clear Data", "btn-danger", () => {
     appData = {};
     appStyles = {};
     hasUnsavedChanges = true;
     triggerAutoSave();
     renderPage();
-    showToast("Cleared successfully");
+    showToast("Cleared successfully", "success");
   });
 }
 
@@ -1230,6 +1274,7 @@ function disableCellPanel() {
   document.getElementById('cell-panel-title').innerHTML = `★ Selected Cell Override`;
   const paintBtn = document.getElementById('btn-copy-fmt');
   if (paintBtn) { paintBtn.disabled = false; paintBtn.style.opacity = ''; }
+  syncSelToolbar();
 }
 
 function copyFormat() {
@@ -1242,7 +1287,7 @@ function copyFormat() {
   const btn = document.getElementById('btn-copy-fmt');
   btn.classList.add('painting');
   btn.textContent = '✕ Cancel Paint';
-  showToast("Click any cell to apply style — Esc to cancel");
+  showToast("Click any cell to apply style — Esc to cancel", "warn");
 }
 
 function cancelPaintMode() {
@@ -1261,7 +1306,7 @@ function applyPaint(id, td) {
   hasUnsavedChanges = true;
   triggerAutoSave();
   cancelPaintMode();
-  showToast("Style applied");
+  showToast("Style applied", "success");
 }
 
 function toggleStyle(prop) {
@@ -1410,7 +1455,7 @@ function checkA11y(ho, he, ht) {
 
 function applyStyle(id) {
   document.querySelectorAll('.theme-box').forEach(b => b.classList.remove('active'));
-  document.getElementById('theme-' + id).classList.add('active');
+  const themeEl = document.getElementById('theme-' + id); if (themeEl) themeEl.classList.add('active');
   const t = themeDefs[id];
   document.getElementById('f-family').value = t.f;
   document.getElementById('f-weight').value = t.fw;
@@ -1434,7 +1479,7 @@ function applyStyle(id) {
 }
 
 function handleFileUpload(e) {
-  if (isPreviewing) { showToast("Cannot import data while previewing."); return; }
+  if (isPreviewing) { showToast("Cannot import data while previewing.", "warn"); return; }
   const f = e.target.files[0];
   if (!f) return;
   const r = new FileReader();
@@ -1450,7 +1495,7 @@ function handleFileUpload(e) {
     hasUnsavedChanges = true;
     triggerAutoSave();
     renderPage();
-    showToast("Data imported");
+    showToast("Data imported", "success");
   };
   r.readAsBinaryString(f);
 }
@@ -1462,7 +1507,7 @@ function downloadTemplate() {
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Template");
   XLSX.writeFile(wb, "LX_Template_200.xlsx");
-  showToast("Template downloaded");
+  showToast("Template downloaded", "success");
 }
 
 function exportCSV() {
@@ -1473,7 +1518,7 @@ function exportCSV() {
   XLSX.utils.book_append_sheet(wb, ws, "Data");
   XLSX.writeFile(wb, "LX_Data.csv");
   hasUnsavedChanges = false;
-  showToast("Data saved successfully");
+  showToast("Data saved successfully", "success");
 }
 
 function loadDemoData() {
