@@ -52,7 +52,8 @@ body { display: flex; height: 100dvh; background: var(--app-bg); color: var(--te
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-#sidebar { width: 380px; background: var(--panel-bg); display: flex; flex-direction: column; border-right: 1px solid var(--panel-bd); z-index: 100; flex-shrink: 0; box-shadow: 4px 0 15px rgba(0,0,0,0.03); transition: margin-left 0.3s ease, background 0.3s, border-color 0.3s; } #sidebar::before { content: ""; display: block; height: 3px; background: linear-gradient(90deg, var(--accent), #7c3aed 60%, #06b6d4); flex-shrink: 0; }
+#sidebar { width: 380px; background: var(--panel-bg); display: flex; flex-direction: column; border-right: 1px solid var(--panel-bd); z-index: 100; flex-shrink: 0; box-shadow: 4px 0 15px rgba(0,0,0,0.03); transition: margin-left 0.3s ease, background 0.3s, border-color 0.3s; }
+#sidebar::before { content: ""; display: block; height: 3px; background: linear-gradient(90deg, var(--accent), #7c3aed 60%, #06b6d4); flex-shrink: 0; }
 #sidebar.closed { margin-left: -380px; }
 .header { padding: 20px; border-bottom: 1px solid var(--panel-bd); display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); position: sticky; top: 0; z-index: 20; transition: background 0.3s, border-color 0.3s; }
 .header h1 { font-size: 18px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
@@ -142,7 +143,8 @@ table.lx-index td { padding: var(--cell-pad); font-family: var(--font-family); f
 table.lx-index tr:last-child td { border-bottom: none; }
 table.lx-index td:last-child { border-right: none !important; }
 table.lx-index td:nth-child(odd) { width: 24px; text-align: right; padding-right: 4px; padding-left: 0; font-weight: 600; opacity: 0.5; user-select: none; font-size: 11px; }
-table.lx-index td:nth-child(even) { outline: none; cursor: text; transition: background 0.12s, box-shadow 0.12s; position: relative; } table.lx-index td:nth-child(even):hover:not(:focus):not(.cell-selected):not(.smatch) { background: rgba(37,99,235,0.04); }
+table.lx-index td:nth-child(even) { outline: none; cursor: text; transition: background 0.12s, box-shadow 0.12s; position: relative; }
+table.lx-index td:nth-child(even):hover:not(:focus):not(.cell-selected):not(.smatch) { background: rgba(37,99,235,0.04); }
 table.lx-index td:nth-child(even):focus { background: #fff8dc; box-shadow: inset 0 0 0 2px var(--accent); border-radius: 2px; z-index: 5; }
 table.lx-index td:nth-child(even).preview-locked { cursor: not-allowed; background: #f8fafc; color: #64748b; }
 table.lx-index td:nth-child(2), table.lx-index td:nth-child(4), table.lx-index td:nth-child(6) { border-right-width: var(--div-bd-w); border-right-style: var(--div-bd-s); border-right-color: var(--div-bd-c); }
@@ -155,7 +157,8 @@ table.lx-index td.cell-selected:focus { background: #fff8dc !important; box-shad
 #btn-copy-fmt.painting { background: #fef9c3 !important; color: #854d0e !important; border-color: #fbbf24 !important; animation: pulse-paint 1.8s ease-in-out infinite; }
 @keyframes pulse-paint { 0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); } 50% { box-shadow: 0 0 0 5px rgba(251, 191, 36, 0.12); } }
 #toast { position: fixed; bottom: 24px; right: 24px; background: #1e293b; color: white; padding: 12px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; box-shadow: 0 10px 24px rgba(0,0,0,0.18); opacity: 0; transform: translateY(12px); transition: opacity 0.25s, transform 0.25s; pointer-events: none; z-index: 110; display: flex; align-items: center; gap: 10px; border-left: 4px solid #3b82f6; min-width: 220px; }
-#toast.show { opacity: 1; transform: translateY(0); } #toast .toast-icon { font-size: 16px; flex-shrink: 0; }
+#toast.show { opacity: 1; transform: translateY(0); }
+#toast .toast-icon { font-size: 16px; flex-shrink: 0; }
 .mobile-tog { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 95; width: 50px; height: 50px; border-radius: 25px; background: var(--accent); color: #fff; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 24px; align-items: center; justify-content: center; cursor: pointer; }
 .desk-tog { position: absolute; top: 20px; left: 20px; width: 36px; height: 36px; border-radius: 8px; background: var(--panel-bg); border: 1px solid var(--panel-bd); color: var(--text-main); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); z-index: 50; transition: all 0.2s; }
 .desk-tog:hover { background: var(--app-bg); transform: scale(1.05); }
@@ -170,7 +173,6 @@ table.lx-index td.cell-selected:focus { background: #fff8dc !important; box-shad
 .preview-banner { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: var(--panel-bg); border: 2px solid var(--accent); padding: 12px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 60; display: none; align-items: center; gap: 20px; color: var(--text-main); font-size: 13px; font-weight: 500; }
 .preview-banner.vis { display: flex; animation: slideDown 0.3s ease; }
 @keyframes slideDown { from { transform: translate(-50%, -20px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
-
 .imp-col-label { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
 .imp-preview-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .imp-preview-table th { padding: 6px 10px; background: var(--app-bg); font-size: 10px; font-weight: 700; color: #64748b; text-align: left; border-bottom: 1px solid var(--panel-bd); text-transform: uppercase; letter-spacing: 0.4px; }
@@ -181,6 +183,68 @@ table.lx-index td.cell-selected:focus { background: #fff8dc !important; box-shad
 .imp-id-invalid { color: #94a3b8; font-family: 'JetBrains Mono', monospace; }
 .imp-summary-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: #eff6ff; color: var(--accent); border: 1px solid #bfdbfe; }
 .imp-warn-pill { background: #fefce8; color: #854d0e; border-color: #fde68a; }
+
+#sel-toolbar {
+  position: fixed;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-bd);
+  border-radius: 16px;
+  padding: 5px 8px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.14), 0 3px 10px rgba(0,0,0,0.06), 0 0 0 1px rgba(255,255,255,0.06) inset;
+  z-index: 90;
+  display: none;
+  align-items: center;
+  gap: 3px;
+  opacity: 0;
+  transition: opacity 0.22s cubic-bezier(0.34,1.56,0.64,1), transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+}
+#sel-toolbar.vis { opacity: 1; transform: translateX(-50%) translateY(0); }
+#sel-toolbar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 16px; right: 16px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(37,99,235,0.25), transparent);
+  border-radius: 1px;
+}
+#sel-toolbar .sep { width: 1px; height: 18px; background: var(--panel-bd); margin: 0 3px; border-radius: 1px; }
+#sel-toolbar .sel-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(37,99,235,0.08);
+  padding: 4px 11px;
+  border-radius: 10px;
+  margin-right: 2px;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+  border: 1px solid rgba(37,99,235,0.12);
+}
+#sel-toolbar .sel-btn {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-main);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.13s, border-color 0.13s, color 0.13s, transform 0.1s;
+  position: relative;
+}
+#sel-toolbar .sel-btn:hover { background: var(--app-bg); border-color: var(--panel-bd); transform: translateY(-1px); }
+#sel-toolbar .sel-btn:active { transform: translateY(0); }
+#sel-toolbar .sel-btn.on { background: #e0e7ff; color: var(--accent); border-color: rgba(37,99,235,0.3); }
+#sel-toolbar .sel-btn.danger:hover { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
+#sel-toolbar .sel-btn.dismiss:hover { background: var(--app-bg); color: #64748b; border-color: var(--panel-bd); }
+
+html.dark #sel-toolbar { box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 3px 10px rgba(0,0,0,0.2); }
+html.dark #sel-toolbar .sel-btn.on { background: #1e3a8a; color: #93c5fd; border-color: rgba(59,130,246,0.4); }
+html.dark #sel-toolbar .sel-count { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.2); }
+html.dark #sel-toolbar .sel-btn.danger:hover { background: rgba(220,38,38,0.15); color: #f87171; border-color: rgba(220,38,38,0.3); }
 
 html.dark .status-badge { color: #94a3b8; }
 html.dark details.panel[open] { border-color: #475569; }
@@ -216,7 +280,6 @@ html.dark table.lx-index td.cell-selected:focus { background: rgba(59, 130, 246,
 html.dark #btn-copy-fmt.painting { background: rgba(251, 191, 36, 0.12) !important; color: #fbbf24 !important; border-color: #fbbf24 !important; }
 html.dark .imp-summary-pill { background: #1e3a8a; border-color: #3b82f6; }
 html.dark .imp-warn-pill { background: rgba(251,191,36,0.1); color: #fbbf24; border-color: rgba(251,191,36,0.3); }
-#sel-toolbar { position: fixed; bottom: 36px; left: 50%; transform: translateX(-50%) translateY(6px); background: var(--panel-bg); border: 1px solid var(--panel-bd); border-radius: 12px; padding: 8px 14px; box-shadow: 0 8px 28px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.06); z-index: 90; display: none; align-items: center; gap: 6px; opacity: 0; transition: opacity 0.2s, transform 0.2s; } #sel-toolbar.vis { opacity: 1; transform: translateX(-50%) translateY(0); } #sel-toolbar .sep { width: 1px; height: 20px; background: var(--panel-bd); margin: 0 4px; } #sel-toolbar .sel-btn { width: 30px; height: 30px; border-radius: 6px; border: 1px solid transparent; background: transparent; color: var(--text-main); cursor: pointer; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; transition: 0.15s; } #sel-toolbar .sel-btn:hover { background: var(--app-bg); border-color: var(--panel-bd); } #sel-toolbar .sel-btn.on { background: #e0e7ff; color: var(--accent); border-color: var(--accent); } #sel-toolbar .sel-count { font-size: 12px; font-weight: 600; color: var(--accent); background: rgba(37,99,235,0.08); padding: 3px 10px; border-radius: 20px; margin-right: 4px; white-space: nowrap; } html.dark #sel-toolbar .sel-btn.on { background: #1e3a8a; color: #93c5fd; border-color: var(--accent); } html.dark #sel-toolbar .sel-count { background: rgba(59,130,246,0.12); }
 html.dark .stats-bar { border-color: var(--panel-bd); background: var(--panel-bg); }
 html.dark .stat-box + .stat-box::before { background: var(--panel-bd); }
 html.dark .stat-v { color: var(--text-main); }
@@ -336,7 +399,7 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 </div>
 </div>
 <button id="btn-copy-fmt" class="btn btn-secondary" style="margin-top:12px;" onmousedown="event.preventDefault(); copyFormat()">🖌️ Paint Style</button>
-<button class="btn btn-secondary" style="margin-top:8px;" onclick="clearCellFormat()">🧹 Clear Override</button>
+<button class="btn btn-secondary" style="margin-top:8px;" onclick="clearCellFormat()">🧹 Clear Style</button>
 </div>
 </details>
 
@@ -519,15 +582,18 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 </div>
 
 <div id="sel-toolbar" style="display:none;">
-  <span class="sel-count" id="sel-count-label">0 cells selected</span>
+  <span class="sel-count" id="sel-count-label">0 selected</span>
   <div class="sep"></div>
   <button class="sel-btn" id="stb-bold" onmousedown="event.preventDefault(); toggleStyle('bold')" title="Bold (Ctrl+B)"><b>B</b></button>
   <button class="sel-btn" id="stb-italic" onmousedown="event.preventDefault(); toggleStyle('italic')" title="Italic (Ctrl+I)"><i>I</i></button>
   <button class="sel-btn" id="stb-under" onmousedown="event.preventDefault(); toggleStyle('underline')" title="Underline (Ctrl+U)" style="text-decoration:underline;">U</button>
   <div class="sep"></div>
-  <button class="sel-btn" onmousedown="event.preventDefault(); clearCellFormat()" title="Clear style" style="font-size:14px;">🧹</button>
-  <button class="sel-btn" onclick="clearMultiSelect(); disableCellPanel();" title="Dismiss (Esc)" style="font-size:14px; color:#94a3b8;">✕</button>
+  <button class="sel-btn" onmousedown="event.preventDefault(); clearCellFormat()" title="Clear style">🧹</button>
+  <button class="sel-btn danger" onmousedown="event.preventDefault(); clearSelectionData()" title="Delete cell content">⌫</button>
+  <div class="sep"></div>
+  <button class="sel-btn dismiss" onclick="clearMultiSelect(); disableCellPanel();" title="Dismiss (Esc)">✕</button>
 </div>
+
 <div class="page-wrapper">
 <div class="table-container" id="page-container"></div>
 </div>
@@ -559,7 +625,7 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 </div>
 </div>
 
-<div id="import-modal" class="custom-modal-overlay" onclick="e => { if(e.target===this) closeImportModal(); }">
+<div id="import-modal" class="custom-modal-overlay">
 <div class="custom-modal-box" style="max-width:500px; width:94%;">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
     <h3 class="custom-modal-title" style="margin:0;">📂 Import Data</h3>
@@ -617,8 +683,8 @@ let importCurrentRows = null;
 let importHeaders = null;
 
 const themeDefs = {
-  modern:  { f: "'Inter', system-ui, sans-serif", fw: "400", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "12", ow: "2", os: "solid", oc: "#cbd5e1", ihw: "1", ivw: "0", ic: "#f1f5f9", dw: "2", ds: "solid", dc: "#94a3b8", pm: "8mm" },
-  classic: { f: "Arial, Helvetica, sans-serif",   fw: "400", fz: "12", ro: "f3f4f6", re: "ffffff", tx: "000000", orad: "0", ow: "1", os: "solid", oc: "#000000", ihw: "1", ivw: "1", ic: "#000000", dw: "2", ds: "solid", dc: "#000000", pm: "8mm" },
+  modern:   { f: "'Inter', system-ui, sans-serif", fw: "400", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "12", ow: "2", os: "solid", oc: "#cbd5e1", ihw: "1", ivw: "0", ic: "#f1f5f9", dw: "2", ds: "solid", dc: "#94a3b8", pm: "8mm" },
+  classic:  { f: "Arial, Helvetica, sans-serif",   fw: "400", fz: "12", ro: "f3f4f6", re: "ffffff", tx: "000000", orad: "0", ow: "1", os: "solid", oc: "#000000", ihw: "1", ivw: "1", ic: "#000000", dw: "2", ds: "solid", dc: "#000000", pm: "8mm" },
   parchment:{ f: "'Lora', Georgia, serif",          fw: "400", fz: "12", ro: "fdf5e4", re: "fff9f3", tx: "3d2b1f", orad: "2", ow: "1", os: "solid", oc: "#c4a47c", ihw: "1", ivw: "0", ic: "#e8d5b4", dw: "2", ds: "solid", dc: "#b8955a", pm: "8mm" },
   slate:    { f: "'JetBrains Mono', monospace",     fw: "400", fz: "11", ro: "f4f6f8", re: "ffffff", tx: "1a1a2e", orad: "0", ow: "1", os: "solid", oc: "#8892a4", ihw: "1", ivw: "0", ic: "#dde1e8", dw: "1", ds: "solid", dc: "#8892a4", pm: "4mm" }
 };
@@ -756,7 +822,7 @@ function syncSelToolbar() {
     document.getElementById('stb-under').classList.toggle('on', ids.every(id => appStyles[id]?.u));
   } else {
     bar.classList.remove('vis');
-    setTimeout(() => { if (!selectedCells.size) bar.style.display = 'none'; }, 200);
+    setTimeout(() => { if (!selectedCells.size) bar.style.display = 'none'; }, 220);
   }
 }
 
@@ -915,9 +981,9 @@ function cycleTheme() {
 }
 
 function applyAppTheme(m) {
-  const d   = document.documentElement;
+  const d = document.documentElement;
   d.classList.remove('dark', 'light');
-  let isD   = m === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : m === 'dark';
+  let isD = m === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : m === 'dark';
   if (isD) {
     d.classList.add('dark');
     document.querySelector('.theme-toggle .sun').style.display  = 'none';
@@ -1047,8 +1113,8 @@ function showToast(msg, type = 'info') {
 function triggerAutoSave() {
   if (isPreviewing) return;
   const dot = document.getElementById('save-dot');
-  dot.style.background   = '#f59e0b';
-  dot.style.boxShadow    = '0 0 8px #f59e0b';
+  dot.style.background = '#f59e0b';
+  dot.style.boxShadow  = '0 0 8px #f59e0b';
   clearTimeout(saveTimeout);
   saveTimeout = setTimeout(() => {
     localStorage.setItem('lx_data_ul_v3',  JSON.stringify(appData));
@@ -1099,8 +1165,8 @@ function renderVersions() {
     metaSpan.style.cssText = 'display:flex;gap:6px;align-items:center;';
     if (fillCount > 0) {
       const fbadge = document.createElement('span');
-      fbadge.textContent  = `${fillCount}`;
-      fbadge.title        = `${fillCount} filled`;
+      fbadge.textContent   = `${fillCount}`;
+      fbadge.title         = `${fillCount} filled`;
       fbadge.style.cssText = 'font-size:10px;background:#f1f5f9;color:#64748b;padding:2px 7px;border-radius:10px;font-weight:600;';
       metaSpan.appendChild(fbadge);
     }
@@ -1150,8 +1216,8 @@ function cancelPreview() {
 
 function confirmRestore() {
   if (!isPreviewing) return;
-  isPreviewing       = false;
-  hasUnsavedChanges  = true;
+  isPreviewing      = false;
+  hasUnsavedChanges = true;
   document.querySelectorAll('.version-item').forEach(el => el.classList.remove('active-preview'));
   document.getElementById('preview-banner').classList.remove('vis');
   triggerAutoSave();
@@ -1291,6 +1357,31 @@ window.addEventListener('beforeunload', (e) => {
   if (hasUnsavedChanges && !isPreviewing) { e.preventDefault(); e.returnValue = ''; }
 });
 
+function isTemplateLike(rows) {
+  if (!rows || rows.length < 2) return false;
+  const h0 = String(rows[0][0] || '').trim().toLowerCase();
+  const h1 = String(rows[0][1] || '').trim().toLowerCase();
+  return h0 === 'id' && h1 === 'item name';
+}
+
+function doDirectImport(rows) {
+  appData   = {};
+  appStyles = {};
+  let count = 0;
+  rows.slice(1).forEach(row => {
+    const id = parseFloat(row[0]);
+    const nm = String(row[1] ?? '').trim();
+    if (Number.isInteger(id) && id >= 1 && id <= 200 && nm) {
+      appData[id] = nm;
+      count++;
+    }
+  });
+  hasUnsavedChanges = true;
+  triggerAutoSave();
+  renderPage();
+  showToast(`Imported ${count} entr${count === 1 ? 'y' : 'ies'}`, "success");
+}
+
 function handleFileUpload(e) {
   if (isPreviewing) { showToast("Cannot import data while previewing.", "warn"); return; }
   const f = e.target.files[0];
@@ -1302,6 +1393,16 @@ function handleFileUpload(e) {
     try {
       importWorkbook = XLSX.read(evt.target.result, { type: 'binary' });
       const sheets = importWorkbook.SheetNames;
+
+      if (sheets.length === 1) {
+        const raw  = XLSX.utils.sheet_to_json(importWorkbook.Sheets[sheets[0]], { header: 1, defval: '' });
+        const rows = raw.filter(r => r.some(c => c !== '' && c !== null && c !== undefined));
+        if (isTemplateLike(rows)) {
+          importWorkbook = null;
+          doDirectImport(rows);
+          return;
+        }
+      }
 
       const sheetSel = document.getElementById('imp-sheet-sel');
       sheetSel.innerHTML = sheets.map((s, i) => `<option value="${i}">${s}</option>`).join('');
@@ -1521,6 +1622,19 @@ function autoFitText(el) {
   }
 }
 
+function clearSelectionData() {
+  const ids = getTargetIds();
+  if (!ids.length || isPreviewing) return;
+  ids.forEach(id => {
+    delete appData[id];
+    const td = document.querySelector(`td[data-id="${id}"]`);
+    if (td) { td.textContent = ''; autoFitText(td); }
+  });
+  hasUnsavedChanges = true;
+  triggerAutoSave();
+  showToast(`Cleared ${ids.length} cell${ids.length > 1 ? 's' : ''}`, 'success');
+}
+
 function renderPage(skipSave = false) {
   const cont = document.getElementById('page-container');
   cont.innerHTML = '';
@@ -1536,8 +1650,8 @@ function renderPage(skipSave = false) {
       tdVal.contentEditable = isPreviewing ? "false" : "true";
       if (isPreviewing) tdVal.classList.add('preview-locked');
       tdVal.setAttribute("dir", "auto");
-      tdVal.dataset.id   = id;
-      tdVal.textContent  = appData[id] || "";
+      tdVal.dataset.id  = id;
+      tdVal.textContent = appData[id] || "";
       applyCellDomStyle(tdVal, id);
       if (!isPreviewing) {
         tdVal.addEventListener('mousedown', (e) => {
