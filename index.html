@@ -133,7 +133,7 @@ input[type="number"]:focus { border-color: var(--accent); }
 .version-time { color: var(--text-main); font-weight: 500; }
 .version-action { color: #64748b; font-weight: 600; font-size: 11px; transition: color 0.2s; }
 .version-item:hover .version-action { color: var(--accent); }
-#workspace { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; position: relative; background-color: var(--app-bg); background-image: radial-gradient(var(--panel-bd) 1.2px, transparent 1.2px); background-size: 24px 24px; }
+#workspace { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; position: relative; background-color: var(--app-bg); background-image: radial-gradient(var(--panel-bd) 1.2px, transparent 1.2px); background-size: 24px 24px; scroll-behavior: smooth; }
 .page-wrapper { width: 210mm; height: 297mm; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 20px rgba(0,0,0,0.08), 0 32px 64px rgba(0,0,0,0.10); padding: var(--page-pad); flex-shrink: 0; box-sizing: border-box; position: relative; transition: all 0.2s; }
 .table-container { width: 100%; height: 100%; border-width: var(--out-bd-w); border-style: var(--out-bd-s); border-color: var(--out-bd-c); border-radius: var(--out-rad); overflow: hidden; box-sizing: border-box; }
 table.lx-index { width: 100%; height: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; background: var(--row-even); }
@@ -186,67 +186,82 @@ table.lx-index td.cell-selected:focus { background: #fff8dc !important; box-shad
 
 #sel-toolbar {
   position: fixed;
-  bottom: 36px;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  background: var(--panel-bg);
-  border: 1px solid var(--panel-bd);
-  border-radius: 16px;
-  padding: 5px 8px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.14), 0 3px 10px rgba(0,0,0,0.06), 0 0 0 1px rgba(255,255,255,0.06) inset;
-  z-index: 90;
+  top: 0; left: 0;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(203,213,225,0.8);
+  border-radius: 12px;
+  padding: 4px 6px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06);
+  z-index: 200;
   display: none;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   opacity: 0;
-  transition: opacity 0.22s cubic-bezier(0.34,1.56,0.64,1), transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events: none;
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out, top 0.1s linear, left 0.1s linear;
+  transform: translateY(8px) scale(0.96);
+  will-change: top, left, transform, opacity;
 }
-#sel-toolbar.vis { opacity: 1; transform: translateX(-50%) translateY(0); }
-#sel-toolbar::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 16px; right: 16px; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(37,99,235,0.25), transparent);
-  border-radius: 1px;
+#sel-toolbar.vis { 
+  opacity: 1; 
+  pointer-events: auto; 
+  transform: translateY(0) scale(1);
 }
-#sel-toolbar .sep { width: 1px; height: 18px; background: var(--panel-bd); margin: 0 3px; border-radius: 1px; }
+#sel-toolbar .sep { width: 1px; height: 18px; background: #e2e8f0; margin: 0 4px; border-radius: 1px; flex-shrink: 0; }
 #sel-toolbar .sel-count {
   font-size: 11px;
   font-weight: 700;
   color: var(--accent);
-  background: rgba(37,99,235,0.08);
-  padding: 4px 11px;
-  border-radius: 10px;
+  background: rgba(37,99,235,0.07);
+  padding: 5px 12px;
+  border-radius: 8px;
   margin-right: 2px;
   white-space: nowrap;
   letter-spacing: 0.01em;
   border: 1px solid rgba(37,99,235,0.12);
 }
 #sel-toolbar .sel-btn {
-  width: 32px; height: 32px;
+  width: 34px; height: 34px;
   border-radius: 9px;
   border: 1px solid transparent;
   background: transparent;
-  color: var(--text-main);
+  color: #334155;
   cursor: pointer;
   font-size: 13px;
   font-weight: 700;
   display: flex; align-items: center; justify-content: center;
-  transition: background 0.13s, border-color 0.13s, color 0.13s, transform 0.1s;
-  position: relative;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  flex-shrink: 0;
 }
-#sel-toolbar .sel-btn:hover { background: var(--app-bg); border-color: var(--panel-bd); transform: translateY(-1px); }
-#sel-toolbar .sel-btn:active { transform: translateY(0); }
-#sel-toolbar .sel-btn.on { background: #e0e7ff; color: var(--accent); border-color: rgba(37,99,235,0.3); }
+#sel-toolbar .sel-btn:hover { background: #f1f5f9; border-color: #e2e8f0; color: #0f172a; }
+#sel-toolbar .sel-btn.on { background: #e0e7ff; color: var(--accent); border-color: rgba(37,99,235,0.25); }
+#sel-toolbar .sel-btn.painting-pulse { background: #fef9c3; color: #854d0e; border-color: #fbbf24; animation: pulse-paint 1.8s ease-in-out infinite; }
 #sel-toolbar .sel-btn.danger:hover { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
-#sel-toolbar .sel-btn.dismiss:hover { background: var(--app-bg); color: #64748b; border-color: var(--panel-bd); }
+#sel-toolbar .sel-btn.dismiss { color: #94a3b8; }
+#sel-toolbar .sel-btn.dismiss:hover { background: #f1f5f9; color: #64748b; border-color: #e2e8f0; }
+#sel-toolbar[data-mode="single"] .sel-count,
+#sel-toolbar[data-mode="single"] .sep-after-count { display: none; }
+#sel-toolbar .sel-btn.dim { opacity: 0.35; pointer-events: none; }
+#sel-toolbar .sel-btn.dim.ready { opacity: 1; pointer-events: auto; }
 
-html.dark #sel-toolbar { box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 3px 10px rgba(0,0,0,0.2); }
+html.dark #sel-toolbar {
+  background: rgba(30,41,59,0.95);
+  border-color: rgba(51,65,85,0.8);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35), 0 1px 6px rgba(0,0,0,0.2);
+}
+html.dark #sel-toolbar .sep { background: #334155; }
+html.dark #sel-toolbar .sel-btn { color: #cbd5e1; }
+html.dark #sel-toolbar .sel-btn:hover { background: #334155; border-color: #475569; color: #f8fafc; }
 html.dark #sel-toolbar .sel-btn.on { background: #1e3a8a; color: #93c5fd; border-color: rgba(59,130,246,0.4); }
+html.dark #sel-toolbar .sel-btn.painting-pulse { background: rgba(251, 191, 36, 0.12); color: #fbbf24; border-color: #fbbf24; }
 html.dark #sel-toolbar .sel-count { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.2); }
 html.dark #sel-toolbar .sel-btn.danger:hover { background: rgba(220,38,38,0.15); color: #f87171; border-color: rgba(220,38,38,0.3); }
+html.dark #sel-toolbar .sel-btn.dismiss { color: #475569; }
+html.dark #sel-toolbar .sel-btn.dismiss:hover { background: #1e293b; color: #64748b; border-color: #334155; }
+html.dark #sel-toolbar .sel-btn.dim { opacity: 0.25; }
 
-html.dark .status-badge { color: #94a3b8; }
 html.dark details.panel[open] { border-color: #475569; }
 html.dark summary.panel-title { color: #cbd5e1; }
 html.dark .ctrl-label { color: #cbd5e1; }
@@ -299,12 +314,26 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
   .mobile-tog { display: flex; }
   .desk-tog { display: none; }
   .overlay.vis { display: block; opacity: 1; }
-  #workspace { padding: 16px 12px 80px; }
+  #workspace { padding: 16px 12px 100px; }
   .page-wrapper { width: 100%; height: auto; min-height: auto; }
   table.lx-index { height: auto; }
   table.lx-index tr { height: auto; }
   table.lx-index td { padding: 4px; }
   .preview-banner { width: 90%; flex-direction: column; text-align: center; gap: 10px; }
+  
+  #sel-toolbar {
+    position: fixed !important;
+    bottom: 20px !important;
+    top: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(20px) scale(0.96) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 400px;
+    justify-content: center;
+  }
+  #sel-toolbar.vis {
+    transform: translateX(-50%) translateY(0) scale(1) !important;
+  }
 }
 
 @media print {
@@ -326,14 +355,27 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 <body>
 <aside id="sidebar">
 <div class="header">
-<div style="display:flex; align-items:center; gap:12px;">
+<div style="display:flex; align-items:center; gap:10px;">
+<div style="display:flex; align-items:center; gap:8px;">
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="28" height="28" rx="7" fill="var(--accent)" opacity="0.12"/>
+  <rect x="5" y="5" width="7" height="4" rx="1.5" fill="var(--accent)" opacity="0.5"/>
+  <rect x="5" y="12" width="7" height="4" rx="1.5" fill="var(--accent)" opacity="0.7"/>
+  <rect x="5" y="19" width="7" height="4" rx="1.5" fill="var(--accent)"/>
+  <rect x="15" y="5" width="8" height="4" rx="1.5" fill="var(--accent)" opacity="0.3"/>
+  <rect x="15" y="12" width="8" height="4" rx="1.5" fill="var(--accent)" opacity="0.5"/>
+  <rect x="15" y="19" width="8" height="4" rx="1.5" fill="var(--accent)" opacity="0.7"/>
+</svg>
 <h1>LX Index</h1>
+</div>
+</div>
+<div style="display:flex; align-items:center; gap:8px;">
 <button class="theme-toggle" onclick="cycleTheme()" id="theme-btn" title="Toggle Theme">
 <svg class="sun" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
 <svg class="moon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
 </button>
-</div>
 <div class="status-badge"><span class="status-dot" id="save-dot"></span>Saved</div>
+</div>
 </div>
 <div class="stats-bar">
 <div class="stat-box"><div class="stat-v acc" id="st-f">0</div><div class="stat-l">Filled</div></div>
@@ -583,15 +625,31 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
 
 <div id="sel-toolbar" style="display:none;">
   <span class="sel-count" id="sel-count-label">0 selected</span>
-  <div class="sep"></div>
+  <div class="sep sep-after-count"></div>
   <button class="sel-btn" id="stb-bold" onmousedown="event.preventDefault(); toggleStyle('bold')" title="Bold (Ctrl+B)"><b>B</b></button>
   <button class="sel-btn" id="stb-italic" onmousedown="event.preventDefault(); toggleStyle('italic')" title="Italic (Ctrl+I)"><i>I</i></button>
   <button class="sel-btn" id="stb-under" onmousedown="event.preventDefault(); toggleStyle('underline')" title="Underline (Ctrl+U)" style="text-decoration:underline;">U</button>
   <div class="sep"></div>
-  <button class="sel-btn" onmousedown="event.preventDefault(); clearCellFormat()" title="Clear style">🧹</button>
-  <button class="sel-btn danger" onmousedown="event.preventDefault(); clearSelectionData()" title="Delete cell content">⌫</button>
+  <button class="sel-btn" id="stb-paint" onmousedown="event.preventDefault(); copyFormat()" title="Paint Style">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg>
+  </button>
+  <button class="sel-btn" id="stb-copy" onmousedown="event.preventDefault(); copySelectionBlock()" title="Copy block (Ctrl+C)">
+    <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="8" height="9" rx="1.5"/><path d="M2 10V2.5A1.5 1.5 0 0 1 3.5 1H10"/></svg>
+  </button>
+  <button class="sel-btn dim" id="stb-paste" onmousedown="event.preventDefault(); pasteBlock()" title="Paste block (Ctrl+V)">
+    <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H9"/><rect x="4.5" y="1" width="5" height="2.5" rx="1"/><line x1="4" y1="7" x2="10" y2="7"/><line x1="4" y1="9.5" x2="8" y2="9.5"/></svg>
+  </button>
   <div class="sep"></div>
-  <button class="sel-btn dismiss" onclick="clearMultiSelect(); disableCellPanel();" title="Dismiss (Esc)">✕</button>
+  <button class="sel-btn clear-style" onmousedown="event.preventDefault(); clearCellFormat()" title="Clear style">
+    <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11h10M8.5 2.5 5 9h5.5l-1-2M5.5 5 4 7"/><line x1="2" y1="2" x2="12" y2="12"/></svg>
+  </button>
+  <button class="sel-btn danger" onmousedown="event.preventDefault(); clearSelectionData()" title="Delete content (Del)">
+    <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4 13,4"/><path d="M5.5 4V2.5h3V4M3 4l.8 8h6.4L11 4"/></svg>
+  </button>
+  <div class="sep sep-before-dismiss"></div>
+  <button class="sel-btn dismiss" onmousedown="event.preventDefault(); clearMultiSelect(); disableCellPanel();" title="Dismiss (Esc)">
+    <svg viewBox="0 0 14 14" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/></svg>
+  </button>
 </div>
 
 <div class="page-wrapper">
@@ -681,6 +739,7 @@ let lastClickedId = null;
 let importWorkbook = null;
 let importCurrentRows = null;
 let importHeaders = null;
+let cellClipboard = null;
 
 const themeDefs = {
   modern:   { f: "'Inter', system-ui, sans-serif", fw: "400", fz: "13", ro: "f8fafc", re: "ffffff", tx: "0f172a", orad: "12", ow: "2", os: "solid", oc: "#cbd5e1", ihw: "1", ivw: "0", ic: "#f1f5f9", dw: "2", ds: "solid", dc: "#94a3b8", pm: "8mm" },
@@ -808,21 +867,92 @@ async function exportXLSX(btn) {
   }
 }
 
+function positionSelToolbar() {
+  const bar = document.getElementById('sel-toolbar');
+  if (!bar || !bar.classList.contains('vis')) return;
+  const targetId = lastClickedId || activeCellId;
+  if (!targetId) return;
+  const anchorTd = document.querySelector(`td[data-id="${targetId}"]`);
+  if (!anchorTd) return;
+  
+  if (window.innerWidth <= 768) {
+    bar.style.top = '';
+    bar.style.left = '';
+    bar.style.opacity = '';
+    bar.style.pointerEvents = '';
+    return;
+  }
+  
+  const ws = document.getElementById('workspace');
+  const wsRect = ws.getBoundingClientRect();
+  const tdRect = anchorTd.getBoundingClientRect();
+  
+  if (tdRect.bottom < wsRect.top || tdRect.top > wsRect.bottom) {
+    bar.style.opacity = '0';
+    bar.style.pointerEvents = 'none';
+    return;
+  }
+  
+  bar.style.opacity = '';
+  bar.style.pointerEvents = '';
+  
+  const barW = bar.offsetWidth || 320;
+  const barH = bar.offsetHeight || 44;
+  const gap = 8;
+  let top = tdRect.top - barH - gap;
+  let left = tdRect.left + (tdRect.width / 2) - (barW / 2);
+  
+  if (top < Math.max(8, wsRect.top + gap)) {
+    top = tdRect.bottom + gap;
+  }
+  
+  left = Math.max(wsRect.left + gap, Math.min(left, wsRect.right - barW - gap));
+  
+  bar.style.top = top + 'px';
+  bar.style.left = left + 'px';
+}
+
 function syncSelToolbar() {
   const bar = document.getElementById('sel-toolbar');
   if (!bar) return;
   const count = selectedCells.size;
-  if (count >= 1) {
+  const ids = count > 0 ? [...selectedCells] : (activeCellId !== null ? [activeCellId] : []);
+  
+  if (ids.length >= 1) {
+    bar.setAttribute('data-mode', count <= 1 ? 'single' : 'multi');
     bar.style.display = 'flex';
-    requestAnimationFrame(() => bar.classList.add('vis'));
-    document.getElementById('sel-count-label').textContent = count + ' cell' + (count > 1 ? 's' : '') + ' selected';
-    const ids = [...selectedCells];
+    
+    requestAnimationFrame(() => {
+      bar.classList.add('vis');
+      positionSelToolbar();
+    });
+    
+    document.getElementById('sel-count-label').textContent = count + ' cell' + (count > 1 ? 's' : '');
+    
     document.getElementById('stb-bold').classList.toggle('on', ids.every(id => appStyles[id]?.b));
     document.getElementById('stb-italic').classList.toggle('on', ids.every(id => appStyles[id]?.i));
     document.getElementById('stb-under').classList.toggle('on', ids.every(id => appStyles[id]?.u));
+    
+    const paintBtn = document.getElementById('stb-paint');
+    if (paintBtn) {
+      if(isPainting) {
+        paintBtn.classList.add('painting-pulse', 'on');
+      } else {
+        paintBtn.classList.remove('painting-pulse', 'on');
+      }
+    }
+    
+    const copyBtn = document.getElementById('stb-copy');
+    if (copyBtn) copyBtn.classList.toggle('on', !!cellClipboard);
+    
+    const pasteBtn = document.getElementById('stb-paste');
+    if (pasteBtn) {
+      pasteBtn.classList.toggle('dim', !cellClipboard);
+      pasteBtn.classList.toggle('ready', !!cellClipboard);
+    }
   } else {
     bar.classList.remove('vis');
-    setTimeout(() => { if (!selectedCells.size) bar.style.display = 'none'; }, 220);
+    setTimeout(() => { if (selectedCells.size === 0 && activeCellId === null) bar.style.display = 'none'; }, 200);
   }
 }
 
@@ -1019,10 +1149,13 @@ window.addEventListener('keydown', e => {
     if (isPainting) { cancelPaintMode(); showToast("Paint mode canceled", "warn"); return; }
     if (document.getElementById('shortcuts-overlay').style.display === 'flex') { closeShortcuts(); return; }
     if (document.getElementById('import-modal').classList.contains('vis')) { closeImportModal(); return; }
-    if (selectedCells.size > 0) { clearMultiSelect(); disableCellPanel(); return; }
+    if (selectedCells.size > 0 || activeCellId !== null) { disableCellPanel(); return; }
   }
   if (e.key === '?' && !inEdit) { e.preventDefault(); openShortcuts(); return; }
   if (e.key === '/' && !inEdit) { e.preventDefault(); document.getElementById('sinp').focus(); return; }
+  if (e.key === 'Delete' && !inEdit && (selectedCells.size > 0 || activeCellId !== null)) {
+    clearSelectionData(); return;
+  }
   if ((e.ctrlKey || e.metaKey) && !e.shiftKey) {
     if ((e.key === 'a' || e.key === 'A') && !inEdit) {
       e.preventDefault();
@@ -1038,6 +1171,12 @@ window.addEventListener('keydown', e => {
       return;
     }
     const ids = getTargetIds();
+    if (e.key === 'c' || e.key === 'C') {
+      if (ids.length) { e.preventDefault(); copySelectionBlock(); return; }
+    }
+    if (e.key === 'v' || e.key === 'V') {
+      if (cellClipboard) { e.preventDefault(); pasteBlock(); return; }
+    }
     if (!ids.length) return;
     if (e.key === 'b' || e.key === 'B') { e.preventDefault(); toggleStyle('bold');     return; }
     if (e.key === 'i' || e.key === 'I') { e.preventDefault(); toggleStyle('italic');   return; }
@@ -1049,6 +1188,9 @@ const SHORTCUTS = [
   { keys: ['Ctrl+B'], desc: 'Bold — focused or selected cells' },
   { keys: ['Ctrl+I'], desc: 'Italic — focused or selected cells' },
   { keys: ['Ctrl+U'], desc: 'Underline — focused or selected cells' },
+  { keys: ['Ctrl+C'], desc: 'Copy selected cell block' },
+  { keys: ['Ctrl+V'], desc: 'Paste block starting from focused cell' },
+  { keys: ['Delete'], desc: 'Delete content of selected cells' },
   { keys: ['Ctrl+A'], desc: 'Select all 200 cells' },
   { keys: ['Ctrl+Click'], desc: 'Add / remove cell from selection' },
   { keys: ['Shift+Click'], desc: 'Range select (sequential IDs)' },
@@ -1097,6 +1239,18 @@ window.onload = () => {
   if (Object.keys(appData).length === 0) loadDemoData();
   if (!loadSettings()) applyStyle('modern');
   renderPage();
+
+  window.addEventListener('resize', positionSelToolbar);
+  let isScrollLocked = false;
+  document.getElementById('workspace').addEventListener('scroll', () => {
+    if (!isScrollLocked) {
+      window.requestAnimationFrame(() => {
+        positionSelToolbar();
+        isScrollLocked = false;
+      });
+      isScrollLocked = true;
+    }
+  }, { passive: true });
 };
 
 function showToast(msg, type = 'info') {
@@ -1735,6 +1889,7 @@ function activateCell(id, td) {
     document.getElementById('cell-hex').value   = "";
     document.getElementById('cell-color').value = "#000000";
   }
+  syncSelToolbar();
 }
 
 function disableCellPanel() {
@@ -1752,13 +1907,17 @@ function disableCellPanel() {
 function copyFormat() {
   if (isPreviewing) return;
   if (isPainting)   { cancelPaintMode(); return; }
-  if (!activeCellId) return;
-  clipboardFormat = appStyles[activeCellId] ? JSON.parse(JSON.stringify(appStyles[activeCellId])) : {};
+  const tid = activeCellId !== null ? activeCellId : (selectedCells.size > 0 ? [...selectedCells][0] : null);
+  if (!tid) return;
+  clipboardFormat = appStyles[tid] ? JSON.parse(JSON.stringify(appStyles[tid])) : {};
   isPainting = true;
   document.getElementById('workspace').classList.add('paint-mode');
   const btn = document.getElementById('btn-copy-fmt');
-  btn.classList.add('painting');
-  btn.textContent = '✕ Cancel Paint';
+  if(btn) {
+    btn.classList.add('painting');
+    btn.textContent = '✕ Cancel Paint';
+  }
+  syncSelToolbar();
   showToast("Click any cell to apply style — Esc to cancel", "warn");
 }
 
@@ -1766,8 +1925,11 @@ function cancelPaintMode() {
   isPainting = false;
   document.getElementById('workspace').classList.remove('paint-mode');
   const btn = document.getElementById('btn-copy-fmt');
-  btn.classList.remove('painting');
-  btn.textContent = '🖌️ Paint Style';
+  if(btn) {
+    btn.classList.remove('painting');
+    btn.textContent = '🖌️ Paint Style';
+  }
+  syncSelToolbar();
 }
 
 function applyPaint(id, td) {
@@ -1957,10 +2119,67 @@ function downloadTemplate() {
   showToast("Template downloaded", "success");
 }
 
+function copySelectionBlock() {
+  const raw = selectedCells.size > 0 ? [...selectedCells] : (activeCellId !== null ? [activeCellId] : []);
+  if (!raw.length) return;
+  const ids = raw.slice().sort((a, b) => a - b);
+  const minId = ids[0];
+  cellClipboard = {
+    entries: ids.map(id => ({
+      offset: id - minId,
+      value:  appData[id] != null ? String(appData[id]) : '',
+      style:  appStyles[id] ? JSON.parse(JSON.stringify(appStyles[id])) : null
+    }))
+  };
+  const copyBtn = document.getElementById('stb-copy');
+  if (copyBtn) copyBtn.classList.add('on');
+  const pasteBtn = document.getElementById('stb-paste');
+  if (pasteBtn) { pasteBtn.classList.remove('dim'); pasteBtn.classList.add('ready'); }
+  showToast(`${ids.length} cell${ids.length > 1 ? 's' : ''} copied`, 'success');
+}
+
+function pasteBlock() {
+  if (!cellClipboard || isPreviewing) { showToast('Nothing to paste', 'info'); return; }
+  const baseId = activeCellId !== null ? activeCellId
+    : selectedCells.size > 0 ? Math.min(...selectedCells)
+    : lastClickedId;
+  if (baseId == null) { showToast('Click a target cell first', 'info'); return; }
+  const maxOffset = cellClipboard.entries.reduce((m, e) => Math.max(m, e.offset), 0);
+  if (baseId + maxOffset > 200) { showToast('Paste would exceed cell 200', 'warn'); return; }
+  if (document.activeElement && document.activeElement.isContentEditable) {
+    document.activeElement.blur();
+  }
+  cellClipboard.entries.forEach(({ offset, value, style }) => {
+    const tid = baseId + offset;
+    if (value) appData[tid] = value; else delete appData[tid];
+    if (style) appStyles[tid] = JSON.parse(JSON.stringify(style)); else delete appStyles[tid];
+    const td = document.querySelector(`td[data-id="${tid}"]`);
+    if (td) { td.textContent = value; applyCellDomStyle(td, tid); autoFitText(td); }
+  });
+  hasUnsavedChanges = true;
+  triggerAutoSave();
+  showToast(`Pasted ${cellClipboard.entries.length} cell${cellClipboard.entries.length > 1 ? 's' : ''} → cell ${baseId}`, 'success');
+}
+
+function exportCSV() {
+  const rows = [["ID", "Item Name"]];
+  for (let i = 1; i <= 200; i++) {
+    if (appData[i]) rows.push([i, appData[i]]);
+  }
+  if (rows.length === 1) { showToast("Nothing to export", "warn"); return; }
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'LX_Index.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showToast(`CSV exported — ${rows.length - 1} entries`, "success");
+}
+
 function loadDemoData() {
   appData   = { 1: "A.Viton", 2: "Hydroxychloroquine 200mg", 3: "Acyclovir 200", 51: "Aubajeo" };
   appStyles = { 2: { b: true, c: "#1d4ed8" }, 152: { b: true, s: "14px", c: "#047857" } };
 }
 </script>
 </body>
-</html>
+</html
