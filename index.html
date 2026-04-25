@@ -186,28 +186,32 @@ table.lx-index td.cell-selected:focus { background: #fff8dc !important; box-shad
 
 #sel-toolbar {
   position: fixed;
-  top: 0; left: 0;
+  bottom: 32px;
+  left: 50%;
   background: rgba(255,255,255,0.96);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(203,213,225,0.8);
-  border-radius: 12px;
-  padding: 4px 6px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06);
+  border-radius: 14px;
+  padding: 6px 8px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
   z-index: 200;
   display: none;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.15s ease-out, transform 0.15s ease-out, top 0.1s linear, left 0.1s linear;
-  transform: translateY(8px) scale(0.96);
-  will-change: top, left, transform, opacity;
+  transform: translateX(-50%) translateY(16px) scale(0.96);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+  max-width: calc(100vw - 32px);
+  flex-wrap: wrap;
+  justify-content: center;
 }
 #sel-toolbar.vis { 
   opacity: 1; 
   pointer-events: auto; 
-  transform: translateY(0) scale(1);
+  transform: translateX(-50%) translateY(0) scale(1);
 }
 #sel-toolbar .sep { width: 1px; height: 18px; background: #e2e8f0; margin: 0 4px; border-radius: 1px; flex-shrink: 0; }
 #sel-toolbar .sel-count {
@@ -320,20 +324,6 @@ html.dark .preview-banner { box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-colo
   table.lx-index tr { height: auto; }
   table.lx-index td { padding: 4px; }
   .preview-banner { width: 90%; flex-direction: column; text-align: center; gap: 10px; }
-  
-  #sel-toolbar {
-    position: fixed !important;
-    bottom: 20px !important;
-    top: auto !important;
-    left: 50% !important;
-    transform: translateX(-50%) translateY(20px) scale(0.96) !important;
-    width: calc(100% - 40px) !important;
-    max-width: 400px;
-    justify-content: center;
-  }
-  #sel-toolbar.vis {
-    transform: translateX(-50%) translateY(0) scale(1) !important;
-  }
 }
 
 @media print {
@@ -867,51 +857,6 @@ async function exportXLSX(btn) {
   }
 }
 
-function positionSelToolbar() {
-  const bar = document.getElementById('sel-toolbar');
-  if (!bar || !bar.classList.contains('vis')) return;
-  const targetId = lastClickedId || activeCellId;
-  if (!targetId) return;
-  const anchorTd = document.querySelector(`td[data-id="${targetId}"]`);
-  if (!anchorTd) return;
-  
-  if (window.innerWidth <= 768) {
-    bar.style.top = '';
-    bar.style.left = '';
-    bar.style.opacity = '';
-    bar.style.pointerEvents = '';
-    return;
-  }
-  
-  const ws = document.getElementById('workspace');
-  const wsRect = ws.getBoundingClientRect();
-  const tdRect = anchorTd.getBoundingClientRect();
-  
-  if (tdRect.bottom < wsRect.top || tdRect.top > wsRect.bottom) {
-    bar.style.opacity = '0';
-    bar.style.pointerEvents = 'none';
-    return;
-  }
-  
-  bar.style.opacity = '';
-  bar.style.pointerEvents = '';
-  
-  const barW = bar.offsetWidth || 320;
-  const barH = bar.offsetHeight || 44;
-  const gap = 8;
-  let top = tdRect.top - barH - gap;
-  let left = tdRect.left + (tdRect.width / 2) - (barW / 2);
-  
-  if (top < Math.max(8, wsRect.top + gap)) {
-    top = tdRect.bottom + gap;
-  }
-  
-  left = Math.max(wsRect.left + gap, Math.min(left, wsRect.right - barW - gap));
-  
-  bar.style.top = top + 'px';
-  bar.style.left = left + 'px';
-}
-
 function syncSelToolbar() {
   const bar = document.getElementById('sel-toolbar');
   if (!bar) return;
@@ -924,7 +869,6 @@ function syncSelToolbar() {
     
     requestAnimationFrame(() => {
       bar.classList.add('vis');
-      positionSelToolbar();
     });
     
     document.getElementById('sel-count-label').textContent = count + ' cell' + (count > 1 ? 's' : '');
@@ -1239,18 +1183,6 @@ window.onload = () => {
   if (Object.keys(appData).length === 0) loadDemoData();
   if (!loadSettings()) applyStyle('modern');
   renderPage();
-
-  window.addEventListener('resize', positionSelToolbar);
-  let isScrollLocked = false;
-  document.getElementById('workspace').addEventListener('scroll', () => {
-    if (!isScrollLocked) {
-      window.requestAnimationFrame(() => {
-        positionSelToolbar();
-        isScrollLocked = false;
-      });
-      isScrollLocked = true;
-    }
-  }, { passive: true });
 };
 
 function showToast(msg, type = 'info') {
@@ -2182,4 +2114,4 @@ function loadDemoData() {
 }
 </script>
 </body>
-</html
+</html>
