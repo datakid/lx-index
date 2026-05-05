@@ -50,7 +50,7 @@ body{display:flex;height:100dvh;background:var(--app-bg);color:var(--text-main);
 .s-clear.vis{display:block;}
 .s-clear:hover{color:#ef4444;}
 .scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding:18px;display:flex;flex-direction:column;gap:12px;min-height:0;}
-.panel{border:1px solid var(--panel-bd);border-radius:12px;background:var(--panel-bg);box-shadow:0 2px 8px rgba(0,0,0,.02);transition:opacity .25s,background .35s,border-color .25s,box-shadow .25s;overflow:hidden;flex-shrink:0;}
+.panel{border:1px solid var(--panel-bd);border-radius:12px;background:var(--panel-bg);box-shadow:0 2px 8px rgba(0,0,0,.02);transition:opacity .25s,background .35s,border-color .25s,box-shadow .25s;flex-shrink:0;}
 .panel.open{border-color:rgba(37,99,235,.3);box-shadow:0 4px 16px rgba(37,99,235,.06);}
 .panel.disabled{opacity:.4;pointer-events:none;}
 .panel-title{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.6px;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;user-select:none;margin:0;transition:color .2s,background .2s;}
@@ -58,8 +58,10 @@ body{display:flex;height:100dvh;background:var(--app-bg);color:var(--text-main);
 .panel.open .panel-title{color:var(--accent);}
 .panel-title .arrow{font-size:9px;color:#94a3b8;transition:transform .28s cubic-bezier(.4,0,.2,1);display:inline-block;}
 .panel.open .panel-title .arrow{transform:rotate(180deg);}
-.panel-body{overflow:hidden;transition:height .28s cubic-bezier(.4,0,.2,1);}
-.panel-body-inner{padding:0 16px 16px;}
+.panel-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s cubic-bezier(.4,0,.2,1);}
+.panel.open .panel-body{grid-template-rows:1fr;}
+.panel-body-inner{min-height:0;overflow:hidden;padding:0 16px;opacity:0;transition:opacity .2s,padding .3s cubic-bezier(.4,0,.2,1);}
+.panel.open .panel-body-inner{padding:0 16px 16px;opacity:1;}
 .ctrl-group{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .ctrl-group:last-child{margin-bottom:0;}
 .ctrl-label{font-size:12px;font-weight:500;color:#475569;transition:color .3s;}
@@ -329,9 +331,7 @@ html.dark .top-btn:hover:not(:disabled){border-color:var(--accent);color:var(--a
 <div class="theme-box active" id="theme-modern" onclick="applyStyle('modern')"><div class="theme-swatches"><span style="background:#edf2f7;"></span><span style="background:#fff;border-color:rgba(0,0,0,.1);"></span><span style="background:#0f172a;"></span></div><div class="theme-name">Modern</div><div class="theme-desc">Soft &amp; Rounded</div></div>
 <div class="theme-box" id="theme-classic" onclick="applyStyle('classic')"><div class="theme-swatches"><span style="background:#f3f4f6;"></span><span style="background:#fff;border-color:rgba(0,0,0,.1);"></span><span style="background:#000;"></span></div><div class="theme-name">Classic</div><div class="theme-desc">Sharp Grid</div></div>
 <div class="theme-box" id="theme-compact" onclick="applyStyle('compact')"><div class="theme-swatches"><span style="background:#f8fafc;"></span><span style="background:#fff;border-color:rgba(0,0,0,.1);"></span><span style="background:#1e293b;"></span></div><div class="theme-name">Compact</div><div class="theme-desc">Dense · 4mm</div></div>
-<div class="theme-box" id="theme-prism" onclick="applyStyle('prism')"><div class="theme-swatches prism-sw"><span></span></div><div class="theme-name">Prism</div><div class="theme-desc">Chromatic</div></div>
-<div class="theme-box" id="theme-ethereal" onclick="applyStyle('ethereal')"><div class="theme-swatches"><span style="background:#faf9f6;"></span><span style="background:#d4af37;border:none;"></span><span style="background:#2c2724;"></span></div><div class="theme-name">Ethereal</div><div class="theme-desc">Elegant Serif</div></div>
-<div class="theme-box" id="theme-onyx" onclick="applyStyle('onyx')"><div class="theme-swatches"><span style="background:#e5e5e5;"></span><span style="background:#171717;border:none;"></span><span style="background:#0a0a0a;"></span></div><div class="theme-name">Onyx</div><div class="theme-desc">Bold Mono</div></div>
+<div class="theme-box" id="theme-prism" onclick="applyStyle('prism')"><div class="theme-swatches prism-sw"><span></span></div><div class="theme-name">Prism</div><div class="theme-desc">Chromatic Border</div></div>
 </div>
 </div></div>
 </div>
@@ -497,9 +497,7 @@ const themeDefs={
   modern:{f:"'Inter',system-ui,sans-serif",fw:"400",fz:"13",ro:"edf2f7",re:"ffffff",tx:"0f172a",orad:"12",ow:"2",os:"solid",oc:"#cbd5e1",ihw:"1",ivw:"0",ic:"#e8edf2",dw:"2",ds:"solid",dc:"#94a3b8",pm:"8mm"},
   classic:{f:"Arial,Helvetica,sans-serif",fw:"400",fz:"12",ro:"f3f4f6",re:"ffffff",tx:"000000",orad:"0",ow:"1",os:"solid",oc:"#000000",ihw:"1",ivw:"1",ic:"#000000",dw:"2",ds:"solid",dc:"#000000",pm:"8mm"},
   compact:{f:"'Inter',system-ui,sans-serif",fw:"400",fz:"11",ro:"f8fafc",re:"ffffff",tx:"1e293b",orad:"4",ow:"1",os:"solid",oc:"#94a3b8",ihw:"1",ivw:"0",ic:"#f1f5f9",dw:"1",ds:"solid",dc:"#64748b",pm:"4mm"},
-  prism:{f:"'Inter',system-ui,sans-serif",fw:"400",fz:"13",ro:"f5f3ff",re:"ffffff",tx:"1e1b4b",orad:"16",ow:"2",os:"solid",oc:"#7c3aed",ihw:"1",ivw:"0",ic:"#ede9fe",dw:"2",ds:"solid",dc:"#7c3aed",pm:"8mm"},
-  ethereal:{f:"'Lora',Georgia,serif",fw:"400",fz:"14",ro:"faf9f6",re:"ffffff",tx:"2c2724",orad:"16",ow:"3",os:"double",oc:"#d4af37",ihw:"1",ivw:"0",ic:"#f0ebe1",dw:"2",ds:"solid",dc:"#d4af37",pm:"8mm"},
-  onyx:{f:"'JetBrains Mono',monospace",fw:"600",fz:"12",ro:"e5e5e5",re:"ffffff",tx:"0a0a0a",orad:"4",ow:"3",os:"solid",oc:"#171717",ihw:"1",ivw:"1",ic:"#d4d4d4",dw:"3",ds:"solid",dc:"#171717",pm:"12mm"}
+  prism:{f:"'Inter',system-ui,sans-serif",fw:"400",fz:"13",ro:"f5f3ff",re:"ffffff",tx:"1e1b4b",orad:"16",ow:"2",os:"solid",oc:"#7c3aed",ihw:"1",ivw:"0",ic:"#ede9fe",dw:"2",ds:"solid",dc:"#7c3aed",pm:"8mm"}
 };
 function recordHistory(){
   if(isPreviewing)return;
@@ -529,46 +527,12 @@ function updateUndoRedoUI(){
 }
 function togglePanel(id){
   const panel=document.getElementById(id);
-  if(!panel||panel.classList.contains('disabled'))return;
-  const body=panel.querySelector('.panel-body');
-  if(!body)return;
-  if(panel.classList.contains('open')){
-    const h=body.scrollHeight;
-    body.style.height=h+'px';
-    requestAnimationFrame(()=>requestAnimationFrame(()=>body.style.height='0px'));
-    body.addEventListener('transitionend',()=>panel.classList.remove('open'),{once:true});
-  }else{
-    panel.classList.add('open');
-    const h=body.scrollHeight;
-    body.style.height='0px';
-    requestAnimationFrame(()=>requestAnimationFrame(()=>body.style.height=h+'px'));
-    body.addEventListener('transitionend',()=>body.style.height='auto',{once:true});
-  }
+  if(panel&&!panel.classList.contains('disabled')) panel.classList.toggle('open');
 }
 function setPanelOpen(panel,open){
-  if(!panel)return;
-  const body=panel.querySelector('.panel-body');
-  if(!body)return;
-  if(open&&!panel.classList.contains('open')){
-    panel.classList.add('open');
-    const h=body.scrollHeight;
-    body.style.height='0px';
-    requestAnimationFrame(()=>requestAnimationFrame(()=>body.style.height=h+'px'));
-    body.addEventListener('transitionend',()=>body.style.height='auto',{once:true});
-  }else if(!open&&panel.classList.contains('open')){
-    const h=body.scrollHeight;
-    body.style.height=h+'px';
-    requestAnimationFrame(()=>requestAnimationFrame(()=>body.style.height='0px'));
-    body.addEventListener('transitionend',()=>panel.classList.remove('open'),{once:true});
-  }
+  if(panel&&!panel.classList.contains('disabled')) panel.classList.toggle('open', open);
 }
-function initPanels(){
-  document.querySelectorAll('.panel').forEach(panel=>{
-    const body=panel.querySelector('.panel-body');
-    if(!body)return;
-    body.style.height=panel.classList.contains('open')?'auto':'0px';
-  });
-}
+function initPanels(){}
 function toARGB(hex){const h=(hex||'#000').replace('#','').trim();if(h.length===3)return'FF'+h.split('').map(c=>c+c).join('').toUpperCase();return'FF'+h.toUpperCase().padStart(6,'0');}
 function excelBorderStyle(w){if(!w||w<=0)return null;if(w<=1)return'thin';if(w<=2)return'medium';return'thick';}
 function makeBorder(w,color){const s=excelBorderStyle(w);if(!s)return undefined;return{style:s,color:{argb:toARGB(color)}};}
@@ -648,7 +612,6 @@ function updateMultiSelectPanel(){
   panel.classList.remove('disabled');setPanelOpen(panel,true);
   const titleEl=panel.querySelector('.panel-title');
   titleEl.innerHTML=`★ Style Override <span style="color:#64748b;font-size:10px;">(${count} cell${count>1?'s':''} selected)</span><span class="arrow">▼</span>`;
-  titleEl.onclick=()=>togglePanel('cell-panel');
   activeCellId=null;
   const ids=[...selectedCells];
   document.getElementById('btn-bold').classList.toggle('active',ids.every(id=>appStyles[id]?.b));
@@ -1033,7 +996,6 @@ function activateCell(id,td){
   panel.classList.remove('disabled');setPanelOpen(panel,true);
   const titleEl=panel.querySelector('.panel-title');
   titleEl.innerHTML=`★ Cell Override <span style="color:#64748b;font-size:10px;">(ID: ${id})</span><span class="arrow">▼</span>`;
-  titleEl.onclick=()=>togglePanel('cell-panel');
   const paintBtn=document.getElementById('btn-copy-fmt');if(paintBtn){paintBtn.disabled=false;paintBtn.style.opacity='';}
   const s=appStyles[id]||{};
   document.getElementById('btn-bold').classList.toggle('active',!!s.b);document.getElementById('btn-italic').classList.toggle('active',!!s.i);document.getElementById('btn-under').classList.toggle('active',!!s.u);
@@ -1048,7 +1010,6 @@ function disableCellPanel(){
   panel.classList.add('disabled');setPanelOpen(panel,false);
   const titleEl=panel.querySelector('.panel-title');
   titleEl.innerHTML=`★ Selected Cell Override<span class="arrow">▼</span>`;
-  titleEl.onclick=()=>togglePanel('cell-panel');
   const paintBtn=document.getElementById('btn-copy-fmt');if(paintBtn){paintBtn.disabled=false;paintBtn.style.opacity='';}
   syncSelToolbar();
 }
