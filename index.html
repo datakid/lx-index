@@ -148,7 +148,7 @@ html.dark .panel.open .panel-title{border-bottom-color:rgba(63,63,70,0.5);}
 .panel-body-inner{padding:20px;}
 .ctrl-group{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 .ctrl-group:last-child{margin-bottom:0;}
-.ctrl-label{font-size:13px;font-weight:600;color:var(--text-main);white-space:nowrap;margin-right:12px;opacity:0.8;}
+.ctrl-label{font-size:13px;font-weight:600;color:var(--text-main);white-space:nowrap;margin-right:12px;opacity:0.8;flex-shrink:0;}
 .input-block{margin-bottom:12px;}
 .input-block label{display:block;font-size:12px;font-weight:600;margin-bottom:6px;color:#64748b;}
 .form-input{width:100%;background:var(--app-bg);border:1px solid var(--panel-bd);color:var(--text-main);padding:10px 12px;border-radius:10px;font-size:13px;font-weight:500;outline:none;transition:all 0.3s;box-shadow:inset 0 1px 2px rgba(0,0,0,0.02);}
@@ -727,7 +727,7 @@ body.mode-cover .a4-page{width:210mm !important;height:297mm !important;box-shad
 <button class="btn-icon" id="btn-under" onmousedown="event.preventDefault();toggleStyle('underline')" style="text-decoration:underline;">U</button>
 </div></div>
 <div class="ctrl-group"><span class="ctrl-label">Specific Size</span>
-<select id="cell-size" style="width:80px;padding:8px;" onchange="applyCellSize()">
+<select id="cell-size" style="width:100px;padding:8px;" onchange="applyCellSize()">
 <option value="">Auto</option><option value="9px">9px</option><option value="10px">10px</option><option value="11px">11px</option><option value="12px">12px</option><option value="13px">13px</option><option value="14px">14px</option><option value="15px">15px</option><option value="16px">16px</option>
 </select></div>
 <div class="ctrl-group"><span class="ctrl-label">Specific Color</span>
@@ -764,10 +764,10 @@ body.mode-cover .a4-page{width:210mm !important;height:297mm !important;box-shad
 <option value="'JetBrains Mono',monospace">Mono (Code)</option>
 </select></div>
 <div class="ctrl-group"><span class="ctrl-label">Base Size &amp; Wt.</span>
-<div style="display:flex;align-items:center;gap:8px;">
-<select id="f-weight" style="width:80px;padding:8px;" onchange="updateCSS();saveSettings()"><option value="400">Norm</option><option value="500">Med</option><option value="600">Bold</option><option value="700">X-Bd</option></select>
-<input type="range" id="f-size" min="9" max="16" value="13" style="width:70px;" oninput="updateCSS();updateSizeLabel();" onchange="saveSettings()">
-<span id="f-size-lbl" style="font-size:12px;font-weight:600;width:30px;text-align:right;">13px</span>
+<div style="display:flex;align-items:center;gap:6px;">
+<select id="f-weight" style="width:74px;padding:8px 8px 8px 10px;" onchange="updateCSS();saveSettings()"><option value="400">Norm</option><option value="500">Med</option><option value="600">Bold</option><option value="700">X-Bd</option></select>
+<input type="range" id="f-size" min="9" max="16" value="13" style="width:60px;" oninput="updateCSS();updateSizeLabel();" onchange="saveSettings()">
+<span id="f-size-lbl" style="font-size:12px;font-weight:600;width:34px;text-align:right;">13px</span>
 </div></div>
 <div class="divider"></div>
 <div class="ctrl-group"><span class="ctrl-label">Odd Row Base</span>
