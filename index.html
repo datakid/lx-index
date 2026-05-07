@@ -302,7 +302,9 @@ transform:translateX(4px);
 .version-action{color:#94a3b8;font-weight:600;font-size:11px;transition:color 0.2s;background:rgba(148,163,184,0.1);padding:3px 8px;border-radius:8px;}
 .version-item:hover .version-action{color:var(--accent);background:rgba(79,70,229,0.1);}
 #workspace{
-flex-grow:1;padding:60px 40px;overflow-y:auto;
+flex-grow:1;
+padding: 60px 40px 140px 40px; 
+overflow-y:auto;
 display:flex;justify-content:center;align-items:flex-start;
 position:relative;background-color:var(--app-bg);
 background-image:radial-gradient(var(--panel-bd) 1.5px,transparent 1.5px);
@@ -632,19 +634,120 @@ html.dark .a4-page{box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255
 .theme-kinetic .cover-footer{font-size:calc(1.2rem * var(--header-scale, 1));font-weight:800;color:var(--text-color, #000);transform:skewX(-10deg);text-align:right;z-index:1;border-bottom:6px solid var(--accent-color, #000);padding-bottom:10px;}
 .theme-kinetic .cover-footer > div{transform:skewX(10deg);}
 
+.cover-editable-link {
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    border-radius: 4px;
+    border: 1px solid transparent;
+}
+.cover-editable-link:hover {
+    box-shadow: 0 0 0 2px var(--accent);
+    background: rgba(79,70,229,0.05);
+}
+.cover-editable-link::after {
+    content: '✎ Edit';
+    position: absolute;
+    top: -24px;
+    right: 0;
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: var(--ui-font);
+    padding: 3px 8px;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(79,70,229,0.2);
+}
+.cover-editable-link:hover::after {
+    opacity: 1;
+}
+
+.clip-popover {
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--panel-solid);
+    border: 1px solid var(--panel-bd);
+    border-radius: 16px;
+    padding: 12px;
+    width: 280px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s var(--ease-spring);
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.clip-popover.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+.clip-popover-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 4px 4px;
+    border-bottom: 1px solid var(--panel-bd);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.clip-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid var(--panel-bd);
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--app-bg);
+    transition: all 0.2s;
+    text-align: left;
+}
+.clip-item:hover {
+    border-color: var(--accent);
+    background: var(--panel-solid);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(79,70,229,0.1);
+}
+.clip-time { font-size: 10px; color: #94a3b8; font-weight: 600; white-space: nowrap; }
+.clip-preview { font-size: 12px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+.clip-list-scroll {
+    max-height: 240px;
+    overflow-y: auto;
+    padding-right: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.clip-list-scroll::-webkit-scrollbar { width: 4px; }
+
 @media(max-width:768px){
 #sidebar{position:fixed;top:0;bottom:0;left:0;transform:translateX(-100%);margin-left:0 !important;transition:transform 0.4s var(--ease-spring);}
 #sidebar.open{transform:translateX(0);}
 .mobile-tog{display:flex;}
 .desk-tog,.top-controls{display:none;}
 .overlay.vis{display:block;opacity:1;}
-#workspace{padding:24px 16px 120px;}
+#workspace{padding:24px 16px 160px;}
 .page-wrapper{width:100%;height:auto;min-height:auto;}
 table.lx-index{height:auto;}
 table.lx-index tr{height:auto;}
 table.lx-index td{padding:6px;}
 .preview-banner{width:90%;flex-direction:column;text-align:center;gap:12px;}
 #cover-workspace{padding-bottom:120px;}
+#sel-toolbar{bottom: 32px;}
 }
 
 @media print{
@@ -924,7 +1027,14 @@ body.mode-cover .a4-page{width:210mm !important;height:297mm !important;box-shad
 <div class="sep"></div>
 <button class="sel-btn" id="stb-cut" onmousedown="event.preventDefault();cutSelectionBlock()" title="Cut block (Ctrl+X)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></button>
 <button class="sel-btn" id="stb-copy" onmousedown="event.preventDefault();copySelectionBlock()" title="Copy block (Ctrl+C)"><svg viewBox="0 0 14 14" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="8" height="9" rx="1.5"/><path d="M2 10V2.5A1.5 1.5 0 0 1 3.5 1H10"/></svg></button>
-<button class="sel-btn dim" id="stb-paste" onmousedown="event.preventDefault();pasteBlock()" title="Paste block (Ctrl+V)"><svg viewBox="0 0 14 14" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H9"/><rect x="4.5" y="1" width="5" height="2.5" rx="1"/><line x1="4" y1="7" x2="10" y2="7"/><line x1="4" y1="9.5" x2="8" y2="9.5"/></svg></button>
+<div style="position:relative;">
+    <button class="sel-btn dim" id="stb-paste" onmousedown="event.preventDefault();pasteBlock()" title="Paste block (Ctrl+V)"><svg viewBox="0 0 14 14" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H9"/><rect x="4.5" y="1" width="5" height="2.5" rx="1"/><line x1="4" y1="7" x2="10" y2="7"/><line x1="4" y1="9.5" x2="8" y2="9.5"/></svg></button>
+    <button class="sel-btn dim" id="stb-clip-btn" onmousedown="event.preventDefault();toggleClipboardPopover()" title="Clipboard History" style="position:absolute;top:-4px;right:-12px;width:20px;height:20px;font-size:10px;background:var(--panel-solid);box-shadow:0 2px 4px rgba(0,0,0,0.1);z-index:5;">▼</button>
+    <div id="clip-popover" class="clip-popover">
+        <div class="clip-popover-title">Recent Clips <span style="font-size:9px;opacity:0.6;">(Last 10)</span></div>
+        <div id="clip-list-scroll" class="clip-list-scroll"></div>
+    </div>
+</div>
 <div class="sep"></div>
 <button class="sel-btn" onmousedown="event.preventDefault();clearCellFormat()" title="Clear style"><svg viewBox="0 0 14 14" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11h10M8.5 2.5 5 9h5.5l-1-2M5.5 5 4 7"/><line x1="2" y1="2" x2="12" y2="12"/></svg></button>
 <button class="sel-btn danger" onmousedown="event.preventDefault();clearSelectionData()" title="Delete content (Del)"><svg viewBox="0 0 14 14" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4 13,4"/><path d="M5.5 4V2.5h3V4M3 4l.8 8h6.4L11 4"/></svg></button>
@@ -1013,7 +1123,7 @@ body.mode-cover .a4-page{width:210mm !important;height:297mm !important;box-shad
 </div>
 </div>
 <script>
-let appData={},appStyles={},saveTimeout,activeCellId=null,clipboardFormat=null,dupWarned=false,qStr='',versions=[],hasUnsavedChanges=false,modalConfirmAction=null,backupData=null,backupStyles=null,isPreviewing=false,isPainting=false,selectedCells=new Set(),lastClickedId=null,importWorkbook=null,importCurrentRows=null,importHeaders=null,cellClipboard=null;
+let appData={},appStyles={},saveTimeout,activeCellId=null,clipboardHistory=[],dupWarned=false,qStr='',versions=[],hasUnsavedChanges=false,modalConfirmAction=null,backupData=null,backupStyles=null,isPreviewing=false,isPainting=false,selectedCells=new Set(),lastClickedId=null,importWorkbook=null,importCurrentRows=null,importHeaders=null;
 let undoStack=[],redoStack=[];
 const MAX_HISTORY=50;
 const themeDefs={
@@ -1055,16 +1165,16 @@ function recordHistory(){if(isPreviewing)return;undoStack.push({d:JSON.parse(JSO
 function undo(){if(isPreviewing||undoStack.length===0)return;redoStack.push({d:JSON.parse(JSON.stringify(appData)),s:JSON.parse(JSON.stringify(appStyles))});let state=undoStack.pop();appData=state.d;appStyles=state.s;hasUnsavedChanges=true;triggerAutoSave();renderPage(true);updateUndoRedoUI();showToast("Undo successful","info");}
 function redo(){if(isPreviewing||redoStack.length===0)return;undoStack.push({d:JSON.parse(JSON.stringify(appData)),s:JSON.parse(JSON.stringify(appStyles))});let state=redoStack.pop();appData=state.d;appStyles=state.s;hasUnsavedChanges=true;triggerAutoSave();renderPage(true);updateUndoRedoUI();showToast("Redo successful","info");}
 function updateUndoRedoUI(){document.getElementById('btn-undo').disabled=undoStack.length===0;document.getElementById('btn-redo').disabled=redoStack.length===0;}
-function togglePanel(id){
+function togglePanel(id, forceOpen = false){
 const panel=document.getElementById(id);
 if(!panel||panel.classList.contains('disabled'))return;
 const body=panel.querySelector('.panel-body');
 if(!body)return;
-if(panel.classList.contains('open')){
+if(panel.classList.contains('open') && !forceOpen){
 const h=body.scrollHeight;body.style.height=h+'px';
 requestAnimationFrame(()=>requestAnimationFrame(()=>body.style.height='0px'));
 body.addEventListener('transitionend',()=>panel.classList.remove('open'),{once:true});
-}else{
+}else if(!panel.classList.contains('open')){
 panel.classList.add('open');const h=body.scrollHeight;body.style.height='0px';
 requestAnimationFrame(()=>requestAnimationFrame(()=>body.style.height=h+'px'));
 body.addEventListener('transitionend',()=>body.style.height='auto',{once:true});
@@ -1129,6 +1239,7 @@ hasUnsavedChanges=false;showToast("XLSX exported","success");
 }catch(err){console.error(err);showToast("Export failed: "+err.message,"error");}
 finally{btn.disabled=false;btn.textContent=orig;}
 }
+
 function syncSelToolbar(){
 const bar=document.getElementById('sel-toolbar');if(!bar)return;
 const count=selectedCells.size;
@@ -1136,21 +1247,31 @@ const ids=count>0?[...selectedCells]:(activeCellId!==null?[activeCellId]:[]);
 if(ids.length>=1){
 bar.setAttribute('data-mode',count<=1?'single':'multi');
 bar.style.display='flex';
-requestAnimationFrame(()=>bar.classList.add('vis'));
+requestAnimationFrame(()=> bar.classList.add('vis'));
 document.getElementById('sel-count-label').textContent=count+' cell'+(count>1?'s':'');
 document.getElementById('stb-bold').classList.toggle('on',ids.every(id=>appStyles[id]?.b));
 document.getElementById('stb-italic').classList.toggle('on',ids.every(id=>appStyles[id]?.i));
 document.getElementById('stb-under').classList.toggle('on',ids.every(id=>appStyles[id]?.u));
 const pp=document.getElementById('stb-paint');
 if(pp){if(isPainting)pp.classList.add('painting-pulse','on');else pp.classList.remove('painting-pulse','on');}
-const cb=document.getElementById('stb-copy');if(cb)cb.classList.toggle('on',!!cellClipboard);
+const cb=document.getElementById('stb-copy');if(cb)cb.classList.toggle('on',clipboardHistory.length > 0);
 const pb=document.getElementById('stb-paste');
-if(pb){pb.classList.toggle('dim',!cellClipboard);pb.classList.toggle('ready',!!cellClipboard);}
+const cpBtn = document.getElementById('stb-clip-btn');
+if(pb){
+    pb.classList.toggle('dim',clipboardHistory.length === 0);
+    pb.classList.toggle('ready',clipboardHistory.length > 0);
+    if(cpBtn) {
+        cpBtn.classList.toggle('dim',clipboardHistory.length === 0);
+        cpBtn.classList.toggle('ready',clipboardHistory.length > 0);
+    }
+}
 }else{
 bar.classList.remove('vis');
-setTimeout(()=>{if(selectedCells.size===0&&activeCellId===null)bar.style.display='none';},400);
+document.getElementById('clip-popover').classList.remove('open');
+setTimeout(()=>{if(selectedCells.size===0&&activeCellId===null)bar.style.display='none';},200);
 }
 }
+
 function getTargetIds(){if(selectedCells.size>0)return[...selectedCells];if(activeCellId!==null)return[activeCellId];return[];}
 function clearMultiSelect(){selectedCells.forEach(id=>{const td=document.querySelector(`td[data-id="${id}"]`);if(td)td.classList.remove('cell-selected');});selectedCells.clear();}
 function updateMultiSelectPanel(){
@@ -1208,6 +1329,7 @@ function closeModal(){const ov=document.getElementById('custom-modal');ov.classL
 document.getElementById('modal-cancel').addEventListener('click',closeModal);
 document.getElementById('modal-confirm').addEventListener('click',()=>{if(modalConfirmAction)modalConfirmAction();closeModal();});
 document.getElementById('import-modal').addEventListener('mousedown',function(e){if(e.target===this)closeImportModal();});
+
 function initThm(){applyAppTheme(localStorage.getItem('lx_tm')||'auto');}
 function cycleTheme(){const m=localStorage.getItem('lx_tm')||'auto';const n=m==='auto'?'light':m==='light'?'dark':'auto';localStorage.setItem('lx_tm',n);applyAppTheme(n);showToast(`Theme: ${n}`,'info');}
 function applyAppTheme(m){
@@ -1220,13 +1342,25 @@ function toggleMobileSB(){document.getElementById('sidebar').classList.toggle('o
 function toggleDeskSB(){document.getElementById('sidebar').classList.toggle('closed');}
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>initThm());
 document.getElementById('fileUpload').addEventListener('change',handleFileUpload);
-document.addEventListener('mousedown',(e)=>{if(e.target.id==='workspace'||e.target.classList.contains('page-wrapper')){disableCellPanel();if(isPainting)cancelPaintMode();}});
+document.addEventListener('mousedown',(e)=>{
+    if(e.target.id==='workspace'||e.target.classList.contains('page-wrapper')){
+        disableCellPanel();
+        if(isPainting)cancelPaintMode();
+    }
+    const pop = document.getElementById('clip-popover');
+    if(pop && pop.classList.contains('open') && !e.target.closest('#stb-clip-btn') && !e.target.closest('#clip-popover')) {
+        pop.classList.remove('open');
+    }
+});
+
 window.addEventListener('keydown',e=>{
 const inEdit=document.activeElement.tagName==='INPUT'||document.activeElement.isContentEditable;
 if(e.key==='Escape'){
 if(isPainting){cancelPaintMode();showToast("Paint mode canceled","warn");return;}
 if(document.getElementById('shortcuts-overlay').style.display==='flex'){closeShortcuts();return;}
 if(document.getElementById('import-modal').classList.contains('vis')){closeImportModal();return;}
+const pop = document.getElementById('clip-popover');
+if(pop && pop.classList.contains('open')){pop.classList.remove('open');return;}
 if(selectedCells.size>0||activeCellId!==null){disableCellPanel();return;}
 }
 if(e.key==='?'&&!inEdit){e.preventDefault();openShortcuts();return;}
@@ -1244,7 +1378,7 @@ lastClickedId=1;updateMultiSelectPanel();showToast('All 200 cells selected','inf
 const ids=getTargetIds();
 if(k==='c'){if(ids.length){e.preventDefault();copySelectionBlock();return;}}
 if(k==='x'){if(ids.length){e.preventDefault();cutSelectionBlock();return;}}
-if(k==='v'){if(cellClipboard){e.preventDefault();pasteBlock();return;}}
+if(k==='v'){if(clipboardHistory.length > 0){e.preventDefault();pasteBlock();return;}}
 if(!ids.length||inEdit)return;
 if(k==='b'){e.preventDefault();toggleStyle('bold');return;}
 if(k==='i'){e.preventDefault();toggleStyle('italic');return;}
@@ -1578,7 +1712,9 @@ syncSelToolbar();
 function copyFormat(){
 if(isPreviewing)return;if(isPainting){cancelPaintMode();return;}
 const tid=activeCellId!==null?activeCellId:(selectedCells.size>0?[...selectedCells][0]:null);if(!tid)return;
-clipboardFormat=appStyles[tid]?JSON.parse(JSON.stringify(appStyles[tid])):{};isPainting=true;
+const clipboardFormat=appStyles[tid]?JSON.parse(JSON.stringify(appStyles[tid])):{};
+window._paintFormat = clipboardFormat;
+isPainting=true;
 document.getElementById('workspace').classList.add('paint-mode');
 const btn=document.getElementById('btn-copy-fmt');if(btn){btn.classList.add('painting');btn.textContent='✕ Cancel Paint';}
 syncSelToolbar();showToast("Click any cell to apply style — Esc to cancel","warn");
@@ -1589,9 +1725,9 @@ const btn=document.getElementById('btn-copy-fmt');if(btn){btn.classList.remove('
 syncSelToolbar();
 }
 function applyPaint(id,td){
-if(!clipboardFormat)return;
+if(!window._paintFormat)return;
 recordHistory();
-appStyles[id]=JSON.parse(JSON.stringify(clipboardFormat));
+appStyles[id]=JSON.parse(JSON.stringify(window._paintFormat));
 applyCellDomStyle(td,id);autoFitText(td);hasUnsavedChanges=true;triggerAutoSave();cancelPaintMode();showToast("Style applied","success");
 }
 function toggleStyle(prop){
@@ -1654,9 +1790,20 @@ const ws=XLSX.utils.aoa_to_sheet(d),wb=XLSX.utils.book_new();XLSX.utils.book_app
 function copySelectionBlock(skipToast=false){
 const raw=selectedCells.size>0?[...selectedCells]:(activeCellId!==null?[activeCellId]:[]);if(!raw.length)return;
 const ids=raw.slice().sort((a,b)=>a-b),minId=ids[0];
-cellClipboard={entries:ids.map(id=>({offset:id-minId,value:appData[id]!=null?String(appData[id]):'',style:appStyles[id]?JSON.parse(JSON.stringify(appStyles[id])):null}))};
+const textPreview = ids.slice(0, 3).map(id => appData[id] || '').filter(v => v).join(', ') + (ids.length > 3 ? '...' : '');
+const clipObj = {
+    id: Date.now(),
+    count: ids.length,
+    preview: textPreview || '(Empty Cells)',
+    entries: ids.map(id=>({offset:id-minId,value:appData[id]!=null?String(appData[id]):'',style:appStyles[id]?JSON.parse(JSON.stringify(appStyles[id])):null}))
+};
+clipboardHistory.unshift(clipObj);
+if(clipboardHistory.length > 10) clipboardHistory.pop();
 const cb=document.getElementById('stb-copy');if(cb)cb.classList.add('on');
-const pb=document.getElementById('stb-paste');if(pb){pb.classList.remove('dim');pb.classList.add('ready');}
+const pb=document.getElementById('stb-paste');
+const cpBtn=document.getElementById('stb-clip-btn');
+if(pb){pb.classList.remove('dim');pb.classList.add('ready');}
+if(cpBtn){cpBtn.classList.remove('dim');cpBtn.classList.add('ready');}
 if(!skipToast)showToast(`${ids.length} cell${ids.length>1?'s':''} copied`,'success');
 }
 function cutSelectionBlock(){
@@ -1665,31 +1812,70 @@ recordHistory();
 copySelectionBlock(true);clearSelectionData(true);
 showToast(`${ids.length} cell${ids.length>1?'s':''} cut`,'success');
 }
-function pasteBlock(){
-if(!cellClipboard||isPreviewing){showToast('Nothing to paste','info');return;}
+function pasteBlock(clipItem = null){
+const item = clipItem || clipboardHistory[0];
+if(!item || isPreviewing){showToast('Nothing to paste','info');return;}
 const baseId=activeCellId!==null?activeCellId:selectedCells.size>0?Math.min(...selectedCells):lastClickedId;
 if(baseId==null){showToast('Click a target cell first','info');return;}
-const maxOffset=cellClipboard.entries.reduce((m,e)=>Math.max(m,e.offset),0);
+const maxOffset=item.entries.reduce((m,e)=>Math.max(m,e.offset),0);
 if(baseId+maxOffset>200){showToast('Paste would exceed cell 200','warn');return;}
 if(document.activeElement&&document.activeElement.isContentEditable)document.activeElement.blur();
 recordHistory();
-cellClipboard.entries.forEach(({offset,value,style})=>{const tid=baseId+offset;if(value)appData[tid]=value;else delete appData[tid];if(style)appStyles[tid]=JSON.parse(JSON.stringify(style));else delete appStyles[tid];const td=document.querySelector(`td[data-id="${tid}"]`);if(td){td.textContent=value;applyCellDomStyle(td,tid);autoFitText(td);}});
-hasUnsavedChanges=true;updateStats();triggerAutoSave();showToast(`Pasted ${cellClipboard.entries.length} cell${cellClipboard.entries.length>1?'s':''} → cell ${baseId}`,'success');
+item.entries.forEach(({offset,value,style})=>{const tid=baseId+offset;if(value)appData[tid]=value;else delete appData[tid];if(style)appStyles[tid]=JSON.parse(JSON.stringify(style));else delete appStyles[tid];const td=document.querySelector(`td[data-id="${tid}"]`);if(td){td.textContent=value;applyCellDomStyle(td,tid);autoFitText(td);}});
+hasUnsavedChanges=true;updateStats();triggerAutoSave();showToast(`Pasted ${item.entries.length} cell${item.entries.length>1?'s':''} → cell ${baseId}`,'success');
 }
+function toggleClipboardPopover() {
+    if(clipboardHistory.length === 0) { showToast('Clipboard is empty','info'); return; }
+    const pop = document.getElementById('clip-popover');
+    if(pop.classList.contains('open')) {
+        pop.classList.remove('open');
+        return;
+    }
+    const list = document.getElementById('clip-list-scroll');
+    list.innerHTML = '';
+    clipboardHistory.forEach((item) => {
+        const div = document.createElement('div');
+        div.className = 'clip-item';
+        const time = new Date(item.id).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        div.innerHTML = `
+            <div style="display:flex;flex-direction:column;gap:4px;overflow:hidden;">
+                <span class="clip-preview" title="${item.preview}">${item.preview}</span>
+                <span class="clip-time">${item.count} cell${item.count>1?'s':''} • ${time}</span>
+            </div>
+            <div style="font-size:14px;color:var(--accent);opacity:0.8;">↵</div>
+        `;
+        div.onclick = () => { pasteBlock(item); pop.classList.remove('open'); };
+        list.appendChild(div);
+    });
+    pop.classList.add('open');
+}
+
 function loadDemoData(){appData={1:"A.Viton",2:"Hydroxychloroquine 200mg",3:"Acyclovir 200",51:"Aubajeo"};appStyles={2:{b:true,c:"#1d4ed8"},152:{b:true,s:"14px",c:"#047857"}};}
 
-const bind = (inputId, outputId) => {
+const bindCoverText = (inputId, outputId) => {
     const input = document.getElementById(inputId);
     const output = document.getElementById(outputId);
-    input.addEventListener('input', (e) => { output.textContent = e.target.value; });
+    
+    input.addEventListener('input', (e) => { 
+        output.textContent = e.target.value; 
+    });
+
+    output.classList.add('cover-editable-link');
+    output.title = "Click to edit";
+    output.addEventListener('click', () => {
+        togglePanel('cp3', true);
+        input.focus();
+        input.select();
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
 };
 
-bind('in-title', 'out-title');
-bind('in-subtitle', 'out-subtitle');
-bind('in-sub-subtitle', 'out-sub-subtitle');
-bind('in-branch', 'out-branch');
-bind('in-hero', 'out-hero');
-bind('in-footer', 'out-footer');
+bindCoverText('in-title', 'out-title');
+bindCoverText('in-subtitle', 'out-subtitle');
+bindCoverText('in-sub-subtitle', 'out-sub-subtitle');
+bindCoverText('in-branch', 'out-branch');
+bindCoverText('in-hero', 'out-hero');
+bindCoverText('in-footer', 'out-footer');
 
 const printPage = document.getElementById('print-page');
 
