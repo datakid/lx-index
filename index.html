@@ -693,6 +693,24 @@ html.dark .a4-page{box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255
 .filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
 .filter-btn:not(.active):hover{border-color:var(--accent);}
 
+body.theme-spreadsheet-active table.lx-index tr { background-color: var(--row-even) !important; }
+body.theme-spreadsheet-active table.lx-index td {
+    background-color: var(--row-even) !important;
+}
+body.theme-spreadsheet-active table.lx-index td.has-data {
+    background-color: var(--row-odd) !important;
+}
+body.theme-spreadsheet-active table.lx-index td:nth-child(odd) {
+    opacity: 1 !important;
+    color: transparent !important;
+    border-right: none !important;
+    transition: color 0.2s;
+}
+body.theme-spreadsheet-active table.lx-index td.has-data:nth-child(odd) {
+    color: var(--text-col) !important;
+    font-weight: 400 !important;
+}
+
 @media print{
 @page{size:A4 portrait;margin:0;}
 *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;color-adjust:exact !important;}
@@ -783,7 +801,7 @@ body.mode-registry .reg-vol-page:last-child{page-break-after:auto;break-after:au
 <option value="">Auto</option><option value="9px">9px</option><option value="10px">10px</option><option value="11px">11px</option><option value="12px">12px</option><option value="13px">13px</option><option value="14px">14px</option><option value="15px">15px</option><option value="16px">16px</option>
 </select></div>
 <div class="ctrl-group"><span class="ctrl-label">Specific Color</span>
-<div class="uci" style="width:110px;"><span class="hash">#</span><input type="text" id="cell-hex" maxlength="6" oninput="syncCellHex()" placeholder="Auto"><input type="color" id="cell-color" oninput="syncCellCol()"></div>
+<div class="uci" style="width:110px;"><span class="hash">#</span><input type="text" id="cell-hex" maxlength="6" oninput="previewCellHex()" onchange="commitCellHex()" placeholder="Auto"><input type="color" id="cell-color" oninput="previewCellCol()" onchange="commitCellCol()"></div>
 </div>
 <button id="btn-copy-fmt" class="btn btn-secondary" style="margin-top:16px;" onmousedown="event.preventDefault();copyFormat()">🖌️ Paint Style</button>
 <button class="btn btn-secondary" style="margin-top:10px;" onclick="clearCellFormat()">🧹 Clear Style</button>
@@ -797,7 +815,7 @@ body.mode-registry .reg-vol-page:last-child{page-break-after:auto;break-after:au
 <div class="theme-box index-theme" id="theme-classic" onclick="applyStyle('classic')"><div class="theme-swatches"><span style="background:#f3f4f6;"></span><span style="background:#fff;border-color:rgba(0,0,0,0.1);"></span><span style="background:#000;"></span></div><div class="theme-name">Classic</div></div>
 <div class="theme-box index-theme" id="theme-compact" onclick="applyStyle('compact')"><div class="theme-swatches"><span style="background:#f8fafc;"></span><span style="background:#fff;border-color:rgba(0,0,0,0.1);"></span><span style="background:#1e293b;"></span></div><div class="theme-name">Compact</div></div>
 <div class="theme-box index-theme" id="theme-prism" onclick="applyStyle('prism')"><div class="theme-swatches prism-sw"><span></span></div><div class="theme-name">Prism</div></div>
-<div class="theme-box index-theme" id="theme-monochrome" onclick="applyStyle('monochrome')"><div class="theme-swatches"><span style="background:#fff;border-color:#000;"></span><span style="background:#fff;border-color:#000;"></span><span style="background:#000;"></span></div><div class="theme-name">Mono</div></div>
+<div class="theme-box index-theme" id="theme-spreadsheet" onclick="applyStyle('spreadsheet')"><div class="theme-swatches"><span style="background:#f3f4f6;border-color:rgba(0,0,0,0.1);"></span><span style="background:#fff;border-color:rgba(0,0,0,0.1);"></span><span style="background:#000;"></span></div><div class="theme-name">Spreadsheet</div></div>
 <div class="theme-box index-theme" id="theme-editorial" onclick="applyStyle('editorial')"><div class="theme-swatches"><span style="background:#fafaf9;"></span><span style="background:#fff;border-color:rgba(0,0,0,0.1);"></span><span style="background:#1c1917;"></span></div><div class="theme-name">Editorial</div></div>
 </div>
 </div></div>
@@ -823,11 +841,11 @@ body.mode-registry .reg-vol-page:last-child{page-break-after:auto;break-after:au
 </div></div>
 <div class="divider"></div>
 <div class="ctrl-group"><span class="ctrl-label">Odd Row Base</span>
-<div class="uci"><span class="hash">#</span><input type="text" id="hex-odd" value="f8fafc" maxlength="6" oninput="syncHex('odd')" onblur="saveSettings()"><input type="color" id="c-odd" value="#f8fafc" oninput="syncCol('odd')" onchange="saveSettings()"></div></div>
+<div class="uci"><span class="hash">#</span><input type="text" id="hex-odd" value="f8fafc" maxlength="6" oninput="syncHex('odd',true)" onblur="saveSettings()"><input type="color" id="c-odd" value="#f8fafc" oninput="syncCol('odd',true)" onchange="saveSettings()"></div></div>
 <div class="ctrl-group" style="margin-top:14px;"><span class="ctrl-label">Even Row Base</span>
-<div class="uci"><span class="hash">#</span><input type="text" id="hex-even" value="ffffff" maxlength="6" oninput="syncHex('even')" onblur="saveSettings()"><input type="color" id="c-even" value="#ffffff" oninput="syncCol('even')" onchange="saveSettings()"></div></div>
+<div class="uci"><span class="hash">#</span><input type="text" id="hex-even" value="ffffff" maxlength="6" oninput="syncHex('even',true)" onblur="saveSettings()"><input type="color" id="c-even" value="#ffffff" oninput="syncCol('even',true)" onchange="saveSettings()"></div></div>
 <div class="ctrl-group" style="margin-top:14px;"><span class="ctrl-label">Text Color</span>
-<div class="uci"><span class="hash">#</span><input type="text" id="hex-text" value="0f172a" maxlength="6" oninput="syncHex('text')" onblur="saveSettings()"><input type="color" id="c-text" value="#0f172a" oninput="syncCol('text')" onchange="saveSettings()"></div></div>
+<div class="uci"><span class="hash">#</span><input type="text" id="hex-text" value="0f172a" maxlength="6" oninput="syncHex('text',true)" onblur="saveSettings()"><input type="color" id="c-text" value="#0f172a" oninput="syncCol('text',true)" onchange="saveSettings()"></div></div>
 </div></div>
 </div>
 <div class="panel" id="p4">
@@ -841,18 +859,18 @@ body.mode-registry .reg-vol-page:last-child{page-break-after:auto;break-after:au
 <select id="b-out-s" style="width:80px;padding:8px;" onchange="updateCSS();saveSettings()"><option value="solid">Solid</option><option value="dashed">Dashed</option><option value="double">Double</option></select>
 <input type="number" id="b-out-w" min="0" max="8" value="2" style="width:48px;text-align:center;padding:8px;" oninput="updateCSS()" onchange="saveSettings()">
 </div></div>
-<div class="ctrl-group"><span class="ctrl-label">Outer Color</span><input type="color" id="b-out-c" value="#cbd5e1" oninput="updateCSS()" onchange="saveSettings()" style="width:36px;height:36px;border-radius:10px;border:1px solid var(--panel-bd);cursor:pointer;background:transparent;"></div>
+<div class="ctrl-group"><span class="ctrl-label">Outer Color</span><input type="color" id="b-out-c" value="#cbd5e1" oninput="updateCSS(true)" onchange="saveSettings()" style="width:36px;height:36px;border-radius:10px;border:1px solid var(--panel-bd);cursor:pointer;background:transparent;"></div>
 <div class="divider"></div>
 <div class="ctrl-group"><span class="ctrl-label">Row Line (H)</span><input type="range" id="b-in-hw" min="0" max="3" value="1" oninput="updateCSS()" onchange="saveSettings()"></div>
 <div class="ctrl-group"><span class="ctrl-label">Cell Line (V)</span><input type="range" id="b-in-vw" min="0" max="3" value="1" oninput="updateCSS()" onchange="saveSettings()"></div>
-<div class="ctrl-group"><span class="ctrl-label">Inner Grid Color</span><input type="color" id="b-in-c" value="#f1f5f9" oninput="updateCSS()" onchange="saveSettings()" style="width:36px;height:36px;border-radius:10px;border:1px solid var(--panel-bd);cursor:pointer;background:transparent;"></div>
+<div class="ctrl-group"><span class="ctrl-label">Inner Grid Color</span><input type="color" id="b-in-c" value="#f1f5f9" oninput="updateCSS(true)" onchange="saveSettings()" style="width:36px;height:36px;border-radius:10px;border:1px solid var(--panel-bd);cursor:pointer;background:transparent;"></div>
 <div class="divider"></div>
 <div class="ctrl-group"><span class="ctrl-label">Column Divider</span>
 <div style="display:flex;gap:8px;">
 <select id="b-div-s" style="width:80px;padding:8px;" onchange="updateCSS();saveSettings()"><option value="solid">Solid</option><option value="dashed">Dashed</option><option value="double">Double</option></select>
 <input type="number" id="b-div-w" min="0" max="6" value="1" style="width:48px;text-align:center;padding:8px;" oninput="updateCSS()" onchange="saveSettings()">
 </div></div>
-<div class="ctrl-group"><span class="ctrl-label">Divider Color</span><input type="color" id="b-div-c" value="#e2e8f0" oninput="updateCSS()" onchange="saveSettings()" style="width:36px;height:36px;border-radius:10px;border:1px solid var(--panel-bd);cursor:pointer;background:transparent;"></div>
+<div class="ctrl-group"><span class="ctrl-label">Divider Color</span><input type="color" id="b-div-c" value="#e2e8f0" oninput="updateCSS(true)" onchange="saveSettings()" style="width:36px;height:36px;border-radius:10px;border:1px solid var(--panel-bd);cursor:pointer;background:transparent;"></div>
 </div></div>
 </div>
 <div class="panel" id="p5">
@@ -1149,7 +1167,7 @@ modern:{f:"'Inter',system-ui,sans-serif",fw:"400",fz:"13",ro:"edf2f7",re:"ffffff
 classic:{f:"Arial,Helvetica,sans-serif",fw:"400",fz:"12",ro:"f3f4f6",re:"ffffff",tx:"000000",orad:"0",ow:"1",os:"solid",oc:"#000000",ihw:"1",ivw:"1",ic:"#000000",dw:"2",ds:"solid",dc:"#000000",pm:"8mm"},
 compact:{f:"'Inter',system-ui,sans-serif",fw:"400",fz:"11",ro:"f8fafc",re:"ffffff",tx:"1e293b",orad:"8",ow:"1",os:"solid",oc:"#cbd5e1",ihw:"1",ivw:"1",ic:"#f1f5f9",dw:"1",ds:"solid",dc:"#94a3b8",pm:"4mm"},
 prism:{f:"'Inter',system-ui,sans-serif",fw:"400",fz:"13",ro:"f5f3ff",re:"ffffff",tx:"1e1b4b",orad:"20",ow:"2",os:"solid",oc:"#7c3aed",ihw:"1",ivw:"0",ic:"#ede9fe",dw:"2",ds:"solid",dc:"#7c3aed",pm:"8mm"},
-monochrome:{f:"'Inter',system-ui,sans-serif",fw:"600",fz:"12",ro:"ffffff",re:"ffffff",tx:"000000",orad:"0",ow:"2",os:"solid",oc:"#000000",ihw:"1",ivw:"1",ic:"#000000",dw:"2",ds:"solid",dc:"#000000",pm:"8mm"},
+spreadsheet:{f:"'Lora',Georgia,serif",fw:"400",fz:"13",ro:"f3f4f6",re:"ffffff",tx:"000000",orad:"0",ow:"1",os:"solid",oc:"#d1d5db",ihw:"1",ivw:"0",ic:"#d1d5db",dw:"1",ds:"solid",dc:"#d1d5db",pm:"8mm"},
 editorial:{f:"'Lora',Georgia,serif",fw:"400",fz:"13",ro:"fafaf9",re:"ffffff",tx:"1c1917",orad:"0",ow:"1",os:"solid",oc:"#a8a29e",ihw:"1",ivw:"0",ic:"#e7e5e4",dw:"1",ds:"solid",dc:"#a8a29e",pm:"12mm"}
 };
 
@@ -1343,7 +1361,14 @@ const ihW=get('--in-h-w')||'1px',ihC=get('--in-h-c')||'#f1f5f9',ivW=get('--in-v-
 const dvW=get('--div-bd-w')||'1px',dvS=get('--div-bd-s')||'solid',dvC=get('--div-bd-c')||'#e2e8f0';
 let el=document.getElementById('lx-print-dynamic');
 if(!el){el=document.createElement('style');el.id='lx-print-dynamic';document.head.appendChild(el);}
-el.textContent=`@media print{body.mode-grid .page-wrapper{padding:${pad}mm !important;}body.mode-grid .table-container{height:${tableH}mm !important;border:${outW} ${outS} ${outC} !important;border-radius:${outR} !important;overflow:hidden !important;box-sizing:border-box !important;}body.mode-grid table.lx-index{height:${contentH.toFixed(4)}mm !important;background:${re} !important;}body.mode-grid table.lx-index tr{height:${rowH}mm !important;max-height:${rowH}mm !important;overflow:hidden !important;}body.mode-grid table.lx-index tr:nth-child(odd){background-color:${ro} !important;}body.mode-grid table.lx-index td{height:${rowH}mm !important;max-height:${rowH}mm !important;overflow:hidden !important;white-space:nowrap !important;line-height:1 !important;vertical-align:middle !important;padding:${cp} !important;font-family:${ff} !important;font-size:${fs} !important;font-weight:${fw} !important;color:${tc} !important;border-bottom:${ihW} solid ${ihC} !important;border-right:${ivW} solid ${ivC} !important;}body.mode-grid table.lx-index tr:last-child td{border-bottom:none !important;}body.mode-grid table.lx-index td:last-child{border-right:none !important;}body.mode-grid table.lx-index td:nth-child(odd){width:24px !important;font-size:11px !important;font-weight:700 !important;opacity:0.5 !important;text-align:right !important;padding-right:4px !important;padding-left:0 !important;}body.mode-grid table.lx-index td:nth-child(2),body.mode-grid table.lx-index td:nth-child(4),body.mode-grid table.lx-index td:nth-child(6){border-right:${dvW} ${dvS} ${dvC} !important;}}`;
+const isSpreadsheet = document.body.classList.contains('theme-spreadsheet-active');
+const bgOdd = isSpreadsheet ? re : ro;
+let baseCSS = `@media print{body.mode-grid .page-wrapper{padding:${pad}mm !important;}body.mode-grid .table-container{height:${tableH}mm !important;border:${outW} ${outS} ${outC} !important;border-radius:${outR} !important;overflow:hidden !important;box-sizing:border-box !important;}body.mode-grid table.lx-index{height:${contentH.toFixed(4)}mm !important;background:${re} !important;}body.mode-grid table.lx-index tr{height:${rowH}mm !important;max-height:${rowH}mm !important;overflow:hidden !important;background-color:${re} !important;}body.mode-grid table.lx-index tr:nth-child(odd){background-color:${bgOdd} !important;}body.mode-grid table.lx-index td{height:${rowH}mm !important;max-height:${rowH}mm !important;overflow:hidden !important;white-space:nowrap !important;line-height:1 !important;vertical-align:middle !important;padding:${cp} !important;font-family:${ff} !important;font-size:${fs} !important;font-weight:${fw} !important;color:${tc} !important;border-bottom:${ihW} solid ${ihC} !important;border-right:${ivW} solid ${ivC} !important;background-color:${re} !important;}body.mode-grid table.lx-index tr:last-child td{border-bottom:none !important;}body.mode-grid table.lx-index td:last-child{border-right:none !important;}body.mode-grid table.lx-index td:nth-child(odd){width:24px !important;font-size:11px !important;font-weight:700 !important;opacity:0.5 !important;text-align:right !important;padding-right:4px !important;padding-left:0 !important;}body.mode-grid table.lx-index td:nth-child(2),body.mode-grid table.lx-index td:nth-child(4),body.mode-grid table.lx-index td:nth-child(6){border-right:${dvW} ${dvS} ${dvC} !important;}`;
+if (isSpreadsheet) {
+    baseCSS += `body.mode-grid.theme-spreadsheet-active table.lx-index td.has-data {background-color:${ro} !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;} body.mode-grid.theme-spreadsheet-active table.lx-index td:nth-child(odd) {color:transparent !important;border-right:none !important;} body.mode-grid.theme-spreadsheet-active table.lx-index td.has-data:nth-child(odd) {color:${tc} !important;}`;
+}
+baseCSS += `}`;
+el.textContent = baseCSS;
 document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td=>autoFitText(td));
 }
 function doPrint(){if(document.body.classList.contains('mode-grid')) preparePrint(); window.print();}
@@ -1456,7 +1481,16 @@ initThm();
 loadFromLocal();
 loadVersions();
 if(Object.keys(appData).length===0)loadDemoData();
-if(!loadSettings())applyStyle('modern');
+if(!loadSettings()) applyStyle('modern');
+else {
+    const actTheme = localStorage.getItem('lx_active_theme_v4') || 'modern';
+    document.body.classList.toggle('theme-spreadsheet-active', actTheme === 'spreadsheet');
+    const themeEl = document.getElementById('theme-'+actTheme);
+    if(themeEl) {
+        document.querySelectorAll('.index-theme').forEach(b=>b.classList.remove('active'));
+        themeEl.classList.add('active');
+    }
+}
 renderPage(true);
 initPanels();
 updateUndoRedoUI();
@@ -1734,7 +1768,16 @@ if(el.scrollWidth>maxW&&maxW>0){const ratio=maxW/el.scrollWidth,newSize=Math.max
 function clearSelectionData(skipHistory=false){
 const ids=getTargetIds();if(!ids.length||isPreviewing)return;
 if(!skipHistory)recordHistory();
-ids.forEach(id=>{delete appData[id];const td=document.querySelector(`td[data-id="${id}"]`);if(td){td.textContent='';autoFitText(td);}});
+ids.forEach(id=>{
+    delete appData[id];
+    const td=document.querySelector(`td[data-id="${id}"]`);
+    if(td){
+        td.textContent='';
+        td.classList.remove('has-data');
+        if(td.previousElementSibling) td.previousElementSibling.classList.remove('has-data');
+        autoFitText(td);
+    }
+});
 hasUnsavedChanges=true;updateStats();triggerAutoSave();if(!skipHistory)showToast(`Cleared ${ids.length} cell${ids.length>1?'s':''}`,'success');
 }
 function renderPage(skipSave=false){
@@ -1749,6 +1792,12 @@ const tdVal=document.createElement('td');
 tdVal.contentEditable=isPreviewing?"false":"true";
 if(isPreviewing)tdVal.classList.add('preview-locked');
 tdVal.setAttribute("dir","auto");tdVal.dataset.id=id;tdVal.textContent=appData[id]||"";
+
+if(appData[id]){
+    tdVal.classList.add('has-data');
+    tdId.classList.add('has-data');
+}
+
 applyCellDomStyle(tdVal,id);
 if(!isPreviewing){
 tdVal.addEventListener('mousedown',(e)=>{
@@ -1766,7 +1815,15 @@ tdVal.addEventListener('focus',()=>activateCell(id,tdVal));
 tdVal.addEventListener('input',(e)=>{
 if(!tdVal._hasModified){recordHistory();tdVal._hasModified=true;}
 const v=e.target.textContent;
-if(v.trim())appData[id]=v.trim();else delete appData[id];
+if(v.trim()){
+    appData[id]=v.trim();
+    tdVal.classList.add('has-data');
+    tdId.classList.add('has-data');
+}else{
+    delete appData[id];
+    tdVal.classList.remove('has-data');
+    tdId.classList.remove('has-data');
+}
 hasUnsavedChanges=true;autoFitText(e.target);updateStats();
 if(!skipSave)triggerAutoSave();if(qStr)runSearch(qStr);
 });
@@ -1843,8 +1900,42 @@ recordHistory();
 ids.forEach(id=>{if(!appStyles[id])appStyles[id]={};appStyles[id].s=val;const td=document.querySelector(`td[data-id="${id}"]`);if(td){applyCellDomStyle(td,id);autoFitText(td);}});
 hasUnsavedChanges=true;triggerAutoSave();
 }
-function syncCellHex(){const h=document.getElementById('cell-hex').value.trim();if(!h){updateCellColor("");return;}if(/^[0-9A-F]{6}$/i.test(h)){document.getElementById('cell-color').value='#'+h;updateCellColor('#'+h);}}
-function syncCellCol(){const v=document.getElementById('cell-color').value;document.getElementById('cell-hex').value=v.replace('#','');updateCellColor(v);}
+function previewCellHex(){
+const h=document.getElementById('cell-hex').value.trim();
+if(/^[0-9A-F]{6}$/i.test(h)){
+const v='#'+h;
+document.getElementById('cell-color').value=v;
+const ids=getTargetIds();if(!ids.length||isPreviewing)return;
+ids.forEach(id=>{
+const td=document.querySelector(`td[data-id="${id}"]`);
+if(td) td.style.setProperty('color', v, 'important');
+});
+} else if(!h) {
+const ids=getTargetIds();if(!ids.length||isPreviewing)return;
+ids.forEach(id=>{
+const td=document.querySelector(`td[data-id="${id}"]`);
+if(td) td.style.removeProperty('color');
+});
+}
+}
+function commitCellHex(){
+const h=document.getElementById('cell-hex').value.trim();
+if(!h){updateCellColor("");return;}
+if(/^[0-9A-F]{6}$/i.test(h)) updateCellColor('#'+h);
+}
+function previewCellCol(){
+const v=document.getElementById('cell-color').value;
+document.getElementById('cell-hex').value=v.replace('#','');
+const ids=getTargetIds();if(!ids.length||isPreviewing)return;
+ids.forEach(id=>{
+const td=document.querySelector(`td[data-id="${id}"]`);
+if(td) td.style.setProperty('color', v, 'important');
+});
+}
+function commitCellCol(){
+const v=document.getElementById('cell-color').value;
+updateCellColor(v);
+}
 function updateCellColor(hex){
 const ids=getTargetIds();if(!ids.length||isPreviewing)return;
 recordHistory();
@@ -1858,10 +1949,10 @@ ids.forEach(id=>{delete appStyles[id];const td=document.querySelector(`td[data-i
 if(selectedCells.size>0)updateMultiSelectPanel();else if(activeCellId!==null){const td=document.querySelector(`td[data-id="${activeCellId}"]`);if(td)activateCell(activeCellId,td);}
 hasUnsavedChanges=true;triggerAutoSave();
 }
-function syncCol(t){document.getElementById(`hex-${t}`).value=document.getElementById(`c-${t}`).value.replace('#','');updateCSS();}
-function syncHex(t){const h=document.getElementById(`hex-${t}`).value.trim();if(/^[0-9A-F]{6}$/i.test(h)){document.getElementById(`c-${t}`).value='#'+h;updateCSS();}}
+function syncCol(t, skipFit=false){document.getElementById(`hex-${t}`).value=document.getElementById(`c-${t}`).value.replace('#','');updateCSS(skipFit);}
+function syncHex(t, skipFit=false){const h=document.getElementById(`hex-${t}`).value.trim();if(/^[0-9A-F]{6}$/i.test(h)){document.getElementById(`c-${t}`).value='#'+h;updateCSS(skipFit);}}
 function updateSizeLabel(){document.getElementById('f-size-lbl').textContent=document.getElementById('f-size').value+'px';}
-function updateCSS(){
+function updateCSS(skipFit=false){
 const r=document.documentElement;
 r.style.setProperty('--font-family',document.getElementById('f-family').value);r.style.setProperty('--font-weight',document.getElementById('f-weight').value);r.style.setProperty('--font-size',document.getElementById('f-size').value+'px');
 r.style.setProperty('--row-odd',document.getElementById('c-odd').value);r.style.setProperty('--row-even',document.getElementById('c-even').value);r.style.setProperty('--text-col',document.getElementById('c-text').value);
@@ -1869,12 +1960,16 @@ r.style.setProperty('--out-rad',document.getElementById('b-rad').value+'px');r.s
 r.style.setProperty('--in-h-w',document.getElementById('b-in-hw').value+'px');r.style.setProperty('--in-v-w',document.getElementById('b-in-vw').value+'px');r.style.setProperty('--in-h-c',document.getElementById('b-in-c').value);r.style.setProperty('--in-v-c',document.getElementById('b-in-c').value);
 r.style.setProperty('--div-bd-w',document.getElementById('b-div-w').value+'px');r.style.setProperty('--div-bd-s',document.getElementById('b-div-s').value);r.style.setProperty('--div-bd-c',document.getElementById('b-div-c').value);r.style.setProperty('--page-pad',document.getElementById('p-margin').value);
 checkA11y(document.getElementById('c-odd').value,document.getElementById('c-even').value,document.getElementById('c-text').value);
-document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td=>autoFitText(td));
+if(!skipFit) {
+    document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td=>autoFitText(td));
+}
 }
 function getLum(hex){const rgb=parseInt(hex.slice(1),16);return[(rgb>>16)&0xff,(rgb>>8)&0xff,rgb&0xff].map(v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);}).reduce((s,v,i)=>s+v*[0.2126,0.7152,0.0722][i],0);}
 function checkA11y(ho,he,ht){const lt=getLum(ht),lo=getLum(ho),le=getLum(he),ro=lo>lt?(lo+0.05)/(lt+0.05):(lt+0.05)/(lo+0.05),re=le>lt?(le+0.05)/(lt+0.05):(lt+0.05)/(le+0.05);const b=document.getElementById('contrast-badge');if(ro<4.5||re<4.5){b.textContent="Low Contrast";b.className="contrast-badge c-fail";}else{b.textContent="Good Contrast";b.className="contrast-badge c-pass";}}
 function applyStyle(id){
 document.querySelectorAll('.index-theme').forEach(b=>b.classList.remove('active'));const themeEl=document.getElementById('theme-'+id);if(themeEl)themeEl.classList.add('active');
+localStorage.setItem('lx_active_theme_v4', id);
+document.body.classList.toggle('theme-spreadsheet-active', id === 'spreadsheet');
 const t=themeDefs[id];
 document.getElementById('f-family').value=t.f;document.getElementById('f-weight').value=t.fw;document.getElementById('f-size').value=t.fz;
 document.getElementById('hex-odd').value=t.ro;document.getElementById('c-odd').value='#'+t.ro;document.getElementById('hex-even').value=t.re;document.getElementById('c-even').value='#'+t.re;document.getElementById('hex-text').value=t.tx;document.getElementById('c-text').value='#'+t.tx;
@@ -1920,9 +2015,27 @@ const maxOffset=item.entries.reduce((m,e)=>Math.max(m,e.offset),0);
 if(baseId+maxOffset>200){showToast('Paste would exceed cell 200','warn');return;}
 if(document.activeElement&&document.activeElement.isContentEditable)document.activeElement.blur();
 recordHistory();
-item.entries.forEach(({offset,value,style})=>{const tid=baseId+offset;if(value)appData[tid]=value;else delete appData[tid];if(style)appStyles[tid]=JSON.parse(JSON.stringify(style));else delete appStyles[tid];const td=document.querySelector(`td[data-id="${tid}"]`);if(td){td.textContent=value;applyCellDomStyle(td,tid);autoFitText(td);}});
+item.entries.forEach(({offset,value,style})=>{
+    const tid=baseId+offset;
+    const td=document.querySelector(`td[data-id="${tid}"]`);
+    if(value){        appData[tid]=value;
+        if(td){
+            td.classList.add('has-data');
+            if(td.previousElementSibling) td.previousElementSibling.classList.add('has-data');
+        }
+    }else{
+        delete appData[tid];
+        if(td){
+            td.classList.remove('has-data');
+            if(td.previousElementSibling) td.previousElementSibling.classList.remove('has-data');
+        }
+    }
+    if(style)appStyles[tid]=JSON.parse(JSON.stringify(style));else delete appStyles[tid];
+    if(td){td.textContent=value;applyCellDomStyle(td,tid);autoFitText(td);}
+});
 hasUnsavedChanges=true;updateStats();triggerAutoSave();showToast(`Pasted ${item.entries.length} cell${item.entries.length>1?'s':''} → cell ${baseId}`,'success');
 }
+
 function toggleClipboardPopover() {
     if(clipboardHistory.length === 0) { showToast('Clipboard is empty','info'); return; }
     const pop = document.getElementById('clip-popover');
@@ -2127,7 +2240,6 @@ function runRegSearch(q) {
     regQ = q.trim();
     buildRegistry();
 }
-
 function createSafeHighlightNode(text) {
     const safeText = String(text);
     const frag = document.createDocumentFragment();
