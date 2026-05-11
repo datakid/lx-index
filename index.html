@@ -236,8 +236,6 @@ box-shadow:0 0 0 3px rgba(79,70,229,0.15),var(--shadow-sm);
 html.dark .btn-icon.active{background:linear-gradient(135deg,#312e81,#3730a3);color:#a5b4fc;}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .toolbar-row{display:flex;gap:8px;align-items:center;}
-.file-wrap{position:relative;overflow:hidden;}
-.file-wrap input[type=file]{position:absolute;left:0;top:0;opacity:0;cursor:pointer;height:100%;width:100%;z-index:2;}
 .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
 .theme-box{
 border:1px solid var(--panel-bd);padding:14px;border-radius:14px;cursor:pointer;
@@ -765,10 +763,7 @@ body.mode-registry .reg-vol-page:last-child{page-break-after:auto;break-after:au
 <div class="panel-title" onclick="togglePanel('p1')">1. Data Management<span class="arrow">▼</span></div>
 <div class="panel-body"><div class="panel-body-inner">
 <div class="grid-2" style="margin-bottom:12px;">
-<label class="btn btn-secondary file-wrap" style="margin:0;cursor:pointer;">
-📂 Import Data
-<input type="file" id="fileUpload" accept=".xlsx,.xls,.csv" tabindex="-1">
-</label>
+<button class="btn btn-secondary" onclick="openImportModal()" style="margin:0;">📂 Import Data</button>
 <button class="btn btn-danger" onclick="requestClearData()">🗑️ Clear Grid</button>
 </div>
 <button class="btn btn-secondary" onclick="downloadTemplate()">📥 Blank Template</button>
@@ -1106,6 +1101,15 @@ body.mode-registry .reg-vol-page:last-child{page-break-after:auto;break-after:au
 <h3 class="custom-modal-title" style="margin:0;">📂 Import Data</h3>
 <button onclick="closeImportModal()" style="background:none;border:none;cursor:pointer;color:#64748b;font-size:20px;line-height:1;padding:6px 10px;border-radius:10px;transition:all 0.2s;" onmouseover="this.style.background='var(--app-bg)';this.style.color='var(--text-main)';" onmouseout="this.style.background='none';this.style.color='#64748b';">✕</button>
 </div>
+<div id="imp-step-1">
+  <div style="border:2px dashed var(--panel-bd);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;background:var(--app-bg);transition:all 0.2s;" onclick="document.getElementById('imp-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)';" ondragleave="this.style.borderColor='var(--panel-bd)';" ondrop="handleDrop(event)">
+    <div style="font-size:24px;margin-bottom:10px;">📄</div>
+    <div style="font-size:14px;font-weight:600;color:var(--text-main);">Drop Excel or CSV file here</div>
+    <div style="font-size:12px;color:#94a3b8;margin-top:6px;">or click to browse</div>
+  </div>
+  <input type="file" id="imp-file-input" style="display:none;" accept=".xlsx,.xls,.csv" onchange="handleFileSelect(event)">
+</div>
+<div id="imp-step-2" style="display:none;">
 <div id="imp-sheet-row" style="display:none;align-items:center;justify-content:space-between;margin-bottom:16px;padding:12px 16px;background:var(--app-bg);border-radius:12px;border:1px solid var(--panel-bd);">
 <span style="font-size:13px;font-weight:700;color:var(--text-main);">Sheet</span>
 <select id="imp-sheet-sel" style="width:240px;padding:8px 12px;font-size:13px;" onchange="onImportSheetChange()"></select>
@@ -1116,10 +1120,15 @@ body.mode-registry .reg-vol-page:last-child{page-break-after:auto;break-after:au
 </div>
 <div class="imp-col-label" style="margin-bottom:8px;">Preview</div>
 <div id="imp-preview" style="border:1px solid var(--panel-bd);border-radius:12px;overflow:hidden;margin-bottom:16px;min-height:80px;"></div>
+<div style="display:flex;gap:16px;margin-bottom:24px;padding:12px;background:var(--app-bg);border-radius:12px;border:1px solid var(--panel-bd);">
+<label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer;"><input type="radio" name="imp-mode" value="merge" checked style="accent-color:var(--accent);"> Merge Data</label>
+<label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer;"><input type="radio" name="imp-mode" value="replace" style="accent-color:var(--accent);"> Replace All</label>
+</div>
 <div id="imp-summary-row" style="margin-bottom:24px;display:flex;gap:10px;flex-wrap:wrap;"></div>
 <div class="custom-modal-actions">
 <button class="btn btn-secondary" onclick="closeImportModal()">Cancel</button>
 <button class="btn btn-primary" id="imp-confirm-btn" onclick="confirmImport()">Import Data</button>
+</div>
 </div>
 </div>
 </div>
@@ -1348,7 +1357,6 @@ const ov=document.getElementById('custom-modal');ov.style.display='flex';ov.offs
 function closeModal(){const ov=document.getElementById('custom-modal');ov.classList.remove('vis');setTimeout(()=>ov.style.display='none',400);}
 document.getElementById('modal-cancel').addEventListener('click',closeModal);
 document.getElementById('modal-confirm').addEventListener('click',()=>{if(modalConfirmAction)modalConfirmAction();closeModal();});
-document.getElementById('import-modal').addEventListener('mousedown',function(e){if(e.target===this)closeImportModal();});
 
 function initThm(){applyAppTheme(localStorage.getItem('lx_tm')||'auto');}
 function cycleTheme(){const m=localStorage.getItem('lx_tm')||'auto';const n=m==='auto'?'light':m==='light'?'dark':'auto';localStorage.setItem('lx_tm',n);applyAppTheme(n);showToast(`Theme: ${n}`,'info');}
@@ -1361,7 +1369,7 @@ else{document.querySelector('.theme-toggle .sun').style.display='block';document
 function toggleMobileSB(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sb-ov').classList.toggle('vis');}
 function toggleDeskSB(){document.getElementById('sidebar').classList.toggle('closed');}
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>initThm());
-document.getElementById('fileUpload').addEventListener('change',handleFileUpload);
+
 document.addEventListener('mousedown',(e)=>{
     if(e.target.id==='index-workspace'||e.target.classList.contains('page-wrapper')){
         disableCellPanel();
@@ -1442,7 +1450,6 @@ row.appendChild(keys);row.appendChild(desc);list.appendChild(row);
 document.getElementById('shortcuts-overlay').style.display='flex';
 }
 function closeShortcuts(){document.getElementById('shortcuts-overlay').style.display='none';}
-document.getElementById('shortcuts-overlay').addEventListener('mousedown',e=>{if(e.target===document.getElementById('shortcuts-overlay'))closeShortcuts();});
 
 window.onload=()=>{
 initThm();
@@ -1582,33 +1589,56 @@ openModal("Clear Grid Data","Are you sure you want to delete all grid entries?",
 }
 window.addEventListener('beforeunload',(e)=>{if(hasUnsavedChanges&&!isPreviewing){e.preventDefault();e.returnValue='';}});
 function isTemplateLike(rows){if(!rows||rows.length<2)return false;const h0=String(rows[0][0]||'').trim().toLowerCase(),h1=String(rows[0][1]||'').trim().toLowerCase();return h0==='id'&&h1==='item name';}
-function doDirectImport(rows){
-recordHistory();appData={};appStyles={};let count=0;
-rows.slice(1).forEach(row=>{const id=parseFloat(row[0]),nm=String(row[1]??'').trim();if(Number.isInteger(id)&&id>=1&&id<=200&&nm){appData[id]=nm;count++;}});
-hasUnsavedChanges=true;triggerAutoSave();renderPage(true);showToast(`Imported ${count} entr${count===1?'y':'ies'}`,"success");
+
+function openImportModal() {
+    if(isPreviewing){showToast("Cannot import data while previewing.","warn");return;}
+    document.getElementById('imp-step-1').style.display = 'block';
+    document.getElementById('imp-step-2').style.display = 'none';
+    const modal=document.getElementById('import-modal');
+    modal.style.display='flex';
+    modal.offsetHeight;
+    modal.classList.add('vis');
 }
-function handleFileUpload(e){
-if(isPreviewing){showToast("Cannot import data while previewing.","warn");return;}
-const f=e.target.files[0];if(!f)return;e.target.value='';
-const reader=new FileReader();
-reader.onload=function(evt){
-try{
-importWorkbook=XLSX.read(evt.target.result,{type:'binary'});
-const sheets=importWorkbook.SheetNames;
-if(sheets.length===1){
-const raw=XLSX.utils.sheet_to_json(importWorkbook.Sheets[sheets[0]],{header:1,defval:''});
-const rows=raw.filter(r=>r.some(c=>c!==''&&c!==null&&c!==undefined));
-if(isTemplateLike(rows)){importWorkbook=null;doDirectImport(rows);return;}
+function handleDrop(e) {
+    e.preventDefault();
+    e.currentTarget.style.borderColor='var(--panel-bd)';
+    const f = e.dataTransfer.files[0];
+    if(f) processFile(f);
 }
-const sheetSel=document.getElementById('imp-sheet-sel');
-sheetSel.innerHTML=sheets.map((s,i)=>`<option value="${i}">${esc(s)}</option>`).join('');
-document.getElementById('imp-sheet-row').style.display=sheets.length>1?'flex':'none';
-loadImportSheet(0);
-const modal=document.getElementById('import-modal');modal.style.display='flex';modal.offsetHeight;modal.classList.add('vis');
-}catch(err){showToast("Could not read file: "+esc(err.message),"error");}
-};
-reader.readAsBinaryString(f);
+function handleFileSelect(e) {
+    const f = e.target.files[0];
+    if(f) processFile(f);
+    e.target.value = '';
 }
+function processFile(f) {
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+        try {
+            importWorkbook = XLSX.read(evt.target.result, {type: 'binary'});
+            const sheets = importWorkbook.SheetNames;
+            if(sheets.length === 1) {
+                const raw = XLSX.utils.sheet_to_json(importWorkbook.Sheets[sheets[0]], {header: 1, defval: ''});
+                const rows = raw.filter(r => r.some(c => c !== '' && c !== null && c !== undefined));
+                if(isTemplateLike(rows)) {
+                    importWorkbook = null;
+                    doDirectImport(rows);
+                    closeImportModal();
+                    return;
+                }
+            }
+            const sheetSel = document.getElementById('imp-sheet-sel');
+            sheetSel.innerHTML = sheets.map((s, i) => `<option value="${i}">${esc(s)}</option>`).join('');
+            document.getElementById('imp-sheet-row').style.display = sheets.length > 1 ? 'flex' : 'none';
+            loadImportSheet(0);
+            document.getElementById('imp-step-1').style.display = 'none';
+            document.getElementById('imp-step-2').style.display = 'block';
+        } catch(err) {
+            showToast("Could not read file: " + esc(err.message), "error");
+        }
+    };
+    reader.readAsBinaryString(f);
+}
+
 function onImportSheetChange(){loadImportSheet(parseInt(document.getElementById('imp-sheet-sel').value));}
 function loadImportSheet(sheetIdx){
 const sheetName=importWorkbook.SheetNames[sheetIdx];
@@ -1657,10 +1687,27 @@ recordHistory();
 const idCI=parseInt(document.getElementById('imp-id-col').value),nameCI=parseInt(document.getElementById('imp-name-col').value);
 const fRHH=importCurrentRows[0].some(c=>typeof c==='string'&&isNaN(parseFloat(c))&&c.trim()!=='');
 const dataRows=fRHH?importCurrentRows.slice(1):importCurrentRows;
-appData={};appStyles={};let count=0;
+
+const mode = document.querySelector('input[name="imp-mode"]:checked').value;
+if(mode === 'replace') {
+    appData = {};
+    appStyles = {};
+}
+
+let count=0;
 dataRows.forEach(row=>{const id=parseFloat(row[idCI]),nm=String(row[nameCI]??'').trim();if(Number.isInteger(id)&&id>=1&&id<=200&&nm){appData[id]=nm;count++;}});
 closeImportModal();hasUnsavedChanges=true;triggerAutoSave();renderPage(true);showToast(`Imported ${count} entr${count===1?'y':'ies'}`,"success");
 }
+
+function doDirectImport(rows){
+recordHistory();
+const mode=document.querySelector('input[name="imp-mode"]:checked')?.value || 'replace';
+if(mode === 'replace') { appData={}; appStyles={}; }
+let count=0;
+rows.slice(1).forEach(row=>{const id=parseFloat(row[0]),nm=String(row[1]??'').trim();if(Number.isInteger(id)&&id>=1&&id<=200&&nm){appData[id]=nm;count++;}});
+hasUnsavedChanges=true;triggerAutoSave();renderPage(true);showToast(`Imported ${count} entr${count===1?'y':'ies'}`,"success");
+}
+
 function handleKey(e,r,c){
 if(['ArrowUp','ArrowDown','Enter'].includes(e.key)){
 e.preventDefault();const tbl=document.querySelector('.lx-index');let trg=r;
