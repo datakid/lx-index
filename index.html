@@ -672,10 +672,12 @@ html.dark .a4-page{box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255
 .reg-vol-page .vp-name{flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:78%;background:var(--vp-bg);padding-right:4px}
 .reg-vol-page .vp-leader{flex:1 1 auto;min-width:6px;border-bottom:var(--vp-leader-width,1px) var(--vp-leader-style) var(--vp-leader-color);position:relative;top:-4px}
 .reg-vol-page .vp-num{flex:0 0 auto;font-family:var(--vp-num-font);font-size:var(--vp-num-size);font-style:var(--vp-num-style,normal);font-weight:var(--vp-num-weight,normal);color:var(--vp-num-color);padding-left:4px;background:var(--vp-bg)}
-.reg-vol-page.is-dense .vp-items{height:245mm;column-fill:auto;flex:none}
-.reg-vol-page.is-dense .vp-item{height:13.5px;line-height:13.5px;margin-bottom:0;font-size:calc(var(--vp-item-size) * 0.85)}
-.reg-vol-page.is-dense .vp-num{font-size:calc(var(--vp-num-size) * 0.85)}
-.reg-vol-page.is-dense .vp-leader{top:-3px}
+
+.reg-vol-page.is-dense .vp-items{height:245mm !important;column-fill:auto !important;flex:none !important;display:block !important;}
+.reg-vol-page.is-dense .vp-item{height:13.5px !important;line-height:13.5px !important;margin-bottom:0 !important;font-size:calc(var(--vp-item-size) * 0.85) !important;align-items:flex-end !important;white-space:nowrap !important;}
+.reg-vol-page.is-dense .vp-name{white-space:nowrap !important;overflow:hidden !important;text-overflow:clip !important;max-width:82% !important;}
+.reg-vol-page.is-dense .vp-num{font-size:calc(var(--vp-num-size) * 0.85) !important;}
+.reg-vol-page.is-dense .vp-leader{top:-3px !important;}
 
 .reg-theme-antiquarian{--vp-bg:#FAFAF5;--vp-letter-font:'Cormorant',serif;--vp-letter-style:italic;--vp-letter-weight:300;--vp-letter-size:55pt;--vp-letter-color:#1B1814;--vp-divider-width:1.5px;--vp-divider-color:#1B1814;--vp-col-rule:0.5px solid #CECBC4;--vp-item-font:'Cormorant',serif;--vp-item-size:9.5pt;--vp-item-weight:500;--vp-item-color:#000;--vp-leader-style:dotted;--vp-leader-color:#AAA;--vp-num-font:'JetBrains Mono',monospace;--vp-num-size:7.5pt;--vp-num-color:#444}
 .reg-theme-clinical{--vp-bg:#FFFFFF;--vp-letter-font:'IBM Plex Mono',monospace;--vp-letter-style:normal;--vp-letter-weight:500;--vp-letter-size:45pt;--vp-letter-color:#080808;--vp-letter-spacing:.04em;--vp-divider-width:1px;--vp-divider-color:#080808;--vp-col-rule:0.5px solid #EBEBEB;--vp-item-font:'IBM Plex Mono',monospace;--vp-item-size:7.5pt;--vp-item-weight:300;--vp-item-color:#0A0A0A;--vp-leader-style:solid;--vp-leader-color:#E2E2E2;--vp-num-font:'IBM Plex Mono',monospace;--vp-num-size:7pt;--vp-num-color:#AAAAAA}
@@ -685,9 +687,6 @@ html.dark .a4-page{box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255
 .reg-theme-modernist{--vp-bg:#FAFAFA;--vp-letter-font:'Playfair Display',serif;--vp-letter-style:italic;--vp-letter-weight:400;--vp-letter-size:55pt;--vp-letter-color:#0C0C0C;--vp-divider-width:1px;--vp-divider-color:#0C0C0C;--vp-col-rule:0.5px solid #E2E2E2;--vp-item-font:'Playfair Display',serif;--vp-item-size:9pt;--vp-item-weight:400;--vp-item-color:#0C0C0C;--vp-leader-style:solid;--vp-leader-color:#DEDEDE;--vp-num-font:'JetBrains Mono',monospace;--vp-num-size:7pt;--vp-num-color:#BBBBBB}
 .reg-theme-telegraph{--vp-bg:#FAF7EE;--vp-letter-font:'Bebas Neue',sans-serif;--vp-letter-style:normal;--vp-letter-weight:400;--vp-letter-size:55pt;--vp-letter-color:#2A1C08;--vp-letter-spacing:.12em;--vp-divider-width:1px;--vp-divider-color:#2A1C08;--vp-col-rule:0.5px solid #D4C9AE;--vp-item-font:'Barlow Condensed',sans-serif;--vp-item-size:9pt;--vp-item-weight:500;--vp-item-color:#2A1C08;--vp-leader-style:dotted;--vp-leader-color:#C4B088;--vp-num-font:'JetBrains Mono',monospace;--vp-num-size:7.5pt;--vp-num-color:#8A7040}
 .reg-theme-census{--vp-bg:#FFFFFF;--vp-letter-font:'IBM Plex Mono',monospace;--vp-letter-style:normal;--vp-letter-weight:300;--vp-letter-size:36pt;--vp-letter-color:#000;--vp-letter-spacing:.28em;--vp-divider-width:1.5px;--vp-divider-color:#000;--vp-col-rule:0.5px solid #BDBDBD;--vp-item-font:'IBM Plex Mono',monospace;--vp-item-size:6.5pt;--vp-item-weight:400;--vp-item-color:#000;--vp-leader-style:solid;--vp-leader-color:#D0D0D0;--vp-leader-width:0.5px;--vp-num-font:'IBM Plex Mono',monospace;--vp-num-size:6pt;--vp-num-color:#888}
-.reg-theme-nuit{--vp-bg:#18160F;--vp-letter-font:'Playfair Display',serif;--vp-letter-style:italic;--vp-letter-weight:400;--vp-letter-size:55pt;--vp-letter-color:#C8A96E;--vp-letter-spacing:-.02em;--vp-divider-width:1px;--vp-divider-color:#C8A96E;--vp-col-rule:0.5px solid #2E2B20;--vp-item-font:'Cormorant',serif;--vp-item-size:9.5pt;--vp-item-weight:400;--vp-item-color:#D8D2C0;--vp-leader-style:dotted;--vp-leader-color:#3E3A2C;--vp-num-font:'JetBrains Mono',monospace;--vp-num-size:7.5pt;--vp-num-color:#8A7850;--vp-meta-color:rgba(200,169,110,.3)}
-.reg-vol-page mark{background:rgba(0,0,0,.13);color:inherit;border-radius:2px;padding:0 1px}
-.reg-theme-nuit mark{background:rgba(200,169,110,.3)}
 
 .reg-theme-fluid {
     --vp-bg: #FFFFFF;
@@ -748,11 +747,43 @@ html.dark .a4-page{box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255
     font-weight: 600;
 }
 
+.reg-theme-lexicon {
+    --vp-bg: #FFFFFF;
+    --vp-letter-font: 'Playfair Display', serif;
+    --vp-letter-style: normal;
+    --vp-letter-weight: 700;
+    --vp-letter-size: 55pt;
+    --vp-letter-color: #0f172a;
+    --vp-divider-width: 2px;
+    --vp-divider-color: #cbd5e1;
+    --vp-col-rule: 1px solid #f1f5f9;
+    --vp-item-font: 'Inter', sans-serif;
+    --vp-item-size: 8.5pt;
+    --vp-item-weight: 500;
+    --vp-item-color: #1e293b;
+    --vp-leader-style: dotted;
+    --vp-leader-color: #94a3b8;
+    --vp-num-font: 'JetBrains Mono', monospace;
+    --vp-num-size: 8pt;
+    --vp-num-color: #475569;
+}
+.reg-theme-lexicon .vp-items { column-count: 3; column-gap: 8mm; height: 245mm; column-fill: auto; display: block; flex: none; }
+.reg-theme-lexicon .vp-item { display: flex; align-items: baseline; width: 100%; margin-bottom: 6px; page-break-inside: avoid; break-inside: avoid; line-height: 1.35; height: auto; }
+.reg-theme-lexicon .vp-name { white-space: normal; word-wrap: break-word; text-align: left; flex: 0 1 auto; max-width: 82%; background: var(--vp-bg); padding-right: 4px; }
+.reg-theme-lexicon .vp-leader { flex: 1 1 auto; min-width: 6px; border-bottom: 1.5px var(--vp-leader-style) var(--vp-leader-color); position: relative; }
+.reg-theme-lexicon .vp-num { flex: 0 0 auto; padding-left: 4px; background: var(--vp-bg); font-weight: 600; }
+
+.reg-vol-page mark{background:rgba(0,0,0,.13);color:inherit;border-radius:2px;padding:0 1px}
+
 .vol-filters{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
 .filter-btn{padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;border:1px solid var(--panel-bd);background:var(--app-bg);color:var(--text-main);cursor:pointer;border-radius:8px;transition:all .14s}
 .filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
 .filter-btn:not(.active):hover{border-color:var(--accent);}
 
+body:not(.mode-grid) #sel-toolbar { display: none !important; opacity: 0 !important; pointer-events: none !important; }
+body.mode-grid table.lx-index td:not(.cell-selected):not(.smatch):not(:focus) { background-color: transparent !important; transition: box-shadow 0.2s, border-radius 0.2s !important; }
+body.mode-grid table.lx-index tr:nth-child(odd) { background-color: var(--row-odd) !important; transition: background-color 0.3s; }
+body.mode-grid table.lx-index tr:nth-child(even) { background-color: var(--row-even) !important; transition: background-color 0.3s; }
 body.theme-spreadsheet-active table.lx-index tr { background-color: var(--row-even) !important; }
 body.theme-spreadsheet-active table.lx-index td {
     background-color: var(--row-even) !important;
@@ -1028,7 +1059,10 @@ body.mode-registry .reg-vol-page button{display:none !important;}
 <div class="panel-title" onclick="togglePanel('rp1')">1. Registry Filters<span class="arrow">▼</span></div>
 <div class="panel-body"><div class="panel-body-inner">
 <div class="vol-filters" id="reg-vol-filters"></div>
-<button class="filter-btn" id="btn-reg-slots" onclick="toggleRegSlots()" style="width:100%;">Toggle Empty Slots (200)</button>
+<div style="display:flex; gap:8px;">
+<button class="filter-btn active" id="btn-dyn-font" onclick="toggleDynFont()" style="flex:1;">Auto-fit: ON</button>
+<button class="filter-btn" id="btn-reg-slots" onclick="toggleRegSlots()" style="flex:1;">200 Slots: OFF</button>
+</div>
 </div></div>
 </div>
 <div class="panel open" id="rp2">
@@ -1043,7 +1077,7 @@ body.mode-registry .reg-vol-page button{display:none !important;}
 <div class="theme-box reg-theme-btn" onclick="setRegTheme('modernist', this)">Modernist</div>
 <div class="theme-box reg-theme-btn" onclick="setRegTheme('telegraph', this)">Telegraph</div>
 <div class="theme-box reg-theme-btn" onclick="setRegTheme('census', this)">Census</div>
-<div class="theme-box reg-theme-btn" onclick="setRegTheme('nuit', this)">Nuit</div>
+<div class="theme-box reg-theme-btn" onclick="setRegTheme('lexicon', this)">Lexicon</div>
 <div class="theme-box reg-theme-btn" onclick="setRegTheme('fluid', this)">Fluid</div>
 </div>
 </div></div>
@@ -1217,23 +1251,15 @@ body.mode-registry .reg-vol-page button{display:none !important;}
 (function applyCriticalFixes() {
     const styleFix = document.createElement('style');
     styleFix.innerHTML = `
-    /* Enforce toolbar hiding on non-grid pages (UX Fix) */
     body:not(.mode-grid) #sel-toolbar { display: none !important; opacity: 0 !important; pointer-events: none !important; }
-    
-    /* Strict Sandbox: Fix modern theme losing fill visually when switching from spreadsheet */
     body.mode-grid table.lx-index td:not(.cell-selected):not(.smatch):not(:focus) { background-color: transparent !important; transition: box-shadow 0.2s, border-radius 0.2s !important; }
     body.mode-grid table.lx-index tr:nth-child(odd) { background-color: var(--row-odd) !important; transition: background-color 0.3s; }
     body.mode-grid table.lx-index tr:nth-child(even) { background-color: var(--row-even) !important; transition: background-color 0.3s; }
-    
     body.mode-grid.theme-spreadsheet-active table.lx-index tr { background-color: var(--row-even) !important; }
     body.mode-grid.theme-spreadsheet-active table.lx-index td.has-data:not(.cell-selected):not(.smatch):not(:focus) { background-color: var(--row-odd) !important; }
-    
-    /* Registry Fluid Theme PDF Matching (3 columns, perfectly fit, strict single line) */
     .reg-theme-fluid .vp-items { column-count: 3 !important; column-gap: 8mm !important; height: 245mm !important; column-fill: auto !important; display: block !important; flex: none !important; }
     .reg-theme-fluid .vp-item { display: flex !important; align-items: flex-end !important; margin-bottom: 4.5px !important; white-space: nowrap !important; line-height: 1.3 !important; height: auto !important; page-break-inside: avoid; break-inside: avoid; }
     .reg-theme-fluid .vp-name { white-space: nowrap !important; max-width: 82% !important; overflow: hidden !important; text-overflow: clip !important; }
-    
-    /* New Lexicon Theme (Replaces Nuit: 3 columns evenly distributed, utilizes whole page, allows 2 lines dynamically) */
     .reg-theme-lexicon {
         --vp-bg: #FFFFFF;
         --vp-letter-font: 'Playfair Display', serif;
@@ -1273,7 +1299,7 @@ body.mode-registry .reg-vol-page button{display:none !important;}
         height: auto !important;
     }
     .reg-theme-lexicon .vp-name {
-        white-space: normal !important; /* Smart layout: allows 2 lines if preferred */
+        white-space: normal !important;
         word-wrap: break-word !important;
         text-align: left !important;
         flex: 0 1 auto !important;
@@ -1314,7 +1340,7 @@ let undoStack=[],redoStack=[];
 const MAX_HISTORY=50;
 
 let registryData = [];
-let regQ = '', regBooks = new Set(), showAllRegSlots = false;
+let regQ = '', regBooks = new Set(), enableRegistryDynFont = true, showAllRegSlots = false;
 let currentRegTheme = 'antiquarian';
 let regUndoStack = [];
 
@@ -2389,10 +2415,23 @@ function renderRegFilters(allBooks) {
     });
 }
 
+function toggleDynFont() {
+    enableRegistryDynFont = !enableRegistryDynFont;
+    const btn = document.getElementById('btn-dyn-font');
+    if (btn) {
+        btn.classList.toggle('active', enableRegistryDynFont);
+        btn.textContent = 'Auto-fit: ' + (enableRegistryDynFont ? 'ON' : 'OFF');
+    }
+    buildRegistry();
+}
+
 function toggleRegSlots() {
     showAllRegSlots = !showAllRegSlots;
     const btn = document.getElementById('btn-reg-slots');
-    btn.classList.toggle('active', showAllRegSlots);
+    if (btn) {
+        btn.classList.toggle('active', showAllRegSlots);
+        btn.textContent = '200 Slots: ' + (showAllRegSlots ? 'ON' : 'OFF');
+    }
     buildRegistry();
 }
 
@@ -2490,6 +2529,8 @@ function autoFitRegistryNames(page) {
         el.style.fontSize = '';
         el.style.letterSpacing = '';
         
+        if (!enableRegistryDynFont) return;
+
         const isNormalWrap = window.getComputedStyle(el).whiteSpace === 'normal';
         
         if(isNormalWrap) {
@@ -2500,7 +2541,7 @@ function autoFitRegistryNames(page) {
             
             if(scrollW > clientW * 1.5 && clientW > 0) {
                 const ratio = (clientW * 1.5) / scrollW;
-                const baseSize = parseFloat(window.getComputedStyle(el).fontSize) || 11.33; // roughly 8.5pt
+                const baseSize = parseFloat(window.getComputedStyle(el).fontSize) || 11.33;
                 const newSize = Math.max(8, baseSize * ratio);
                 el.style.fontSize = newSize + 'px';
                 el.style.letterSpacing = '-0.3px';
@@ -2569,6 +2610,9 @@ function buildRegistry() {
         
         const page = document.createElement('div');
         page.className = `reg-vol-page reg-theme-${currentRegTheme}`;
+        
+        let renderedCount = showAllRegSlots ? 200 : vol.length;
+        if (renderedCount > 120) page.classList.add('is-dense');
         page.style.position = 'relative';
 
         const delBtn = document.createElement('button');
@@ -2659,16 +2703,16 @@ function scalePreview() {
     if(!document.body.classList.contains('mode-cover')) return;
     const wrapper = document.getElementById('cover-workspace');
     const container= document.getElementById('a4-container');
-if(!wrapper || !container) return;
-const a4Width = 794;
-const a4Height = 1123;
-const padding = window.innerWidth <= 768 ? 40 : 80;
-const availableWidth = wrapper.clientWidth - padding;
-const availableHeight = wrapper.clientHeight - padding;
-const scaleX = availableWidth / a4Width;
-const scaleY = availableHeight / a4Height;
-const scale = Math.min(scaleX, scaleY);
-container.style.transform = `scale(${scale})`;
+    if(!wrapper || !container) return;
+    const a4Width = 794;
+    const a4Height = 1123;
+    const padding = window.innerWidth <= 768 ? 40 : 80;
+    const availableWidth = wrapper.clientWidth - padding;
+    const availableHeight = wrapper.clientHeight - padding;
+    const scaleX = availableWidth / a4Width;
+    const scaleY = availableHeight / a4Height;
+    const scale = Math.min(scaleX, scaleY);
+    container.style.transform = `scale(${scale})`;
 }
 window.addEventListener('resize', scalePreview);
 </script>
