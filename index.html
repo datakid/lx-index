@@ -71,8 +71,8 @@ transform:scale(1.1) rotate(12deg);
 box-shadow:var(--shadow-md);
 border-color:var(--accent);color:var(--accent);
 }
-.view-switcher{display:flex;padding:0 24px 16px;border-bottom:1px solid var(--panel-bd);gap:6px;}
-.vs-btn{flex:1;padding:8px 4px;border-radius:10px;background:var(--app-bg);border:1px solid var(--panel-bd);color:var(--text-main);font-size:11px;font-weight:600;cursor:pointer;transition:all 0.3s;box-shadow:inset 0 1px 2px rgba(0,0,0,0.02);}
+.view-switcher{display:flex;padding:0 24px 16px;border-bottom:1px solid var(--panel-bd);gap:6px;flex-wrap:wrap;}
+.vs-btn{flex:1;min-width:70px;padding:8px 4px;border-radius:10px;background:var(--app-bg);border:1px solid var(--panel-bd);color:var(--text-main);font-size:11px;font-weight:600;cursor:pointer;transition:all 0.3s;box-shadow:inset 0 1px 2px rgba(0,0,0,0.02);}
 .vs-btn:hover{background:var(--panel-solid);border-color:var(--accent);}
 .vs-btn.active{background:linear-gradient(135deg,#eef2ff,#e0e7ff);border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 2px rgba(79,70,229,0.15),var(--shadow-sm);}
 html.dark .vs-btn.active{background:linear-gradient(135deg,#312e81,#3730a3);color:#a5b4fc;border-color:rgba(99,102,241,0.5);}
@@ -325,6 +325,7 @@ html.dark body.mode-grid #main-scroll-container::after, html.dark body.mode-cove
 #index-workspace { justify-content: center; align-items: flex-start; }
 #cover-workspace { justify-content: center; align-items: center; }
 #registry-workspace { flex-direction: column; align-items: center; background: #E7E4DF; padding-top: 40px; }
+#review-workspace { flex-direction: column; align-items: center; justify-content: flex-start; }
 body.mode-registry #main-scroll-container { background: #E7E4DF; }
 
 .page-wrapper{
@@ -803,13 +804,157 @@ body.theme-spreadsheet-active table.lx-index td.has-data:nth-child(odd) {
     font-weight: 400 !important;
 }
 
+#review-workspace .page {
+    background: #FFFFFF;
+    width: 297mm;
+    min-height: 210mm;
+    padding: 12mm 16mm;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+}
+html.dark #review-workspace .page {
+    background: #18181b !important;
+    border: 1px solid #3f3f46;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+#review-workspace .header {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 6mm;
+    padding: 0;
+}
+#review-workspace .org {
+    text-align: right;
+    line-height: 1.6;
+}
+#review-workspace .org-1 {
+    font-size: 13pt;
+    font-weight: 700;
+    color: #1D1D1F;
+    letter-spacing: -0.2px;
+}
+html.dark #review-workspace .org-1 { color: #f4f4f5 !important; }
+#review-workspace .org-2 {
+    font-size: 11pt;
+    font-weight: 500;
+    color: #515154;
+}
+html.dark #review-workspace .org-2 { color: #a1a1aa !important; }
+#review-workspace .org-3 {
+    font-size: 11pt;
+    font-weight: 400;
+    color: #86868B;
+    margin-top: 2px;
+}
+html.dark #review-workspace .org-3 { color: #71717a !important; }
+#review-workspace .title-block {
+    text-align: center;
+    margin-bottom: 8mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+#review-workspace .doc-title {
+    font-size: 20pt;
+    font-weight: 700;
+    color: #1D1D1F;
+    display: block;
+    width: 100%;
+    text-align: center;
+    border: none;
+    background: transparent;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+}
+html.dark #review-workspace .doc-title { color: #f4f4f5 !important; }
+#review-workspace .doc-subtitle {
+    font-size: 11pt;
+    font-weight: 500;
+    color: #86868B;
+    letter-spacing: 0.3em;
+    display: block;
+    width: 100%;
+    text-align: center;
+    border: none;
+    background: transparent;
+}
+html.dark #review-workspace .doc-subtitle { color: #a1a1aa !important; }
+#review-workspace .table-wrapper {
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: #FFFFFF;
+    overflow: hidden;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+html.dark #review-workspace .table-wrapper { border-color: #3f3f46 !important; background: #18181b !important; }
+#review-workspace table {
+    width: 100%;
+    border-collapse: collapse;
+    border-style: hidden;
+    table-layout: fixed;
+    height: 100%;
+}
+#review-workspace th:first-child, #review-workspace td:first-child {
+    width: 14%;
+}
+#review-workspace th, #review-workspace td {
+    border: 1px solid #cbd5e1;
+    text-align: center;
+    word-wrap: break-word;
+}
+html.dark #review-workspace th, html.dark #review-workspace td { border-color: #3f3f46 !important; }
+#review-workspace thead th {
+    background-color: #f8fafc;
+    font-size: 11pt;
+    font-weight: 700;
+    color: #1e293b;
+    padding: 10px 4px;
+    white-space: nowrap;
+}
+html.dark #review-workspace thead th { background-color: #27272a !important; color: #d4d4d8 !important; }
+#review-workspace thead th:first-child {
+    text-align: right;
+    padding-right: 16px;
+    font-size: 11pt;
+    color: #1e293b;
+}
+html.dark #review-workspace thead th:first-child { color: #f4f4f5 !important; }
+#review-workspace tbody td {
+    padding: 8px 4px;
+    font-size: 11pt;
+    font-weight: 500;
+    color: #1e293b;
+}
+html.dark #review-workspace tbody td { color: #e4e4e7 !important; }
+#review-workspace tbody td:first-child {
+    text-align: right;
+    padding-right: 16px;
+    font-weight: 600;
+    background-color: #f8fafc;
+    white-space: nowrap;
+}
+html.dark #review-workspace tbody td:first-child { background-color: #27272a !important; }
+#review-workspace [contenteditable] {
+    outline: none;
+    cursor: text;
+}
+#review-workspace [contenteditable]:focus, #review-workspace [contenteditable]:hover {
+    background-color: rgba(79, 70, 229, 0.05);
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
 @media print{
-@page{size:A4 portrait;margin:0;}
 *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;color-adjust:exact !important;}
 body{background:white;margin:0;padding:0;width:210mm;height:297mm;display:block;overflow:hidden;transition:none;}
 #sidebar,#toast,.mobile-tog,.desk-tog,.top-controls,.overlay,.custom-modal-overlay,.preview-banner,#sel-toolbar,#shortcuts-overlay{display:none !important;}
 
-body.mode-grid #cover-workspace, body.mode-grid #registry-workspace { display:none !important; }
+body.mode-grid #cover-workspace, body.mode-grid #registry-workspace, body.mode-grid #review-workspace { display:none !important; }
 body.mode-grid #main-scroll-container{padding:0;margin:0;display:block;overflow:hidden;width:210mm;height:297mm;background:none;}
 body.mode-grid #index-workspace{padding:0;margin:0;display:block;width:210mm;height:297mm;}
 body.mode-grid #main-scroll-container::before, body.mode-grid #main-scroll-container::after{display:none !important;}
@@ -819,19 +964,24 @@ body.mode-grid table.lx-index{width:100%;table-layout:fixed;border-collapse:sepa
 body.mode-grid table.lx-index td{overflow:hidden !important;white-space:nowrap !important;line-height:1 !important;vertical-align:middle !important;}
 body.mode-grid table.lx-index td.smatch,body.mode-grid table.lx-index td.dup-warn,body.mode-grid table.lx-index td.cell-selected{background:inherit !important;box-shadow:none !important;background-image:none !important;}
 
-body.mode-cover #index-workspace, body.mode-cover #registry-workspace { display:none !important; }
+body.mode-cover #index-workspace, body.mode-cover #registry-workspace, body.mode-cover #review-workspace { display:none !important; }
 body.mode-cover #main-scroll-container{padding:0;margin:0;display:block;width:210mm;height:297mm;background:none;}
 body.mode-cover #cover-workspace{display:block !important;padding:0;overflow:visible;height:auto;}
 body.mode-cover .a4-container{transform:none !important;margin:0 !important;}
 body.mode-cover .a4-page{width:210mm !important;height:297mm !important;box-shadow:none !important;margin:0 !important;page-break-after:always;overflow:hidden !important;}
 
-body.mode-registry #index-workspace, body.mode-registry #cover-workspace { display:none !important; }
+body.mode-registry #index-workspace, body.mode-registry #cover-workspace, body.mode-registry #review-workspace { display:none !important; }
 body.mode-registry #main-scroll-container{padding:0;margin:0;display:block;width:210mm;background:none;overflow:visible;}
 body.mode-registry #registry-workspace{display:block !important;padding:0;margin:0;width:210mm;background:none;overflow:visible;}
 body.mode-registry .reg-shell{display:none !important;}
 body.mode-registry .reg-vol-page{margin:0!important;box-shadow:none!important;page-break-after:always;break-after:page;page-break-inside:avoid;break-inside:avoid;transform:none!important;}
 body.mode-registry .reg-vol-page:last-child{page-break-after:auto;break-after:auto;}
 body.mode-registry .reg-vol-page button{display:none !important;}
+
+body.mode-review #index-workspace, body.mode-review #cover-workspace, body.mode-review #registry-workspace { display:none !important; }
+body.mode-review #main-scroll-container{padding:0;margin:0;display:block;overflow:visible;width:297mm;height:210mm;background:none;}
+body.mode-review #review-workspace{display:block !important;padding:0;margin:0;width:297mm;height:210mm;overflow:visible;}
+body.mode-review #review-page{box-shadow:none!important;border-radius:0!important;width:297mm!important;height:210mm!important;padding:12mm 16mm!important;page-break-after:avoid;break-after:avoid;}
 }
 </style>
 </head>
@@ -854,6 +1004,7 @@ body.mode-registry .reg-vol-page button{display:none !important;}
     <button class="vs-btn active" id="btn-view-index" onclick="switchView('grid')">Index Grid</button>
     <button class="vs-btn" id="btn-view-cover" onclick="switchView('cover')">Cover Page</button>
     <button class="vs-btn" id="btn-view-registry" onclick="switchView('registry')">Registry</button>
+    <button class="vs-btn" id="btn-view-review" onclick="switchView('review')">Review Table</button>
 </div>
 
 <div id="index-panels" class="panels-group">
@@ -1095,6 +1246,31 @@ body.mode-registry .reg-vol-page button{display:none !important;}
 </div>
 </div>
 
+<div id="review-panels" class="panels-group" style="display:none;">
+<div class="scroll-area">
+<div class="panel open" id="revp1">
+<div class="panel-title" onclick="togglePanel('revp1')">1. Table Editing<span class="arrow">▼</span></div>
+<div class="panel-body"><div class="panel-body-inner">
+<button class="btn btn-primary" style="margin-bottom:12px;" onclick="toggleView()" id="btnTranspose">Swap View (Transpose)</button>
+<div class="grid-2" style="margin-bottom:12px;">
+<button class="btn btn-secondary" id="btnAddRow" onclick="addRow()">+ Add Entity</button>
+<button class="btn btn-danger" id="btnRemoveRow" onclick="removeRow()">- Delete Row</button>
+</div>
+<div class="grid-2">
+<button class="btn btn-secondary" id="btnAddCol" onclick="addCol()">+ Add Month</button>
+<button class="btn btn-danger" id="btnRemoveCol" onclick="removeCol()">- Delete Col</button>
+</div>
+</div></div>
+</div>
+<div class="panel open" id="revp2">
+<div class="panel-title" onclick="togglePanel('revp2')">2. Print Document<span class="arrow">▼</span></div>
+<div class="panel-body"><div class="panel-body-inner">
+<button class="btn btn-primary" onclick="doPrint()">🖨️ Print Review PDF</button>
+</div></div>
+</div>
+</div>
+</div>
+
 </aside>
 
 <div id="main-scroll-container">
@@ -1183,6 +1359,79 @@ body.mode-registry .reg-vol-page button{display:none !important;}
         </header>
     </div>
     <div id="reg-content" style="width:100%; display:flex; flex-direction:column; align-items:center;"></div>
+</div>
+
+<div id="review-workspace" class="workspace-area">
+    <div class="page" id="review-page">
+        <div class="header" style="direction:rtl;">
+            <div class="org">
+                <div class="org-1" contenteditable="true">الهيئة العامة للتأمين الصحي</div>
+                <div class="org-2" contenteditable="true">فرع البحيرة — إدارة المنطقة الثانية</div>
+                <div class="org-3" contenteditable="true">صيدلية دمنهور الشاملة 2</div>
+            </div>
+        </div>
+        <div class="title-block" style="direction:rtl;">
+            <span class="doc-title" contenteditable="true">المطابقة الشهرية مع المخازن الطبية واستلام الصور المقابلة</span>
+            <span class="doc-subtitle" contenteditable="true">2026 — 2027</span>
+        </div>
+        <div class="table-wrapper" dir="rtl">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th contenteditable="true">الجهة</th>
+                        <th contenteditable="true">يوليو</th><th contenteditable="true">أغسطس</th><th contenteditable="true">سبتمبر</th>
+                        <th contenteditable="true">أكتوبر</th><th contenteditable="true">نوفمبر</th><th contenteditable="true">ديسمبر</th>
+                        <th contenteditable="true">يناير</th><th contenteditable="true">فبراير</th><th contenteditable="true">مارس</th>
+                        <th contenteditable="true">أبريل</th><th contenteditable="true">مايو</th><th contenteditable="true">يونيو</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td contenteditable="true">العهدة</td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td contenteditable="true">مخزن ( أ )</td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td contenteditable="true">مخزن ( ب )</td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td contenteditable="true">متنوعات</td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td contenteditable="true">منفذ تجاري</td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td contenteditable="true">الوحدة الحسابية</td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                        <td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 </main>
@@ -1294,6 +1543,8 @@ let regQ='',regBooks=new Set(),enableRegistryDynFont=true,showAllRegSlots=false;
 let currentRegTheme='antiquarian';
 let regUndoStack=[];
 
+let isTransposed=false;
+
 const themeDefs={
 modern:{f:"'Inter',system-ui,sans-serif",fw:"400",fz:"13",ro:"edf2f7",re:"ffffff",tx:"0f172a",orad:"16",ow:"1",os:"solid",oc:"#cbd5e1",ihw:"1",ivw:"1",ic:"#f1f5f9",dw:"1",ds:"solid",dc:"#e2e8f0",pm:"8mm"},
 classic:{f:"Arial,Helvetica,sans-serif",fw:"400",fz:"12",ro:"f3f4f6",re:"ffffff",tx:"000000",orad:"0",ow:"1",os:"solid",oc:"#000000",ihw:"1",ivw:"1",ic:"#000000",dw:"2",ds:"solid",dc:"#000000",pm:"8mm"},
@@ -1307,7 +1558,7 @@ function switchView(mode){
 document.querySelectorAll('.vs-btn').forEach(b=>b.classList.remove('active'));
 document.querySelectorAll('.panels-group').forEach(p=>p.style.display='none');
 document.querySelectorAll('.workspace-area').forEach(w=>w.classList.remove('active'));
-document.body.classList.remove('mode-grid','mode-cover','mode-registry');
+document.body.classList.remove('mode-grid','mode-cover','mode-registry','mode-review');
 if(mode==='grid'){
 document.getElementById('btn-view-index').classList.add('active');
 document.getElementById('index-panels').style.display='flex';
@@ -1337,6 +1588,15 @@ document.getElementById('btn-undo').style.display='none';
 document.getElementById('btn-redo').style.display='none';
 syncSelToolbar();
 buildRegistry();
+}else if(mode==='review'){
+document.getElementById('btn-view-review').classList.add('active');
+document.getElementById('review-panels').style.display='flex';
+document.getElementById('review-workspace').classList.add('active');
+document.body.classList.add('mode-review');
+document.getElementById('save-badge-container').style.display='none';
+document.getElementById('btn-undo').style.display='none';
+document.getElementById('btn-redo').style.display='none';
+syncSelToolbar();
 }
 }
 
@@ -1513,7 +1773,17 @@ baseCSS+=`}`;
 el.textContent=baseCSS;
 document.querySelectorAll('.lx-index td:nth-child(even)').forEach(td=>autoFitText(td));
 }
-function doPrint(){if(document.body.classList.contains('mode-grid'))preparePrint();window.print();}
+function doPrint(){
+if(document.body.classList.contains('mode-grid')) preparePrint();
+let ps=document.getElementById('lx-print-page-style');
+if(!ps){ps=document.createElement('style');ps.id='lx-print-page-style';document.head.appendChild(ps);}
+if(document.body.classList.contains('mode-review')){
+ps.textContent='@media print{@page{size:A4 landscape;margin:0;}}';
+}else{
+ps.textContent='@media print{@page{size:A4 portrait;margin:0;}}';
+}
+window.print();
+}
 window.addEventListener('beforeprint',preparePrint);
 function openModal(title,msg,confirmText,confirmClass,action){
 document.getElementById('modal-title').textContent=title;document.getElementById('modal-msg').textContent=msg;
@@ -2163,7 +2433,6 @@ if(td){td.textContent=safeVal;applyCellDomStyle(td,tid);autoFitText(td);}
 });
 hasUnsavedChanges=true;updateStats();triggerAutoSave();showToast(`Pasted ${item.entries.length} cell${item.entries.length>1?'s':''} → cell ${baseId}`,'success');
 }
-
 function toggleClipboardPopover(){
 if(clipboardHistory.length===0){showToast('Clipboard is empty','info');return;}
 const pop=document.getElementById('clip-popover');
@@ -2198,9 +2467,7 @@ list.appendChild(div);
 });
 pop.classList.add('open');
 }
-
 function loadDemoData(){appData={1:"A.Viton",2:"Hydroxychloroquine 200mg",3:"Acyclovir 200",51:"Aubajeo"};appStyles={2:{b:true,c:"#1d4ed8"},152:{b:true,s:"14px",c:"#047857"}};}
-
 const bindCoverText=(inputId,outputId)=>{
 const input=document.getElementById(inputId);
 const output=document.getElementById(outputId);
@@ -2214,16 +2481,13 @@ input.select();
 input.scrollIntoView({behavior:'smooth',block:'center'});
 });
 };
-
 bindCoverText('in-title','out-title');
 bindCoverText('in-subtitle','out-subtitle');
 bindCoverText('in-sub-subtitle','out-sub-subtitle');
 bindCoverText('in-branch','out-branch');
 bindCoverText('in-hero','out-hero');
 bindCoverText('in-footer','out-footer');
-
 const printPage=document.getElementById('print-page');
-
 const coverThemeConfig={
 'theme-editorial':{bg:'#fffcf8',text:'#1a1918',accent:'#d4d0c8'},
 'theme-official':{bg:'#ffffff',text:'#000000',accent:'#000000'},
@@ -2236,7 +2500,6 @@ const coverThemeConfig={
 'theme-academic':{bg:'#ffffff',text:'#000000',accent:'#000000'},
 'theme-kinetic':{bg:'#ffffff',text:'#000000',accent:'#000000'}
 };
-
 const cpCtrlBg=document.getElementById('ctrl-bg');
 const cpCtrlText=document.getElementById('ctrl-text');
 const cpCtrlAccent=document.getElementById('ctrl-accent');
@@ -2244,25 +2507,20 @@ const cpCtrlHero=document.getElementById('ctrl-hero');
 const cpCtrlHeader=document.getElementById('ctrl-header');
 const cpValHero=document.getElementById('val-hero');
 const cpValHeader=document.getElementById('val-header');
-
 function updateCoverColor(type,value){
 printPage.style.setProperty(`--${type}`,value);
 }
-
 cpCtrlBg.addEventListener('input',e=>updateCoverColor('page-bg',e.target.value));
 cpCtrlText.addEventListener('input',e=>updateCoverColor('text-color',e.target.value));
 cpCtrlAccent.addEventListener('input',e=>updateCoverColor('accent-color',e.target.value));
-
 cpCtrlHero.addEventListener('input',e=>{
 printPage.style.setProperty('--hero-scale',e.target.value);
 cpValHero.textContent=Math.round(e.target.value*100)+'%';
 });
-
 cpCtrlHeader.addEventListener('input',e=>{
 printPage.style.setProperty('--header-scale',e.target.value);
 cpValHeader.textContent=Math.round(e.target.value*100)+'%';
 });
-
 function applyThemeDefaults(themeName){
 const config=coverThemeConfig[themeName];
 if(config){
@@ -2280,7 +2538,6 @@ printPage.style.setProperty('--header-scale','1');
 cpValHero.textContent='100%';
 cpValHeader.textContent='100%';
 }
-
 document.querySelectorAll('.cover-theme-btn').forEach(btn=>{
 btn.addEventListener('click',()=>{
 document.querySelectorAll('.cover-theme-btn').forEach(x=>x.classList.remove('active'));
@@ -2290,7 +2547,6 @@ printPage.className='a4-page '+themeClass;
 applyThemeDefaults(themeClass);
 });
 });
-
 function pushToRegistry(){
 if(Object.keys(appData).length===0){showToast("Grid is empty","warn");return;}
 let rawVol=document.getElementById('reg-vol-sel').value;
@@ -2304,7 +2560,6 @@ initRegistryFilters();
 if(document.body.classList.contains('mode-registry'))buildRegistry();
 });
 }
-
 function clearRegistry(){
 openModal("Clear Registry","Are you sure you want to delete ALL registry data (A-Z)?","Clear Registry","btn-danger",()=>{
 registryData=[];
@@ -2314,7 +2569,6 @@ buildRegistry();
 showToast("Registry cleared","success");
 });
 }
-
 function initRegistryFilters(){
 const allBooks=[...new Set(registryData.map(d=>d.book))].sort();
 if(allBooks.length===0){
@@ -2324,7 +2578,6 @@ regBooks=new Set(allBooks);
 }
 renderRegFilters(allBooks);
 }
-
 function renderRegFilters(allBooks){
 const cont=document.getElementById('reg-vol-filters');
 cont.innerHTML='';
@@ -2344,7 +2597,6 @@ buildRegistry();
 cont.appendChild(btn);
 });
 }
-
 function toggleDynFont(){
 enableRegistryDynFont=!enableRegistryDynFont;
 const btn=document.getElementById('btn-dyn-font');
@@ -2354,7 +2606,6 @@ btn.textContent='Auto-fit: '+(enableRegistryDynFont?'ON':'OFF');
 }
 buildRegistry();
 }
-
 function toggleRegSlots(){
 showAllRegSlots=!showAllRegSlots;
 const btn=document.getElementById('btn-reg-slots');
@@ -2364,19 +2615,16 @@ btn.textContent='200 Slots: '+(showAllRegSlots?'ON':'OFF');
 }
 buildRegistry();
 }
-
 function setRegTheme(name,btn){
 currentRegTheme=name;
 document.querySelectorAll('.reg-theme-btn').forEach(b=>b.classList.remove('active'));
 if(btn)btn.classList.add('active');
 buildRegistry();
 }
-
 function runRegSearch(q){
 regQ=q.trim();
 buildRegistry();
 }
-
 function createSafeHighlightNode(text){
 const safeText=String(text);
 const frag=document.createDocumentFragment();
@@ -2413,7 +2661,6 @@ frag.appendChild(document.createTextNode(safeText[i]));
 }
 return frag;
 }
-
 function matchReg(pat,txt){
 if(!pat)return true;
 const p=pat.toLowerCase().replace(/\s+/g,''),t=String(txt).toLowerCase();
@@ -2421,7 +2668,6 @@ let idx=0;
 for(let i=0;i<t.length;i++){if(t[i]===p[idx])idx++;if(idx===p.length)return true;}
 return false;
 }
-
 function deleteRegistryVolume(vol){
 const backup=JSON.parse(JSON.stringify(registryData));
 registryData=registryData.filter(d=>d.book!==vol);
@@ -2434,7 +2680,6 @@ initRegistryFilters();
 buildRegistry();
 setTimeout(()=>{regUndoStack=regUndoStack.filter(u=>u.id!==undoId);},30000);
 }
-
 window.undoRegistryDelete=function(undoId){
 const step=regUndoStack.find(u=>u.id===undoId);
 if(step){
@@ -2446,7 +2691,6 @@ buildRegistry();
 showToast("Volume restoration successful.","success");
 }
 };
-
 function autoFitRegistryNames(page){
 page.querySelectorAll('.vp-name').forEach(el=>{
 el.style.fontSize='';
@@ -2478,7 +2722,6 @@ if(newSize<8)el.style.letterSpacing='-0.5px';
 }
 });
 }
-
 function buildRegistry(){
 const box=document.getElementById('reg-content');
 box.innerHTML='';
@@ -2579,7 +2822,6 @@ setTimeout(()=>{
 document.querySelectorAll('.reg-vol-page').forEach(page=>autoFitRegistryNames(page));
 },50);
 }
-
 function exportRegCSV(){
 if(registryData.length===0){
 showToast("Registry is empty","warn");
@@ -2593,7 +2835,6 @@ a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
 a.download='lx_registry_export.csv';
 document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
-
 function scalePreview(){
 if(!document.body.classList.contains('mode-cover'))return;
 const wrapper=document.getElementById('cover-workspace');
@@ -2610,6 +2851,127 @@ const scale=Math.min(scaleX,scaleY);
 container.style.transform=`scale(${scale})`;
 }
 window.addEventListener('resize',scalePreview);
+
+function getTableData() {
+    const rows = Array.from(document.querySelectorAll('#dataTable tr'));
+    return rows.map(row => Array.from(row.children).map(cell => cell.textContent));
+}
+function renderTable(data) {
+    const thead = document.querySelector('#dataTable thead');
+    const tbody = document.querySelector('#dataTable tbody');
+    thead.innerHTML = '';
+    tbody.innerHTML = '';
+    data.forEach((rowData, rowIndex) => {
+        const tr = document.createElement('tr');
+        rowData.forEach((cellData, colIndex) => {
+            const cell = document.createElement(rowIndex === 0 ? 'th' : 'td');
+            cell.contentEditable = "true";
+            cell.textContent = cellData;
+            if (rowIndex === 0) {
+                cell.style.cssText = "border: 1px solid var(--panel-bd); text-align: center; padding: 10px 4px; font-size: 11pt; font-weight: 700; outline:none;";
+                if (colIndex === 0) {
+                    cell.style.textAlign = "right";
+                    cell.style.paddingRight = "16px";
+                    cell.style.width = "14%";
+                }
+            } else {
+                cell.style.cssText = "border: 1px solid var(--panel-bd); text-align: center; padding: 8px 4px; font-size: 11pt; outline:none;";
+                if (colIndex === 0) {
+                    cell.style.textAlign = "right";
+                    cell.style.paddingRight = "16px";
+                    cell.style.fontWeight = "600";
+                    cell.style.backgroundColor = "var(--row-odd)";
+                    cell.style.whiteSpace = "nowrap";
+                }
+            }
+            tr.appendChild(cell);
+        });
+        if (rowIndex === 0) {
+            thead.appendChild(tr);
+        } else {
+            tbody.appendChild(tr);
+        }
+    });
+    updateButtons();
+}
+function toggleView() {
+    const data = getTableData();
+    const transposed = data[0].map((_, colIndex) => data.map(row => row[colIndex]));
+    isTransposed = !isTransposed;
+    renderTable(transposed);
+}
+function updateButtons() {
+    const btnRowAdd = document.getElementById('btnAddRow');
+    const btnColAdd = document.getElementById('btnAddCol');
+    if (btnRowAdd) btnRowAdd.innerText = isTransposed ? "+ Add Month" : "+ Add Entity";
+    if (btnColAdd) btnColAdd.innerText = isTransposed ? "+ Add Entity" : "+ Add Month";
+}
+function addRow() {
+    const tbody = document.querySelector('#dataTable tbody');
+    const currentRows = tbody.children.length;
+    const limit = isTransposed ? 12 : 10;
+    if (currentRows >= limit) {
+        showToast(`Maximum ${limit} ${isTransposed ? 'months' : 'entities'} allowed.`, "warn");
+        return;
+    }
+    const tr = document.createElement('tr');
+    const colCount = document.querySelector('#dataTable thead tr').children.length;
+    for(let i=0; i<colCount; i++) {
+        const td = document.createElement('td');
+        td.contentEditable = "true";
+        td.style.cssText = "border: 1px solid var(--panel-bd); text-align: center; padding: 8px 4px; font-size: 11pt; outline:none;";
+        if(i === 0) {
+            td.textContent = isTransposed ? "شهر جديد" : "جهة جديدة";
+            td.style.textAlign = "right";
+            td.style.paddingRight = "16px";
+            td.style.fontWeight = "600";
+            td.style.backgroundColor = "var(--row-odd)";
+            td.style.whiteSpace = "nowrap";
+        }
+        tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+}
+function removeRow() {
+    const tbody = document.querySelector('#dataTable tbody');
+    if (tbody.children.length > 1) {
+        tbody.lastElementChild.remove();
+    }
+}
+function addCol() {
+    const theadRow = document.querySelector('#dataTable thead tr');
+    const currentCols = theadRow.children.length - 1; 
+    const limit = isTransposed ? 10 : 12;
+    if (currentCols >= limit) {
+        showToast(`Maximum ${limit} ${isTransposed ? 'entities' : 'months'} allowed.`, "warn");
+        return;
+    }
+    const th = document.createElement('th');
+    th.contentEditable = "true";
+    th.style.cssText = "border: 1px solid var(--panel-bd); text-align: center; padding: 10px 4px; font-size: 11pt; font-weight: 700; outline:none;";
+    th.textContent = isTransposed ? "جهة جديدة" : "شهر جديد";
+    theadRow.appendChild(th);
+    const tbodyRows = document.querySelectorAll('#dataTable tbody tr');
+    tbodyRows.forEach(row => {
+        const td = document.createElement('td');
+        td.contentEditable = "true";
+        td.style.cssText = "border: 1px solid var(--panel-bd); text-align: center; padding: 8px 4px; font-size: 11pt; outline:none;";
+        row.appendChild(td);
+    });
+}
+function removeCol() {
+    const rows = document.querySelectorAll('#dataTable tr');
+    if (rows[0].children.length > 2) {
+        rows.forEach(row => row.lastElementChild.remove());
+    }
+}
+
+document.getElementById('dataTable').addEventListener('paste', function(e) {
+    e.preventDefault();
+    let text = (e.originalEvent || e).clipboardData.getData('text/plain');
+    document.execCommand('insertText', false, text);
+});
+
 </script>
 </body>
 </html>
