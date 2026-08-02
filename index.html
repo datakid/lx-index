@@ -1550,6 +1550,7 @@ let registryData=[];
 let regQ='',regBooks=new Set(),enableRegistryDynFont=true,showAllRegSlots=false;
 let currentRegTheme='antiquarian';
 let regUndoStack=[];
+let reviewUndoStack=[];
 
 let isTransposed=false;
 let reviewModel={
@@ -1941,6 +1942,7 @@ initThm();
 loadFromLocal();
 loadVersions();
 loadClipboardHistory();
+loadReviewState();
 if(Object.keys(appData).length===0)loadDemoData();
 if(!loadSettings())applyStyle('modern',{snapshot:false});
 else{
@@ -1951,7 +1953,7 @@ renderPage();
 initPanels();
 updateUndoRedoUI();
 scalePreview();
-applyThemeDefaults('theme-editorial');
+if(!loadCoverState())applyThemeDefaults('theme-editorial');
 initRegistryFilters();
 renderReviewTable();
 };
@@ -2691,10 +2693,60 @@ list.appendChild(div);
 pop.classList.add('open');
 }
 function loadDemoData(){appData={1:"A.Viton",2:"Hydroxychloroquine 200mg",3:"Acyclovir 200",51:"Aubajeo"};appStyles={2:{b:true,c:"#1d4ed8"},152:{b:true,s:"14px",c:"#047857"}};}
+let coverSaveTimeout;
+function triggerCoverAutoSave(){clearTimeout(coverSaveTimeout);coverSaveTimeout=setTimeout(saveCoverState,600);}
+function saveCoverState(){
+const activeBtn=document.querySelector('.cover-theme-btn.active');
+const state={
+theme:activeBtn?activeBtn.dataset.theme:'theme-editorial',
+title:document.getElementById('in-title').value,
+subtitle:document.getElementById('in-subtitle').value,
+subSubtitle:document.getElementById('in-sub-subtitle').value,
+branch:document.getElementById('in-branch').value,
+hero:document.getElementById('in-hero').value,
+footer:document.getElementById('in-footer').value,
+bg:cpCtrlBg.value,
+text:cpCtrlText.value,
+accent:cpCtrlAccent.value,
+heroScale:cpCtrlHero.value,
+headerScale:cpCtrlHeader.value
+};
+safeSetItem('lx_cover_v4',JSON.stringify(state));
+}
+function loadCoverState(){
+try{
+const raw=localStorage.getItem('lx_cover_v4');
+if(!raw)return false;
+const saved=JSON.parse(raw);
+const theme=saved.theme||'theme-editorial';
+document.querySelectorAll('.cover-theme-btn').forEach(b=>b.classList.toggle('active',b.dataset.theme===theme));
+printPage.className='a4-page '+theme;
+const setField=(inId,outId,val)=>{document.getElementById(inId).value=val??'';document.getElementById(outId).textContent=val??'';};
+setField('in-title','out-title',saved.title);
+setField('in-subtitle','out-subtitle',saved.subtitle);
+setField('in-sub-subtitle','out-sub-subtitle',saved.subSubtitle);
+setField('in-branch','out-branch',saved.branch);
+setField('in-hero','out-hero',saved.hero);
+setField('in-footer','out-footer',saved.footer);
+if(saved.bg)cpCtrlBg.value=saved.bg;
+if(saved.text)cpCtrlText.value=saved.text;
+if(saved.accent)cpCtrlAccent.value=saved.accent;
+cpCtrlHero.value=saved.heroScale||'1';
+cpCtrlHeader.value=saved.headerScale||'1';
+updateCoverColor('page-bg',cpCtrlBg.value);
+updateCoverColor('text-color',cpCtrlText.value);
+updateCoverColor('accent-color',cpCtrlAccent.value);
+printPage.style.setProperty('--hero-scale',cpCtrlHero.value);
+printPage.style.setProperty('--header-scale',cpCtrlHeader.value);
+cpValHero.textContent=Math.round(cpCtrlHero.value*100)+'%';
+cpValHeader.textContent=Math.round(cpCtrlHeader.value*100)+'%';
+return true;
+}catch(e){return false;}
+}
 const bindCoverText=(inputId,outputId)=>{
 const input=document.getElementById(inputId);
 const output=document.getElementById(outputId);
-input.addEventListener('input',(e)=>{output.textContent=e.target.value;});
+input.addEventListener('input',(e)=>{output.textContent=e.target.value;triggerCoverAutoSave();});
 output.classList.add('cover-editable-link');
 output.title="Click to edit";
 output.addEventListener('click',()=>{
@@ -2733,16 +2785,18 @@ const cpValHeader=document.getElementById('val-header');
 function updateCoverColor(type,value){
 printPage.style.setProperty(`--${type}`,value);
 }
-cpCtrlBg.addEventListener('input',e=>updateCoverColor('page-bg',e.target.value));
-cpCtrlText.addEventListener('input',e=>updateCoverColor('text-color',e.target.value));
-cpCtrlAccent.addEventListener('input',e=>updateCoverColor('accent-color',e.target.value));
+cpCtrlBg.addEventListener('input',e=>{updateCoverColor('page-bg',e.target.value);triggerCoverAutoSave();});
+cpCtrlText.addEventListener('input',e=>{updateCoverColor('text-color',e.target.value);triggerCoverAutoSave();});
+cpCtrlAccent.addEventListener('input',e=>{updateCoverColor('accent-color',e.target.value);triggerCoverAutoSave();});
 cpCtrlHero.addEventListener('input',e=>{
 printPage.style.setProperty('--hero-scale',e.target.value);
 cpValHero.textContent=Math.round(e.target.value*100)+'%';
+triggerCoverAutoSave();
 });
 cpCtrlHeader.addEventListener('input',e=>{
 printPage.style.setProperty('--header-scale',e.target.value);
 cpValHeader.textContent=Math.round(e.target.value*100)+'%';
+triggerCoverAutoSave();
 });
 function applyThemeDefaults(themeName){
 const config=coverThemeConfig[themeName];
@@ -2768,6 +2822,7 @@ btn.classList.add('active');
 const themeClass=btn.dataset.theme;
 printPage.className='a4-page '+themeClass;
 applyThemeDefaults(themeClass);
+saveCoverState();
 });
 });
 function pushToRegistry(){
@@ -3111,6 +3166,27 @@ container.style.transform=`scale(${scale})`;
 }
 window.addEventListener('resize',scalePreview);
 
+function saveReviewState(){
+safeSetItem('lx_review_v4',JSON.stringify({model:reviewModel,isTransposed}));
+}
+function loadReviewState(){
+try{
+const raw=localStorage.getItem('lx_review_v4');
+if(!raw)return false;
+const saved=JSON.parse(raw);
+if(saved.model&&Array.isArray(saved.model.headers)&&Array.isArray(saved.model.rows)){
+reviewModel=saved.model;
+isTransposed=!!saved.isTransposed;
+return true;
+}
+return false;
+}catch(e){return false;}
+}
+let reviewSaveTimeout;
+function triggerReviewAutoSave(){
+clearTimeout(reviewSaveTimeout);
+reviewSaveTimeout=setTimeout(()=>{syncReviewModelFromDom();saveReviewState();},600);
+}
 function syncReviewModelFromDom(){
 const headTr=document.querySelector('#dataTable thead tr');
 if(headTr)reviewModel.headers=Array.from(headTr.children).map(c=>c.textContent);
@@ -3142,6 +3218,7 @@ function renderReviewTable() {
         tbody.appendChild(tr);
     });
     updateButtons();
+    saveReviewState();
 }
 function toggleView() {
     syncReviewModelFromDom();
@@ -3171,9 +3248,29 @@ function addRow() {
     reviewModel.rows.push(newRow);
     renderReviewTable();
 }
+function reviewUndoToast(backupModel,label){
+const undoId=Date.now();
+reviewUndoStack.push({id:undoId,model:backupModel});
+const btnHtml=`<div style="display:flex;align-items:center;width:100%;"><span class="toast-icon" style="color:#3b82f6;background:#3b82f620;padding:6px;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;margin-right:12px;">ℹ</span><span style="letter-spacing:0.2px;">${esc(label)}</span><button onclick="undoReviewDelete(${undoId})" style="background:var(--panel-solid);border:1px solid var(--panel-bd);border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-main);margin-left:auto;box-shadow:var(--shadow-sm);transition:all 0.2s;">Undo</button></div>`;
+showToast(btnHtml,'info');
+setTimeout(()=>{reviewUndoStack=reviewUndoStack.filter(u=>u.id!==undoId);},30000);
+}
+window.undoReviewDelete=function(undoId){
+const step=reviewUndoStack.find(u=>u.id===undoId);
+if(step){
+reviewModel=step.model;
+reviewUndoStack=reviewUndoStack.filter(u=>u.id!==undoId);
+renderReviewTable();
+showToast("Restored.","success");
+}
+};
 function removeRow() {
     syncReviewModelFromDom();
-    if (reviewModel.rows.length > 1){reviewModel.rows.pop();renderReviewTable();}
+    if (reviewModel.rows.length <= 1) return;
+    const backupModel=JSON.parse(JSON.stringify(reviewModel));
+    reviewModel.rows.pop();
+    renderReviewTable();
+    reviewUndoToast(backupModel,'Row deleted.');
 }
 function addCol() {
     syncReviewModelFromDom();
@@ -3189,17 +3286,21 @@ function addCol() {
 }
 function removeCol() {
     syncReviewModelFromDom();
-    if (reviewModel.headers.length > 2){
-        reviewModel.headers.pop();
-        reviewModel.rows.forEach(row=>row.pop());
-        renderReviewTable();
-    }
+    if (reviewModel.headers.length <= 2) return;
+    const backupModel=JSON.parse(JSON.stringify(reviewModel));
+    reviewModel.headers.pop();
+    reviewModel.rows.forEach(row=>row.pop());
+    renderReviewTable();
+    reviewUndoToast(backupModel,'Column deleted.');
 }
 
 document.getElementById('dataTable').addEventListener('paste', function(e) {
     e.preventDefault();
     let text = (e.originalEvent || e).clipboardData.getData('text/plain');
     document.execCommand('insertText', false, text);
+});
+document.getElementById('dataTable').addEventListener('input', function(){
+    triggerReviewAutoSave();
 });
 
 </script>
