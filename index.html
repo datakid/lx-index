@@ -359,6 +359,7 @@ background-color: transparent;
 }
 table.lx-index tr:last-child td{border-bottom:none;}
 table.lx-index td:last-child{border-right:none !important;}
+body.is-drag-selecting table.lx-index{user-select:none;-webkit-user-select:none;}
 table.lx-index td:nth-child(odd){
 width:28px;text-align:right;padding-right:6px;padding-left:0;
 font-weight:700;opacity:0.3;user-select:none;font-size:10.5px;
@@ -995,6 +996,24 @@ body.mode-review #main-scroll-container{padding:0;margin:0;display:block;overflo
 body.mode-review #review-workspace{display:block !important;padding:0;margin:0;width:297mm;height:210mm;overflow:visible;}
 body.mode-review #review-page{box-shadow:none!important;border-radius:0!important;width:297mm!important;height:210mm!important;padding:12mm 16mm!important;page-break-after:avoid;break-after:avoid;}
 }
+body:not(.mode-grid) #sel-toolbar { display: none !important; opacity: 0 !important; pointer-events: none !important; }
+body.mode-grid table.lx-index td:not(.cell-selected):not(.smatch):not(:focus) { background-color: transparent !important; transition: box-shadow 0.2s, border-radius 0.2s !important; }
+body.mode-grid table.lx-index tr:nth-child(odd) { background-color: var(--row-odd) !important; transition: background-color 0.3s; }
+body.mode-grid table.lx-index tr:nth-child(even) { background-color: var(--row-even) !important; transition: background-color 0.3s; }
+body.mode-grid.theme-spreadsheet-active table.lx-index tr { background-color: var(--row-even) !important; }
+body.mode-grid.theme-spreadsheet-active table.lx-index td.has-data:not(.cell-selected):not(.smatch):not(:focus) { background-color: var(--row-odd) !important; }
+table.lx-index td:nth-child(even) { text-overflow: ellipsis !important; overflow: hidden !important; white-space: nowrap !important; word-wrap: normal !important; word-break: keep-all !important; }
+table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: visible !important; }
+.reg-vol-page .vp-name { text-overflow: ellipsis !important; overflow: hidden !important; }
+.reg-theme-fluid .vp-items { column-count: 3 !important; column-gap: 8mm !important; height: 245mm !important; column-fill: auto !important; display: block !important; flex: none !important; }
+.reg-theme-fluid .vp-item { display: flex !important; align-items: flex-end !important; margin-bottom: 4.5px !important; white-space: nowrap !important; line-height: 1.3 !important; height: auto !important; page-break-inside: avoid; break-inside: avoid; }
+.reg-theme-fluid .vp-name { white-space: nowrap !important; max-width: 82% !important; overflow: hidden !important; text-overflow: ellipsis !important; }
+.reg-theme-lexicon { --vp-bg: #FFFFFF; --vp-letter-font: 'Playfair Display', serif; --vp-letter-style: normal; --vp-letter-weight: 700; --vp-letter-size: 55pt; --vp-letter-color: #0f172a; --vp-divider-width: 2px; --vp-divider-color: #cbd5e1; --vp-col-rule: 1px solid #f1f5f9; --vp-item-font: 'Inter', sans-serif; --vp-item-size: 8.5pt; --vp-item-weight: 500; --vp-item-color: #1e293b; --vp-leader-style: dotted; --vp-leader-color: #94a3b8; --vp-num-font: 'JetBrains Mono', monospace; --vp-num-size: 8pt; --vp-num-color: #475569; }
+.reg-theme-lexicon .vp-items { column-count: 3 !important; column-gap: 8mm !important; height: 245mm !important; column-fill: auto !important; display: block !important; flex: none !important; }
+.reg-theme-lexicon .vp-item { display: flex !important; align-items: baseline !important; width: 100% !important; margin-bottom: 6px !important; page-break-inside: avoid !important; break-inside: avoid !important; line-height: 1.35 !important; height: auto !important; }
+.reg-theme-lexicon .vp-name { white-space: normal !important; overflow-wrap: anywhere !important; word-break: break-word !important; text-align: left !important; flex: 0 1 auto !important; max-width: 82% !important; background: var(--vp-bg) !important; padding-right: 4px !important; }
+.reg-theme-lexicon .vp-leader { flex: 1 1 auto !important; min-width: 6px !important; border-bottom: 1.5px var(--vp-leader-style) var(--vp-leader-color) !important; position: relative !important; }
+.reg-theme-lexicon .vp-num { flex: 0 0 auto !important; padding-left: 4px !important; background: var(--vp-bg) !important; font-weight: 600 !important; }
 </style>
 </head>
 <body class="mode-grid">
@@ -1060,7 +1079,7 @@ body.mode-review #review-page{box-shadow:none!important;border-radius:0!importan
 <div class="ctrl-group"><span class="ctrl-label">Specific Color</span>
 <div class="uci" style="width:110px;"><span class="hash">#</span><input type="text" id="cell-hex" maxlength="6" oninput="previewCellHex()" onchange="commitCellHex()" placeholder="Auto"><input type="color" id="cell-color" oninput="previewCellCol()" onchange="commitCellCol()"></div>
 </div>
-<button id="btn-copy-fmt" class="btn btn-secondary" style="margin-top:16px;" onmousedown="event.preventDefault();copyFormat()">🖌️ Paint Style</button>
+<button id="btn-copy-fmt" class="btn btn-secondary" style="margin-top:16px;" onmousedown="event.preventDefault();copyFormat(event)">🖌️ Paint Style</button>
 <button class="btn btn-secondary" style="margin-top:10px;" onclick="clearCellFormat()">🧹 Clear Style</button>
 </div></div>
 </div>
@@ -1313,7 +1332,7 @@ body.mode-review #review-page{box-shadow:none!important;border-radius:0!importan
 <button class="sel-btn" id="stb-italic" onmousedown="event.preventDefault();toggleStyle('italic')" title="Italic (Ctrl+I)"><i>I</i></button>
 <button class="sel-btn" id="stb-under" onmousedown="event.preventDefault();toggleStyle('underline')" title="Underline (Ctrl+U)" style="text-decoration:underline;">U</button>
 <div class="sep"></div>
-<button class="sel-btn" id="stb-paint" onmousedown="event.preventDefault();copyFormat()" title="Paint Style"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg></button>
+<button class="sel-btn" id="stb-paint" onmousedown="event.preventDefault();copyFormat(event)" title="Paint Style"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg></button>
 <div class="sep"></div>
 <button class="sel-btn" id="stb-cut" onmousedown="event.preventDefault();cutSelectionBlock()" title="Cut block (Ctrl+X)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></button>
 <button class="sel-btn" id="stb-copy" onmousedown="event.preventDefault();copySelectionBlock()" title="Copy block (Ctrl+C)"><svg viewBox="0 0 14 14" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="8" height="9" rx="1.5"/><path d="M2 10V2.5A1.5 1.5 0 0 1 3.5 1H10"/></svg></button>
@@ -1511,44 +1530,14 @@ body.mode-review #review-page{box-shadow:none!important;border-radius:0!importan
 </div>
 </div>
 <script>
-(function applyCriticalFixes(){
-const styleFix=document.createElement('style');
-styleFix.innerHTML=`
-body:not(.mode-grid) #sel-toolbar { display: none !important; opacity: 0 !important; pointer-events: none !important; }
-body.mode-grid table.lx-index td:not(.cell-selected):not(.smatch):not(:focus) { background-color: transparent !important; transition: box-shadow 0.2s, border-radius 0.2s !important; }
-body.mode-grid table.lx-index tr:nth-child(odd) { background-color: var(--row-odd) !important; transition: background-color 0.3s; }
-body.mode-grid table.lx-index tr:nth-child(even) { background-color: var(--row-even) !important; transition: background-color 0.3s; }
-body.mode-grid.theme-spreadsheet-active table.lx-index tr { background-color: var(--row-even) !important; }
-body.mode-grid.theme-spreadsheet-active table.lx-index td.has-data:not(.cell-selected):not(.smatch):not(:focus) { background-color: var(--row-odd) !important; }
-table.lx-index td:nth-child(even) { text-overflow: ellipsis !important; overflow: hidden !important; white-space: nowrap !important; word-wrap: normal !important; word-break: keep-all !important; }
-table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: visible !important; }
-.reg-vol-page .vp-name { text-overflow: ellipsis !important; overflow: hidden !important; }
-.reg-theme-fluid .vp-items { column-count: 3 !important; column-gap: 8mm !important; height: 245mm !important; column-fill: auto !important; display: block !important; flex: none !important; }
-.reg-theme-fluid .vp-item { display: flex !important; align-items: flex-end !important; margin-bottom: 4.5px !important; white-space: nowrap !important; line-height: 1.3 !important; height: auto !important; page-break-inside: avoid; break-inside: avoid; }
-.reg-theme-fluid .vp-name { white-space: nowrap !important; max-width: 82% !important; overflow: hidden !important; text-overflow: ellipsis !important; }
-.reg-theme-lexicon { --vp-bg: #FFFFFF; --vp-letter-font: 'Playfair Display', serif; --vp-letter-style: normal; --vp-letter-weight: 700; --vp-letter-size: 55pt; --vp-letter-color: #0f172a; --vp-divider-width: 2px; --vp-divider-color: #cbd5e1; --vp-col-rule: 1px solid #f1f5f9; --vp-item-font: 'Inter', sans-serif; --vp-item-size: 8.5pt; --vp-item-weight: 500; --vp-item-color: #1e293b; --vp-leader-style: dotted; --vp-leader-color: #94a3b8; --vp-num-font: 'JetBrains Mono', monospace; --vp-num-size: 8pt; --vp-num-color: #475569; }
-.reg-theme-lexicon .vp-items { column-count: 3 !important; column-gap: 8mm !important; height: 245mm !important; column-fill: auto !important; display: block !important; flex: none !important; }
-.reg-theme-lexicon .vp-item { display: flex !important; align-items: baseline !important; width: 100% !important; margin-bottom: 6px !important; page-break-inside: avoid !important; break-inside: avoid !important; line-height: 1.35 !important; height: auto !important; }
-.reg-theme-lexicon .vp-name { white-space: normal !important; overflow-wrap: anywhere !important; word-break: break-word !important; text-align: left !important; flex: 0 1 auto !important; max-width: 82% !important; background: var(--vp-bg) !important; padding-right: 4px !important; }
-.reg-theme-lexicon .vp-leader { flex: 1 1 auto !important; min-width: 6px !important; border-bottom: 1.5px var(--vp-leader-style) var(--vp-leader-color) !important; position: relative !important; }
-.reg-theme-lexicon .vp-num { flex: 0 0 auto !important; padding-left: 4px !important; background: var(--vp-bg) !important; font-weight: 600 !important; }
-`;
-document.head.appendChild(styleFix);
-window.addEventListener('DOMContentLoaded',()=>{
-const btns=document.querySelectorAll('.reg-theme-btn');
-btns.forEach(b=>{
-if(b.textContent.trim()==='Nuit'||(b.getAttribute('onclick')||'').includes('nuit')){
-b.textContent='Lexicon';b.setAttribute('onclick',"setRegTheme('lexicon', this)");
-}
-});
-});
-})();
-
 const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const clampText=t=>t?String(t).slice(0,100):'';
 function safeSetItem(k,v){try{localStorage.setItem(k,v);return true;}catch(e){showToast("Storage quota exceeded. Clear some data.","error");return false;}}
 
 let appData={},appStyles={},saveTimeout,activeCellId=null,clipboardHistory=[],dupWarned=false,qStr='',versions=[],hasUnsavedChanges=false,modalConfirmAction=null,backupData=null,backupStyles=null,isPreviewing=false,isPainting=false,selectedCells=new Set(),lastClickedId=null,importWorkbook=null,importCurrentRows=null,importHeaders=null;
+let rangeAnchorId=null,isDragSelecting=false,paintSticky=false,paintStrokeStarted=false;
+function idToRowCol(id){return{row:((id-1)%50)+1,col:Math.floor((id-1)/50)};}
+function rowColToId(row,col){return col*50+row;}
 let undoStack=[],redoStack=[];
 const MAX_HISTORY=50;
 
@@ -1735,7 +1724,7 @@ setTimeout(()=>{if(selectedCells.size===0&&activeCellId===null)bar.style.display
 }
 
 function getTargetIds(){if(selectedCells.size>0)return[...selectedCells];if(activeCellId!==null)return[activeCellId];return[];}
-function clearMultiSelect(){selectedCells.forEach(id=>{const td=document.querySelector(`td[data-id="${id}"]`);if(td)td.classList.remove('cell-selected');});selectedCells.clear();}
+function clearMultiSelect(){selectedCells.forEach(id=>{const td=document.querySelector(`td[data-id="${id}"]`);if(td)td.classList.remove('cell-selected');});selectedCells.clear();rangeAnchorId=null;}
 function updateMultiSelectPanel(){
 const count=selectedCells.size;if(count===0){disableCellPanel();return;}
 const panel=document.getElementById('cell-panel');
@@ -1757,10 +1746,20 @@ if(paintBtn){paintBtn.disabled=true;paintBtn.style.opacity='0.4';}
 syncSelToolbar();
 }
 function rangeSelect(fromId,toId){
-const lo=Math.min(fromId,toId),hi=Math.max(fromId,toId);
+const a=idToRowCol(fromId),b=idToRowCol(toId);
+const rLo=Math.min(a.row,b.row),rHi=Math.max(a.row,b.row);
+const cLo=Math.min(a.col,b.col),cHi=Math.max(a.col,b.col);
 clearMultiSelect();
-for(let id=lo;id<=hi;id++){selectedCells.add(id);const td=document.querySelector(`td[data-id="${id}"]`);if(td)td.classList.add('cell-selected');}
-lastClickedId=toId;updateMultiSelectPanel();
+for(let col=cLo;col<=cHi;col++){
+for(let row=rLo;row<=rHi;row++){
+const id=rowColToId(row,col);
+selectedCells.add(id);
+const td=document.querySelector(`td[data-id="${id}"]`);
+if(td)td.classList.add('cell-selected');
+}
+}
+rangeAnchorId=fromId;
+updateMultiSelectPanel();
 }
 function getPrintPadMm(){const map={"4mm":4,"8mm":8,"12mm":12};return map[document.getElementById('p-margin').value]??8;}
 function preparePrint(){
@@ -1861,11 +1860,30 @@ lastClickedId=1;updateMultiSelectPanel();showToast('All 200 cells selected','inf
 const ids=getTargetIds();
 if(k==='c'){if(ids.length){e.preventDefault();copySelectionBlock();return;}}
 if(k==='x'){if(ids.length){e.preventDefault();cutSelectionBlock();return;}}
-if(k==='v'){if(clipboardHistory.length>0){e.preventDefault();pasteBlock();return;}}
+if(k==='v'){if(document.activeElement&&document.activeElement.isContentEditable)return;if(clipboardHistory.length>0){e.preventDefault();pasteBlock();return;}}
 if(!ids.length||inEdit)return;
 if(k==='b'){e.preventDefault();toggleStyle('bold');return;}
 if(k==='i'){e.preventDefault();toggleStyle('italic');return;}
 if(k==='u'){e.preventDefault();toggleStyle('underline');return;}
+}
+});
+document.addEventListener('mousemove',(e)=>{
+if(e.buttons!==1)return;
+if(!isDragSelecting&&!isPainting)return;
+const td=e.target.closest('td[data-id]');
+if(!td)return;
+const hoverId=parseInt(td.dataset.id,10);
+if(isPainting){applyPaint(hoverId,td);return;}
+if(isDragSelecting&&rangeAnchorId!==null){rangeSelect(rangeAnchorId,hoverId);lastClickedId=hoverId;}
+});
+document.addEventListener('mouseup',()=>{
+if(isDragSelecting){isDragSelecting=false;document.body.classList.remove('is-drag-selecting');}
+if(isPainting&&paintStrokeStarted){
+paintStrokeStarted=false;
+hasUnsavedChanges=true;triggerAutoSave();
+showToast("Style applied","success");
+document.body.classList.remove('is-drag-selecting');
+if(!paintSticky)cancelPaintMode();
 }
 });
 const SHORTCUTS=[
@@ -1906,6 +1924,7 @@ window.onload=()=>{
 initThm();
 loadFromLocal();
 loadVersions();
+loadClipboardHistory();
 if(Object.keys(appData).length===0)loadDemoData();
 if(!loadSettings())applyStyle('modern',{snapshot:false});
 else{
@@ -1958,6 +1977,14 @@ setSaveStatus('failed');
 },600);
 }
 function loadVersions(){try{const v=localStorage.getItem('lx_versions_v4');if(v)versions=JSON.parse(v);}catch(e){versions=[];}renderVersions();}
+function loadClipboardHistory(){
+try{const c=localStorage.getItem('lx_clip_v4');if(c)clipboardHistory=JSON.parse(c);}catch(e){clipboardHistory=[];}
+if(clipboardHistory.length>0){
+const cb=document.getElementById('stb-copy');if(cb)cb.classList.add('on');
+const pb=document.getElementById('stb-paste');if(pb){pb.classList.remove('dim');pb.classList.add('ready');}
+const cpBtn=document.getElementById('stb-clip-btn');if(cpBtn){cpBtn.classList.remove('dim');cpBtn.classList.add('ready');}
+}
+}
 function stateChangedSinceLastVersion(){
 const lastStr=versions.length?JSON.stringify({d:versions[0].d,s:versions[0].s}):"";
 return JSON.stringify({d:appData,s:appStyles})!==lastStr;
@@ -2078,6 +2105,11 @@ try{const d=localStorage.getItem('lx_data_ul_v4'),st=localStorage.getItem('lx_st
 if(d&&d!=="{}")appData=JSON.parse(d);
 if(st&&st!=="{}")appStyles=JSON.parse(st);}catch(e){appData={};appStyles={};}
 try{const r=localStorage.getItem('lx_registry_v4');if(r)registryData=JSON.parse(r);}catch(e){registryData=[];}
+let pruned=false;
+Object.keys(appStyles).forEach(id=>{
+if(Object.keys(appStyles[id]||{}).length===0||appData[id]==null){delete appStyles[id];pruned=true;}
+});
+if(pruned)safeSetItem('lx_style_ul_v4',JSON.stringify(appStyles));
 }
 function requestClearData(){
 if(isPreviewing){showToast("Cannot clear data while previewing history.","warn");return;}
@@ -2104,11 +2136,39 @@ const f=e.target.files[0];
 if(f)processFile(f);
 e.target.value='';
 }
+function detectCsvDelimiter(text){
+const firstLine=text.split(/\r\n|\r|\n/).find(l=>l.trim().length>0)||'';
+const candidates=[',',';','\t'];
+let best=',',bestCount=-1;
+candidates.forEach(d=>{
+const count=firstLine.split(d).length-1;
+if(count>bestCount){bestCount=count;best=d;}
+});
+return bestCount>0?best:',';
+}
+function decodeFileBytes(buf){
+const bytes=new Uint8Array(buf);
+if(bytes.length>=3&&bytes[0]===0xEF&&bytes[1]===0xBB&&bytes[2]===0xBF){
+return new TextDecoder('utf-8').decode(bytes.slice(3));
+}
+try{
+return new TextDecoder('utf-8',{fatal:true}).decode(bytes);
+}catch(e){
+try{return new TextDecoder('windows-1256').decode(bytes);}catch(e2){return new TextDecoder('utf-8').decode(bytes);}
+}
+}
 function processFile(f){
 const reader=new FileReader();
+const isCsv=/\.(csv|txt)$/i.test(f.name);
 reader.onload=function(evt){
 try{
-importWorkbook=XLSX.read(evt.target.result,{type:'binary'});
+if(isCsv){
+const text=decodeFileBytes(evt.target.result);
+const delim=detectCsvDelimiter(text);
+importWorkbook=XLSX.read(text,{type:'string',FS:delim});
+}else{
+importWorkbook=XLSX.read(evt.target.result,{type:'array'});
+}
 const sheets=importWorkbook.SheetNames;
 const sheetSel=document.getElementById('imp-sheet-sel');
 sheetSel.innerHTML=sheets.map((s,i)=>`<option value="${i}">${esc(s)}</option>`).join('');
@@ -2120,7 +2180,7 @@ document.getElementById('imp-step-2').style.display='block';
 showToast("Could not read file: "+esc(err.message),"error");
 }
 };
-reader.readAsBinaryString(f);
+reader.readAsArrayBuffer(f);
 }
 
 function onImportSheetChange(){loadImportSheet(parseInt(document.getElementById('imp-sheet-sel').value));}
@@ -2179,6 +2239,22 @@ closeImportModal();hasUnsavedChanges=true;triggerAutoSave();pushVersion('Import'
 }
 
 function handleKey(e,r,c){
+if(e.shiftKey&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)){
+e.preventDefault();
+const anchor=rangeAnchorId!==null?rangeAnchorId:rowColToId(r,c);
+let newR=r,newC=c;
+if(e.key==='ArrowUp')newR=Math.max(1,r-1);
+if(e.key==='ArrowDown')newR=Math.min(50,r+1);
+if(e.key==='ArrowLeft')newC=Math.max(0,c-1);
+if(e.key==='ArrowRight')newC=Math.min(3,c+1);
+const newId=rowColToId(newR,newC);
+rangeSelect(anchor,newId);
+const tbl=document.querySelector('.lx-index');
+const td=tbl.children[newR-1].children[(newC*2)+1];
+if(td)td.focus({preventScroll:true});
+updateMultiSelectPanel();
+return;
+}
 if(['ArrowUp','ArrowDown','Enter'].includes(e.key)){
 e.preventDefault();const tbl=document.querySelector('.lx-index');let trg=r;
 if(e.key==='ArrowUp'&&r>1)trg--;if((e.key==='ArrowDown'||e.key==='Enter')&&r<50)trg++;
@@ -2237,36 +2313,59 @@ tdId.classList.add('has-data');
 applyCellDomStyle(tdVal,id);
 if(!isPreviewing){
 tdVal.addEventListener('mousedown',(e)=>{
-if(isPainting){e.preventDefault();applyPaint(id,tdVal);return;}
+if(isPainting){e.preventDefault();document.body.classList.add('is-drag-selecting');applyPaint(id,tdVal);return;}
 if(e.ctrlKey||e.metaKey){
 e.preventDefault();
 if(selectedCells.size===0&&activeCellId!==null&&activeCellId!==id){const prevTd=document.querySelector(`td[data-id="${activeCellId}"]`);selectedCells.add(activeCellId);if(prevTd)prevTd.classList.add('cell-selected');lastClickedId=activeCellId;activeCellId=null;}
 if(selectedCells.has(id)){selectedCells.delete(id);tdVal.classList.remove('cell-selected');}else{selectedCells.add(id);tdVal.classList.add('cell-selected');}
 lastClickedId=id;updateMultiSelectPanel();return;
 }
-if(e.shiftKey&&(lastClickedId!==null||activeCellId!==null)){e.preventDefault();rangeSelect(lastClickedId!==null?lastClickedId:activeCellId,id);return;}
-clearMultiSelect();lastClickedId=id;
+if(e.shiftKey&&(rangeAnchorId!==null||activeCellId!==null)){
+e.preventDefault();
+const anchor=rangeAnchorId!==null?rangeAnchorId:activeCellId;
+rangeSelect(anchor,id);
+lastClickedId=id;
+return;
+}
+clearMultiSelect();lastClickedId=id;rangeAnchorId=id;
+isDragSelecting=true;document.body.classList.add('is-drag-selecting');
 });
 tdVal.addEventListener('focus',()=>activateCell(id,tdVal));
+tdVal.addEventListener('beforeinput',(e)=>{
+if(isPreviewing)return;
+const insertTypes=['insertText','insertFromPaste','insertFromDrop','insertCompositionText','insertReplacementText'];
+if(!insertTypes.includes(e.inputType))return;
+const sel=window.getSelection();
+let selLen=0;
+if(sel&&sel.rangeCount>0){const r=sel.getRangeAt(0);if(!r.collapsed)selLen=r.toString().length;}
+const insertedLen=e.data!=null?e.data.length:0;
+const projected=e.target.textContent.length-selLen+insertedLen;
+if(projected>100){
+e.preventDefault();
+if(!tdVal._limitWarned){tdVal._limitWarned=true;showToast('100 character limit reached','info');}
+}
+});
 tdVal.addEventListener('input',(e)=>{
 if(!tdVal._hasModified){recordHistory();tdVal._hasModified=true;}
 let v=e.target.textContent;
-if(v.length>100){
-v=v.slice(0,100);e.target.textContent=v;
-const sel=window.getSelection(),range=document.createRange();
-range.selectNodeContents(e.target);range.collapse(false);
-sel.removeAllRanges();sel.addRange(range);
-}
 v=v.trim();
 if(v){appData[id]=v;tdVal.classList.add('has-data');tdId.classList.add('has-data');}
-else{delete appData[id];tdVal.classList.remove('has-data');tdId.classList.remove('has-data');}
+else{delete appData[id];tdVal.classList.remove('has-data');tdId.classList.remove('has-data');if(appStyles[id]){delete appStyles[id];applyCellDomStyle(tdVal,id);}}
+const len=e.target.textContent.length;
+if(len>=90){if(!tdVal._nearLimitWarned){tdVal._nearLimitWarned=true;showToast(`${len}/100 characters`,'info');}}
+else{tdVal._nearLimitWarned=false;tdVal._limitWarned=false;}
 hasUnsavedChanges=true;autoFitText(e.target);updateStats();
 triggerAutoSave();if(qStr)runSearch(qStr);
 });
 tdVal.addEventListener('paste',(e)=>{
 e.preventDefault();
+const text=(e.originalEvent||e).clipboardData.getData('text/plain');
+if(/\t|\r|\n/.test(text)){
+pasteTSVIntoGrid(text,id);
+return;
+}
 if(!tdVal._hasModified){recordHistory();tdVal._hasModified=true;}
-const text=(e.originalEvent||e).clipboardData.getData('text/plain');document.execCommand('insertText',false,text);autoFitText(e.target);
+document.execCommand('insertText',false,text);autoFitText(e.target);
 });
 tdVal.addEventListener('keydown',(e)=>handleKey(e,r,c));
 }
@@ -2301,32 +2400,36 @@ titleEl.innerHTML=`★ Selected Cell Override<span class="arrow">▼</span>`;
 const paintBtn=document.getElementById('btn-copy-fmt');if(paintBtn){paintBtn.disabled=false;paintBtn.style.opacity='';}
 syncSelToolbar();
 }
-function copyFormat(){
+function copyFormat(e){
 if(isPreviewing)return;if(isPainting){cancelPaintMode();return;}
 const tid=activeCellId!==null?activeCellId:(selectedCells.size>0?[...selectedCells][0]:null);if(!tid)return;
 const clipboardFormat=appStyles[tid]?JSON.parse(JSON.stringify(appStyles[tid])):{};
 window._paintFormat=clipboardFormat;
 isPainting=true;
+paintSticky=!!(e&&e.detail>=2);
 document.getElementById('index-workspace').classList.add('paint-mode');
-const btn=document.getElementById('btn-copy-fmt');if(btn){btn.classList.add('painting');btn.textContent='✕ Cancel Paint';}
-syncSelToolbar();showToast("Click any cell to apply style — Esc to cancel","warn");
+const btn=document.getElementById('btn-copy-fmt');if(btn){btn.classList.add('painting');btn.textContent=paintSticky?'📌 Sticky Paint — Esc to stop':'✕ Cancel Paint';}
+syncSelToolbar();showToast(paintSticky?"Sticky paint on — click or drag cells, Esc to stop":"Click or drag cells to apply style — Esc to cancel","warn");
 }
 function cancelPaintMode(){
-isPainting=false;document.getElementById('index-workspace').classList.remove('paint-mode');
+isPainting=false;paintSticky=false;paintStrokeStarted=false;document.getElementById('index-workspace').classList.remove('paint-mode');
 const btn=document.getElementById('btn-copy-fmt');if(btn){btn.classList.remove('painting');btn.textContent='🖌️ Paint Style';}
 syncSelToolbar();
 }
 function applyPaint(id,td){
 if(!window._paintFormat)return;
-recordHistory();
+if(!paintStrokeStarted){recordHistory();paintStrokeStarted=true;}
 appStyles[id]=JSON.parse(JSON.stringify(window._paintFormat));
-applyCellDomStyle(td,id);autoFitText(td);hasUnsavedChanges=true;triggerAutoSave();cancelPaintMode();showToast("Style applied","success");
+applyCellDomStyle(td,id);autoFitText(td);
+}
+function pruneStyleIfEmpty(id){
+if(appStyles[id]&&Object.keys(appStyles[id]).length===0)delete appStyles[id];
 }
 function toggleStyle(prop){
 const ids=getTargetIds();if(!ids.length||isPreviewing)return;
 recordHistory();
 const key=prop==='bold'?'b':prop==='italic'?'i':'u';const allHave=ids.every(id=>appStyles[id]?.[key]);const newVal=!allHave;
-ids.forEach(id=>{if(!appStyles[id])appStyles[id]={};if(newVal)appStyles[id][key]=true;else delete appStyles[id][key];const td=document.querySelector(`td[data-id="${id}"]`);if(td){applyCellDomStyle(td,id);autoFitText(td);}});
+ids.forEach(id=>{if(!appStyles[id])appStyles[id]={};if(newVal)appStyles[id][key]=true;else delete appStyles[id][key];pruneStyleIfEmpty(id);const td=document.querySelector(`td[data-id="${id}"]`);if(td){applyCellDomStyle(td,id);autoFitText(td);}});
 if(selectedCells.size>0)updateMultiSelectPanel();else if(activeCellId!==null){const td=document.querySelector(`td[data-id="${activeCellId}"]`);if(td)activateCell(activeCellId,td);}
 hasUnsavedChanges=true;triggerAutoSave();
 }
@@ -2424,18 +2527,48 @@ function downloadTemplate(){
 const d=[["ID","Item Name"]];for(let i=1;i<=200;i++)d.push([i,""]);
 const ws=XLSX.utils.aoa_to_sheet(d),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Template");XLSX.writeFile(wb,"LX_Template_200.xlsx");showToast("Template downloaded","success");
 }
+function clipObjToTSV(clipObj){
+const grid=Array.from({length:clipObj.rows},()=>Array(clipObj.cols).fill(''));
+clipObj.entries.forEach(en=>{grid[en.dr][en.dc]=en.value||'';});
+return grid.map(row=>row.join('\t')).join('\r\n');
+}
+function writeToSystemClipboard(clipObj){
+if(!navigator.clipboard)return;
+const tsv=clipObjToTSV(clipObj);
+if(typeof ClipboardItem!=='undefined'&&navigator.clipboard.write){
+try{
+const json=JSON.stringify({lxClip:true,v:1,rows:clipObj.rows,cols:clipObj.cols,entries:clipObj.entries});
+const html=`<!--lx-clip:${encodeURIComponent(json)}-->`;
+const item=new ClipboardItem({
+'text/plain':new Blob([tsv],{type:'text/plain'}),
+'text/html':new Blob([html],{type:'text/html'})
+});
+navigator.clipboard.write([item]).catch(()=>{navigator.clipboard.writeText&&navigator.clipboard.writeText(tsv).catch(()=>{});});
+return;
+}catch(e){}
+}
+if(navigator.clipboard.writeText)navigator.clipboard.writeText(tsv).catch(()=>{});
+}
+function persistClipboardHistory(){safeSetItem('lx_clip_v4',JSON.stringify(clipboardHistory));}
 function copySelectionBlock(skipToast=false){
 const raw=selectedCells.size>0?[...selectedCells]:(activeCellId!==null?[activeCellId]:[]);if(!raw.length)return;
-const ids=raw.slice().sort((a,b)=>a-b),minId=ids[0];
+const ids=raw.slice().sort((a,b)=>a-b);
+const coords=ids.map(id=>({id,...idToRowCol(id)}));
+const minRow=Math.min(...coords.map(p=>p.row)),minCol=Math.min(...coords.map(p=>p.col));
+const maxRow=Math.max(...coords.map(p=>p.row)),maxCol=Math.max(...coords.map(p=>p.col));
 const textPreview=ids.slice(0,3).map(id=>appData[id]||'').filter(v=>v).join(', ')+(ids.length>3?'...':'');
 const clipObj={
 id:Date.now(),
 count:ids.length,
+rows:maxRow-minRow+1,
+cols:maxCol-minCol+1,
 preview:textPreview||'(Empty Cells)',
-entries:ids.map(id=>({offset:id-minId,value:appData[id]!=null?String(appData[id]):'',style:appStyles[id]?JSON.parse(JSON.stringify(appStyles[id])):null}))
+entries:coords.map(p=>({dr:p.row-minRow,dc:p.col-minCol,value:appData[p.id]!=null?String(appData[p.id]):'',style:appStyles[p.id]?JSON.parse(JSON.stringify(appStyles[p.id])):null}))
 };
 clipboardHistory.unshift(clipObj);
 if(clipboardHistory.length>10)clipboardHistory.pop();
+persistClipboardHistory();
+writeToSystemClipboard(clipObj);
 const cb=document.getElementById('stb-copy');if(cb)cb.classList.add('on');
 const pb=document.getElementById('stb-paste');
 const cpBtn=document.getElementById('stb-clip-btn');
@@ -2454,12 +2587,16 @@ const item=clipItem||clipboardHistory[0];
 if(!item||isPreviewing){showToast('Nothing to paste','info');return;}
 const baseId=activeCellId!==null?activeCellId:selectedCells.size>0?Math.min(...selectedCells):lastClickedId;
 if(baseId==null){showToast('Click a target cell first','info');return;}
-const maxOffset=item.entries.reduce((m,e)=>Math.max(m,e.offset),0);
-if(baseId+maxOffset>200){showToast('Paste would exceed cell 200','warn');return;}
+const base=idToRowCol(baseId);
+const rowSpan=item.rows||1,colSpan=item.cols||1;
+if(base.row+rowSpan-1>50||base.col+colSpan-1>3){
+showToast(`Paste needs ${rowSpan}×${colSpan} cells from here — that overflows the grid`,'warn');
+return;
+}
 if(document.activeElement&&document.activeElement.isContentEditable)document.activeElement.blur();
 recordHistory();
-item.entries.forEach(({offset,value,style})=>{
-const tid=baseId+offset;
+item.entries.forEach(({dr,dc,value,style})=>{
+const tid=rowColToId(base.row+dr,base.col+dc);
 const td=document.querySelector(`td[data-id="${tid}"]`);
 const safeVal=clampText(value);
 if(safeVal){appData[tid]=safeVal;if(td){td.classList.add('has-data');if(td.previousElementSibling)td.previousElementSibling.classList.add('has-data');}}
@@ -2468,6 +2605,39 @@ if(style)appStyles[tid]=JSON.parse(JSON.stringify(style));else delete appStyles[
 if(td){td.textContent=safeVal;applyCellDomStyle(td,tid);autoFitText(td);}
 });
 hasUnsavedChanges=true;updateStats();triggerAutoSave();pushVersion('Paste');showToast(`Pasted ${item.entries.length} cell${item.entries.length>1?'s':''} → cell ${baseId}`,'success');
+}
+function pasteTSVIntoGrid(text,anchorId){
+if(isPreviewing)return;
+const rows=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+while(rows.length>1&&rows[rows.length-1]==='')rows.pop();
+const grid=rows.map(r=>r.split('\t'));
+const anchor=idToRowCol(anchorId);
+const rowSpan=grid.length,colSpan=Math.max(...grid.map(r=>r.length));
+if(anchor.row+rowSpan-1>50||anchor.col+colSpan-1>3){
+showToast(`Paste needs ${rowSpan}×${colSpan} cells from here — that overflows the grid`,'warn');
+return;
+}
+const cellCount=rowSpan*colSpan;
+const doPaste=()=>{
+recordHistory();
+for(let dr=0;dr<rowSpan;dr++){
+for(let dc=0;dc<colSpan;dc++){
+const tid=rowColToId(anchor.row+dr,anchor.col+dc);
+const val=clampText((grid[dr][dc]??'').trim());
+const td=document.querySelector(`td[data-id="${tid}"]`);
+if(val){appData[tid]=val;if(td){td.classList.add('has-data');if(td.previousElementSibling)td.previousElementSibling.classList.add('has-data');}}
+else{delete appData[tid];if(td){td.classList.remove('has-data');if(td.previousElementSibling)td.previousElementSibling.classList.remove('has-data');}}
+if(td){td.textContent=val;autoFitText(td);}
+}
+}
+hasUnsavedChanges=true;updateStats();triggerAutoSave();pushVersion('Paste');
+showToast(`Pasted ${cellCount} cells → starting at cell ${anchorId}`,'success');
+};
+if(cellCount>1){
+openModal('Paste Multiple Cells',`Paste ${rowSpan} row${rowSpan>1?'s':''} × ${colSpan} col${colSpan>1?'s':''} (${cellCount} cells) starting at cell ${anchorId}?`,'Paste','btn-primary',doPaste);
+}else{
+doPaste();
+}
 }
 function toggleClipboardPopover(){
 if(clipboardHistory.length===0){showToast('Clipboard is empty','info');return;}
