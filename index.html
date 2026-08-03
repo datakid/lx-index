@@ -360,6 +360,9 @@ background-color: transparent;
 table.lx-index tr:last-child td{border-bottom:none;}
 table.lx-index td:last-child{border-right:none !important;}
 body.is-drag-selecting table.lx-index{user-select:none;-webkit-user-select:none;}
+.ui-icon{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;vertical-align:-2px;margin-right:4px;flex-shrink:0;}
+.ui-icon.ui-icon-lg{width:18px;height:18px;}
+button .ui-icon:last-child{margin-right:0;}
 table.lx-index td:nth-child(odd){
 width:28px;text-align:right;padding-right:6px;padding-left:0;
 font-weight:700;opacity:0.3;user-select:none;font-size:10.5px;
@@ -1022,6 +1025,25 @@ table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: vis
 </style>
 </head>
 <body class="mode-grid">
+<svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+<defs>
+<symbol id="icon-x" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></symbol>
+<symbol id="icon-menu" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></symbol>
+<symbol id="icon-folder" viewBox="0 0 24 24"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></symbol>
+<symbol id="icon-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></symbol>
+<symbol id="icon-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+<symbol id="icon-bar-chart" viewBox="0 0 24 24"><line x1="6" y1="20" x2="6" y2="16"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/></symbol>
+<symbol id="icon-printer" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
+<symbol id="icon-eraser" viewBox="0 0 24 24"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></symbol>
+<symbol id="icon-file-text" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+<symbol id="icon-brush" viewBox="0 0 24 24"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></symbol>
+<symbol id="icon-pin" viewBox="0 0 24 24"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></symbol>
+<symbol id="icon-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+<symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+<symbol id="icon-alert-triangle" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+<symbol id="icon-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+</defs>
+</svg>
 <aside id="sidebar">
 <div class="header">
 <div style="display:flex;align-items:center;gap:12px;">
@@ -1054,7 +1076,7 @@ table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: vis
 <div class="search-wrap">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
 <input type="text" id="sinp" placeholder="Search grid…" oninput="runSearch(this.value)" spellcheck="false" autocomplete="off">
-<button class="s-clear" id="sclr" onclick="clearSearch()">✕</button>
+<button class="s-clear" id="sclr" onclick="clearSearch()"><svg class="ui-icon"><use href="#icon-x"></use></svg></button>
 </div>
 </div>
 <div class="scroll-area">
@@ -1062,14 +1084,14 @@ table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: vis
 <div class="panel-title" onclick="togglePanel('p1')">1. Data Management<span class="arrow">▼</span></div>
 <div class="panel-body"><div class="panel-body-inner">
 <div class="grid-2" style="margin-bottom:12px;">
-<button class="btn btn-secondary" onclick="openImportModal()" style="margin:0;">📂 Import Data</button>
-<button class="btn btn-danger" onclick="requestClearData()">🗑️ Clear Grid</button>
+<button class="btn btn-secondary" onclick="openImportModal()" style="margin:0;"><svg class="ui-icon"><use href="#icon-folder"></use></svg> Import Data</button>
+<button class="btn btn-danger" onclick="requestClearData()"><svg class="ui-icon"><use href="#icon-trash"></use></svg> Clear Grid</button>
 </div>
-<button class="btn btn-secondary" onclick="downloadTemplate()">📥 Blank Template</button>
+<button class="btn btn-secondary" onclick="downloadTemplate()"><svg class="ui-icon"><use href="#icon-download"></use></svg> Blank Template</button>
 </div></div>
 </div>
 <div class="panel disabled" id="cell-panel">
-<div class="panel-title" onclick="togglePanel('cell-panel')" id="cell-panel-title" style="color:var(--accent);">★ Selected Cell Override<span class="arrow">▼</span></div>
+<div class="panel-title" onclick="togglePanel('cell-panel')" id="cell-panel-title" style="color:var(--accent);"><svg class="ui-icon"><use href="#icon-star"></use></svg> Selected Cell Override<span class="arrow">▼</span></div>
 <div class="panel-body"><div class="panel-body-inner">
 <div class="ctrl-group"><span class="ctrl-label">Font Style</span>
 <div class="toolbar-row">
@@ -1084,8 +1106,8 @@ table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: vis
 <div class="ctrl-group"><span class="ctrl-label">Specific Color</span>
 <div class="uci" style="width:110px;"><span class="hash">#</span><input type="text" id="cell-hex" maxlength="6" oninput="previewCellHex()" onchange="commitCellHex()" placeholder="Auto"><input type="color" id="cell-color" oninput="previewCellCol()" onchange="commitCellCol()"></div>
 </div>
-<button id="btn-copy-fmt" class="btn btn-secondary" style="margin-top:16px;" onmousedown="event.preventDefault();copyFormat(event)">🖌️ Paint Style</button>
-<button class="btn btn-secondary" style="margin-top:10px;" onclick="clearCellFormat()">🧹 Clear Style</button>
+<button id="btn-copy-fmt" class="btn btn-secondary" style="margin-top:16px;" onmousedown="event.preventDefault();copyFormat(event)"><svg class="ui-icon"><use href="#icon-brush"></use></svg> Paint Style</button>
+<button class="btn btn-secondary" style="margin-top:10px;" onclick="clearCellFormat()"><svg class="ui-icon"><use href="#icon-eraser"></use></svg> Clear Style</button>
 </div></div>
 </div>
 <div class="panel open" id="p2">
@@ -1164,8 +1186,8 @@ table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: vis
 <div class="panel-title" onclick="togglePanel('p6')">6. Export &amp; Registry<span class="arrow">▼</span></div>
 <div class="panel-body"><div class="panel-body-inner">
 <div class="grid-2">
-<button class="btn btn-secondary" id="btn-xlsx-export" onclick="exportXLSX(this)">📊 Export XLSX</button>
-<button class="btn btn-primary" onclick="doPrint()">🖨️ Print Grid PDF</button>
+<button class="btn btn-secondary" id="btn-xlsx-export" onclick="exportXLSX(this)"><svg class="ui-icon"><use href="#icon-bar-chart"></use></svg> Export XLSX</button>
+<button class="btn btn-primary" onclick="doPrint()"><svg class="ui-icon"><use href="#icon-printer"></use></svg> Print Grid PDF</button>
 </div>
 <div class="divider"></div>
 <div class="ctrl-group"><span class="ctrl-label">Volume</span>
@@ -1229,7 +1251,7 @@ table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: vis
 <div class="panel open" id="cp4">
 <div class="panel-title" onclick="togglePanel('cp4')">4. Print<span class="arrow">▼</span></div>
 <div class="panel-body"><div class="panel-body-inner">
-<button class="btn btn-primary" onclick="doPrint()">🖨️ Print Cover PDF</button>
+<button class="btn btn-primary" onclick="doPrint()"><svg class="ui-icon"><use href="#icon-printer"></use></svg> Print Cover PDF</button>
 </div></div>
 </div>
 </div>
@@ -1274,10 +1296,10 @@ table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: vis
 <div class="panel-title" onclick="togglePanel('rp3')">3. Actions &amp; Export<span class="arrow">▼</span></div>
 <div class="panel-body"><div class="panel-body-inner">
 <div class="grid-2" style="margin-bottom:12px;">
-<button class="btn btn-secondary" onclick="exportRegCSV()">📊 Export CSV</button>
-<button class="btn btn-danger" onclick="clearRegistry()">🗑️ Clear Reg.</button>
+<button class="btn btn-secondary" onclick="exportRegCSV()"><svg class="ui-icon"><use href="#icon-bar-chart"></use></svg> Export CSV</button>
+<button class="btn btn-danger" onclick="clearRegistry()"><svg class="ui-icon"><use href="#icon-trash"></use></svg> Clear Reg.</button>
 </div>
-<button class="btn btn-primary" onclick="doPrint()">🖨️ Print Registry PDF</button>
+<button class="btn btn-primary" onclick="doPrint()"><svg class="ui-icon"><use href="#icon-printer"></use></svg> Print Registry PDF</button>
 </div></div>
 </div>
 </div>
@@ -1302,7 +1324,7 @@ table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: vis
 <div class="panel open" id="revp2">
 <div class="panel-title" onclick="togglePanel('revp2')">2. Print Document<span class="arrow">▼</span></div>
 <div class="panel-body"><div class="panel-body-inner">
-<button class="btn btn-primary" onclick="doPrint()">🖨️ Print Review PDF</button>
+<button class="btn btn-primary" onclick="doPrint()"><svg class="ui-icon"><use href="#icon-printer"></use></svg> Print Review PDF</button>
 </div></div>
 </div>
 </div>
@@ -1474,14 +1496,14 @@ table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: vis
 
 </main>
 </div>
-<button class="mobile-tog" onclick="toggleMobileSB()">☰</button>
+<button class="mobile-tog" onclick="toggleMobileSB()"><svg class="ui-icon ui-icon-lg"><use href="#icon-menu"></use></svg></button>
 <div class="overlay" id="sb-ov" onclick="toggleMobileSB()"></div>
 <div id="toast"></div>
 <div id="shortcuts-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);z-index:400;align-items:center;justify-content:center;">
 <div style="background:var(--panel-solid);border:1px solid var(--panel-bd);border-radius:24px;padding:40px;width:90%;max-width:480px;box-shadow:0 32px 64px rgba(0,0,0,0.25);">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
 <span style="font-size:18px;font-weight:700;color:var(--text-main);letter-spacing:-0.5px;">⌨ Keyboard Shortcuts</span>
-<button onclick="closeShortcuts()" style="background:none;border:none;cursor:pointer;color:#64748b;font-size:20px;line-height:1;padding:6px 10px;border-radius:10px;transition:all 0.2s;" onmouseover="this.style.background='var(--app-bg)';this.style.color='var(--text-main)';" onmouseout="this.style.background='none';this.style.color='#64748b';">✕</button>
+<button onclick="closeShortcuts()" style="background:none;border:none;cursor:pointer;color:#64748b;font-size:20px;line-height:1;padding:6px 10px;border-radius:10px;transition:all 0.2s;" onmouseover="this.style.background='var(--app-bg)';this.style.color='var(--text-main)';" onmouseout="this.style.background='none';this.style.color='#64748b';"><svg class="ui-icon" style="margin:0;width:16px;height:16px;"><use href="#icon-x"></use></svg></button>
 </div>
 <div id="sc-list" style="display:flex;flex-direction:column;gap:8px;"></div>
 <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--panel-bd);font-size:13px;color:#94a3b8;text-align:center;font-weight:500;">Press <kbd style="background:var(--app-bg);border:1px solid var(--panel-bd);border-radius:6px;padding:4px 8px;font-family:'JetBrains Mono',monospace;color:var(--text-main);font-size:12px;font-weight:700;box-shadow:inset 0 -2px 0 rgba(0,0,0,0.05);">?</kbd> anytime to view</div>
@@ -1500,12 +1522,12 @@ table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: vis
 <div id="import-modal" class="custom-modal-overlay">
 <div class="custom-modal-box" style="max-width:540px;width:94%;">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-<h3 class="custom-modal-title" style="margin:0;">📂 Import Data</h3>
-<button onclick="closeImportModal()" style="background:none;border:none;cursor:pointer;color:#64748b;font-size:20px;line-height:1;padding:6px 10px;border-radius:10px;transition:all 0.2s;" onmouseover="this.style.background='var(--app-bg)';this.style.color='var(--text-main)';" onmouseout="this.style.background='none';this.style.color='#64748b';">✕</button>
+<h3 class="custom-modal-title" style="margin:0;"><svg class="ui-icon"><use href="#icon-folder"></use></svg> Import Data</h3>
+<button onclick="closeImportModal()" style="background:none;border:none;cursor:pointer;color:#64748b;font-size:20px;line-height:1;padding:6px 10px;border-radius:10px;transition:all 0.2s;" onmouseover="this.style.background='var(--app-bg)';this.style.color='var(--text-main)';" onmouseout="this.style.background='none';this.style.color='#64748b';"><svg class="ui-icon" style="margin:0;width:16px;height:16px;"><use href="#icon-x"></use></svg></button>
 </div>
 <div id="imp-step-1">
   <div style="border:2px dashed var(--panel-bd);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;background:var(--app-bg);transition:all 0.2s;" onclick="document.getElementById('imp-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)';" ondragleave="this.style.borderColor='var(--panel-bd)';" ondrop="handleDrop(event)">
-    <div style="font-size:24px;margin-bottom:10px;">📄</div>
+    <div style="font-size:24px;margin-bottom:10px;"><svg class="ui-icon" style="width:24px;height:24px;margin:0;"><use href="#icon-file-text"></use></svg></div>
     <div style="font-size:14px;font-weight:600;color:var(--text-main);">Drop Excel or CSV file here</div>
     <div style="font-size:12px;color:#94a3b8;margin-top:6px;">or click to browse</div>
   </div>
@@ -1536,8 +1558,104 @@ table.lx-index td:nth-child(odd) { text-overflow: clip !important; overflow: vis
 </div>
 <script>
 const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+let currentLang='en';
+const STRINGS={
+en:{
+toast_storage_quota:"Storage quota exceeded. Clear some data.",
+toast_undo_success:"Undo successful",
+toast_redo_success:"Redo successful",
+toast_excel_not_loaded:"ExcelJS not loaded yet",
+toast_xlsx_exported:"XLSX exported",
+toast_export_failed:(msg)=>`Export failed: ${msg}`,
+toast_theme_applied:(n)=>`Theme: ${n}`,
+toast_paint_canceled:"Paint mode canceled",
+toast_all_selected:"All 200 cells selected",
+toast_style_applied:"Style applied",
+toast_preview_canceled:"Preview canceled",
+toast_version_restored:"Version state permanently restored.",
+toast_duplicates_detected:"Duplicate values detected",
+toast_cannot_clear_previewing:"Cannot clear data while previewing history.",
+toast_cleared_successfully:"Cleared successfully",
+toast_cannot_import_previewing:"Cannot import data while previewing.",
+toast_file_read_error:(msg)=>`Could not read file: ${msg}`,
+toast_imported:(count)=>`Imported ${count} entr${count===1?'y':'ies'}`,
+toast_cells_cleared:(n)=>`Cleared ${n} cell${n>1?'s':''}`,
+toast_char_limit_reached:"100 character limit reached",
+toast_char_count:(len)=>`${len}/100 characters`,
+toast_paint_sticky_on:"Sticky paint on — click or drag cells, Esc to stop",
+toast_paint_click_drag:"Click or drag cells to apply style — Esc to cancel",
+toast_template_downloaded:"Template downloaded",
+toast_cells_copied:(n)=>`${n} cell${n>1?'s':''} copied`,
+toast_cells_cut:(n)=>`${n} cell${n>1?'s':''} cut`,
+toast_nothing_to_paste:"Nothing to paste",
+toast_click_target_first:"Click a target cell first",
+toast_paste_overflow:(r,c)=>`Paste needs ${r}×${c} cells from here — that overflows the grid`,
+toast_pasted_at_cell:(n,id)=>`Pasted ${n} cell${n>1?'s':''} → cell ${id}`,
+toast_pasted_starting:(n,id)=>`Pasted ${n} cells → starting at cell ${id}`,
+toast_clipboard_empty:"Clipboard is empty",
+toast_grid_empty:"Grid is empty",
+toast_pushed_to_volume:(vol)=>`Pushed to Volume ${vol}`,
+toast_registry_cleared:"Registry cleared",
+toast_volume_restored:"Volume restoration successful.",
+toast_registry_empty:"Registry is empty",
+toast_max_allowed:(limit,unit)=>`Maximum ${limit} ${unit} allowed.`,
+toast_restored:"Restored.",
+unit_months:"months",
+unit_entities:"entities"
+},
+ar:{
+toast_storage_quota:"تم تجاوز سعة التخزين. يرجى حذف بعض البيانات.",
+toast_undo_success:"تم التراجع بنجاح",
+toast_redo_success:"تمت الإعادة بنجاح",
+toast_excel_not_loaded:"لم يتم تحميل مكتبة إكسل بعد",
+toast_xlsx_exported:"تم تصدير ملف إكسل",
+toast_export_failed:(msg)=>`فشل التصدير: ${msg}`,
+toast_theme_applied:(n)=>`النمط: ${n}`,
+toast_paint_canceled:"تم إلغاء وضع النسخ الشكلي",
+toast_all_selected:"تم تحديد جميع الخلايا الـ200",
+toast_style_applied:"تم تطبيق التنسيق",
+toast_preview_canceled:"تم إلغاء المعاينة",
+toast_version_restored:"تمت استعادة الإصدار بشكل نهائي.",
+toast_duplicates_detected:"تم اكتشاف قيم مكررة",
+toast_cannot_clear_previewing:"لا يمكن مسح البيانات أثناء معاينة السجل.",
+toast_cleared_successfully:"تم المسح بنجاح",
+toast_cannot_import_previewing:"لا يمكن الاستيراد أثناء المعاينة.",
+toast_file_read_error:(msg)=>`تعذّرت قراءة الملف: ${msg}`,
+toast_imported:(count)=>`تم استيراد ${count} من المدخلات`,
+toast_cells_cleared:(n)=>`تم مسح ${n} من الخلايا`,
+toast_char_limit_reached:"تم الوصول للحد الأقصى 100 حرف",
+toast_char_count:(len)=>`${len}/100 حرف`,
+toast_paint_sticky_on:"وضع النسخ الشكلي المستمر مفعّل — اضغط أو اسحب على الخلايا، Esc للإيقاف",
+toast_paint_click_drag:"اضغط أو اسحب على الخلايا لتطبيق التنسيق — Esc للإلغاء",
+toast_template_downloaded:"تم تنزيل القالب",
+toast_cells_copied:(n)=>`تم نسخ ${n} من الخلايا`,
+toast_cells_cut:(n)=>`تم قص ${n} من الخلايا`,
+toast_nothing_to_paste:"لا يوجد شيء للّصق",
+toast_click_target_first:"اختر الخلية المستهدفة أولاً",
+toast_paste_overflow:(r,c)=>`اللصق يحتاج ${r}×${c} خلايا من هنا — هذا يتجاوز حدود الشبكة`,
+toast_pasted_at_cell:(n,id)=>`تم لصق ${n} من الخلايا ← الخلية ${id}`,
+toast_pasted_starting:(n,id)=>`تم لصق ${n} خلية ← بدءاً من الخلية ${id}`,
+toast_clipboard_empty:"الحافظة فارغة",
+toast_grid_empty:"الشبكة فارغة",
+toast_pushed_to_volume:(vol)=>`تم النقل إلى المجلد ${vol}`,
+toast_registry_cleared:"تم مسح السجل",
+toast_volume_restored:"تمت استعادة المجلد بنجاح.",
+toast_registry_empty:"السجل فارغ",
+toast_max_allowed:(limit,unit)=>`الحد الأقصى ${limit} ${unit}.`,
+toast_restored:"تمت الاستعادة.",
+unit_months:"أشهر",
+unit_entities:"جهات"
+}
+};
+function t(key,...args){
+const dict=STRINGS[currentLang]||STRINGS.en;
+let entry=dict[key];
+if(entry===undefined)entry=STRINGS.en[key];
+if(entry===undefined)return key;
+return typeof entry==='function'?entry(...args):entry;
+}
 const clampText=t=>t?String(t).slice(0,100):'';
-function safeSetItem(k,v){try{localStorage.setItem(k,v);return true;}catch(e){showToast("Storage quota exceeded. Clear some data.","error");return false;}}
+function safeSetItem(k,v){try{localStorage.setItem(k,v);return true;}catch(e){showToast(t('toast_storage_quota'),"error");return false;}}
 
 let appData={},appStyles={},saveTimeout,activeCellId=null,clipboardHistory=[],dupWarned=false,qStr='',versions=[],hasUnsavedChanges=false,modalConfirmAction=null,backupData=null,backupStyles=null,isPreviewing=false,isPainting=false,selectedCells=new Set(),lastClickedId=null,importWorkbook=null,importCurrentRows=null,importHeaders=null;
 let rangeAnchorId=null,isDragSelecting=false,paintSticky=false,paintStrokeStarted=false;
@@ -1697,7 +1815,7 @@ appData=state.d;appStyles=state.s;
 patchGridToState(oldData,oldStyles,appData,appStyles);
 hasUnsavedChanges=true;triggerAutoSave();updateUndoRedoUI();
 restoreSelectionSnapshot(state.sel);
-showToast("Undo successful","info");
+showToast(t('toast_undo_success'),"info");
 }
 function redo(){
 if(isPreviewing||redoStack.length===0)return;
@@ -1708,7 +1826,7 @@ appData=state.d;appStyles=state.s;
 patchGridToState(oldData,oldStyles,appData,appStyles);
 hasUnsavedChanges=true;triggerAutoSave();updateUndoRedoUI();
 restoreSelectionSnapshot(state.sel);
-showToast("Redo successful","info");
+showToast(t('toast_redo_success'),"info");
 }
 function updateUndoRedoUI(){document.getElementById('btn-undo').disabled=undoStack.length===0;document.getElementById('btn-redo').disabled=redoStack.length===0;}
 
@@ -1745,7 +1863,7 @@ function excelBorderStyle(w){if(!w||w<=0)return null;if(w<=1)return'thin';if(w<=
 function makeBorder(w,color){const s=excelBorderStyle(w);if(!s)return undefined;return{style:s,color:{argb:toARGB(color)}};}
 
 async function exportXLSX(btn){
-if(!window.ExcelJS){showToast("ExcelJS not loaded yet","error");return;}
+if(!window.ExcelJS){showToast(t('toast_excel_not_loaded'),"error");return;}
 const orig=btn.textContent;btn.disabled=true;btn.textContent='⏳ Building…';
 try{
 const cs=getComputedStyle(document.documentElement);
@@ -1783,8 +1901,8 @@ valCell.border={...(hB&&{bottom:hB}),...(!isLast&&(dvB?{right:dvB}:vB?{right:vB}
 const buf=await wb.xlsx.writeBuffer();
 const blob=new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
 const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='LX_Grid.xlsx';a.click();URL.revokeObjectURL(url);
-hasUnsavedChanges=false;showToast("XLSX exported","success");
-}catch(err){console.error(err);showToast("Export failed: "+esc(err.message),"error");}
+hasUnsavedChanges=false;showToast(t('toast_xlsx_exported'),"success");
+}catch(err){console.error(err);showToast(t('toast_export_failed',esc(err.message)),"error");}
 finally{btn.disabled=false;btn.textContent=orig;}
 }
 
@@ -1834,7 +1952,7 @@ const count=selectedCells.size;if(count===0){disableCellPanel();return;}
 const panel=document.getElementById('cell-panel');
 panel.classList.remove('disabled');setPanelOpen(panel,true);
 const titleEl=panel.querySelector('.panel-title');
-titleEl.innerHTML=`★ Style Override <span style="color:#64748b;font-size:10px;">(${parseInt(count)} cell${count>1?'s':''} selected)</span><span class="arrow">▼</span>`;
+titleEl.innerHTML=`<svg class="ui-icon"><use href="#icon-star"></use></svg> Style Override <span style="color:#64748b;font-size:10px;">(${parseInt(count)} cell${count>1?'s':''} selected)</span><span class="arrow">▼</span>`;
 activeCellId=null;
 const ids=[...selectedCells];
 document.getElementById('btn-bold').classList.toggle('active',ids.every(id=>appStyles[id]?.b));
@@ -1913,7 +2031,7 @@ document.getElementById('modal-cancel').addEventListener('click',closeModal);
 document.getElementById('modal-confirm').addEventListener('click',()=>{if(modalConfirmAction)modalConfirmAction();closeModal();});
 
 function initThm(){applyAppTheme(localStorage.getItem('lx_tm')||'auto');}
-function cycleTheme(){const m=localStorage.getItem('lx_tm')||'auto';const n=m==='auto'?'light':m==='light'?'dark':'auto';safeSetItem('lx_tm',n);applyAppTheme(n);showToast(`Theme: ${n}`,'info');}
+function cycleTheme(){const m=localStorage.getItem('lx_tm')||'auto';const n=m==='auto'?'light':m==='light'?'dark':'auto';safeSetItem('lx_tm',n);applyAppTheme(n);showToast(t('toast_theme_applied',n),'info');}
 function applyAppTheme(m){
 const d=document.documentElement;d.classList.remove('dark','light');
 const isD=m==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:m==='dark';
@@ -1938,7 +2056,7 @@ pop.classList.remove('open');
 window.addEventListener('keydown',e=>{
 const inEdit=document.activeElement.tagName==='INPUT'||document.activeElement.isContentEditable;
 if(e.key==='Escape'){
-if(isPainting){cancelPaintMode();showToast("Paint mode canceled","warn");return;}
+if(isPainting){cancelPaintMode();showToast(t('toast_paint_canceled'),"warn");return;}
 if(document.getElementById('shortcuts-overlay').style.display==='flex'){closeShortcuts();return;}
 if(document.getElementById('import-modal').classList.contains('vis')){closeImportModal();return;}
 const pop=document.getElementById('clip-popover');
@@ -1959,7 +2077,7 @@ if(k==='y'){e.preventDefault();redo();return;}
 if(k==='a'&&!inEdit&&document.body.classList.contains('mode-grid')){
 e.preventDefault();clearMultiSelect();
 for(let id=1;id<=200;id++){selectedCells.add(id);const td=document.querySelector(`td[data-id="${id}"]`);if(td)td.classList.add('cell-selected');}
-lastClickedId=1;updateMultiSelectPanel();showToast('All 200 cells selected','info');return;
+lastClickedId=1;updateMultiSelectPanel();showToast(t('toast_all_selected'),'info');return;
 }
 const ids=getTargetIds();
 if(k==='c'){if(ids.length){e.preventDefault();copySelectionBlock();return;}}
@@ -1985,7 +2103,7 @@ if(isDragSelecting){isDragSelecting=false;document.body.classList.remove('is-dra
 if(isPainting&&paintStrokeStarted){
 paintStrokeStarted=false;
 hasUnsavedChanges=true;triggerAutoSave();
-showToast("Style applied","success");
+showToast(t('toast_style_applied'),"success");
 document.body.classList.remove('is-drag-selecting');
 if(!paintSticky)cancelPaintMode();
 }
@@ -2047,7 +2165,7 @@ renderReviewTable();
 
 function showToast(msg,type='info'){
 const t=document.getElementById('toast');
-const icons={success:'✓',error:'✕',warn:'⚠',info:'ℹ'},colors={success:'#10b981',error:'#f43f5e',warn:'#f59e0b',info:'#3b82f6'};
+const icons={success:'<svg class="ui-icon" style="margin:0;"><use href="#icon-check"></use></svg>',error:'<svg class="ui-icon" style="margin:0;"><use href="#icon-x"></use></svg>',warn:'<svg class="ui-icon" style="margin:0;"><use href="#icon-alert-triangle"></use></svg>',info:'<svg class="ui-icon" style="margin:0;"><use href="#icon-info"></use></svg>'},colors={success:'#10b981',error:'#f43f5e',warn:'#f59e0b',info:'#3b82f6'};
 if(msg.includes('<button')){t.innerHTML=msg;t.style.pointerEvents='auto';}else{t.innerHTML='<span class="toast-icon" style="color:'+colors[type]+';background:'+colors[type]+'20;padding:6px;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;">'+icons[type]+'</span><span style="letter-spacing:0.2px;">'+esc(msg)+'</span>';t.style.pointerEvents='none';}
 t.style.borderLeftColor=colors[type];t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>{t.classList.remove('show');t.style.pointerEvents='none';},4000);
 }
@@ -2153,32 +2271,43 @@ document.getElementById('preview-banner').classList.add('vis');disableCellPanel(
 function cancelPreview(){
 if(!isPreviewing)return;appData=backupData;appStyles=backupStyles;isPreviewing=false;
 document.querySelectorAll('.version-item').forEach(el=>el.classList.remove('active-preview'));
-document.getElementById('preview-banner').classList.remove('vis');renderPage();showToast("Preview canceled","info");
+document.getElementById('preview-banner').classList.remove('vis');renderPage();showToast(t('toast_preview_canceled'),"info");
 }
 function confirmRestore(){
 if(!isPreviewing)return;isPreviewing=false;hasUnsavedChanges=true;
 document.querySelectorAll('.version-item').forEach(el=>el.classList.remove('active-preview'));
 document.getElementById('preview-banner').classList.remove('vis');
-recordHistory();triggerAutoSave();pushVersion('Restore');renderPage();showToast("Version state permanently restored.","success");
+recordHistory();triggerAutoSave();pushVersion('Restore');renderPage();showToast(t('toast_version_restored'),"success");
 }
-function updateStats(){
-let counts={},dupes=new Set(),dCount=0,filledCount=0;
-for(let id in appData){
-let val=appData[id].trim().toLowerCase();
+const selectors={
+getGridStats(data){
+let counts={},dupes=new Set(),filledCount=0;
+for(let id in data){
+let val=data[id].trim().toLowerCase();
 if(val){filledCount++;if(counts[val]){dupes.add(val);counts[val].push(id);}else counts[val]=[id];}
 }
 let allDupIds=new Set();
-dupes.forEach(val=>{dCount++;counts[val].forEach(id=>allDupIds.add(String(id)));});
+dupes.forEach(val=>{counts[val].forEach(id=>allDupIds.add(String(id)));});
+return{filledCount,emptyCount:200-filledCount,duplicateGroupCount:dupes.size,duplicateIds:allDupIds};
+},
+groupRegistryByVolume(items){
+const grp={};
+items.forEach(d=>{if(!grp[d.book])grp[d.book]=[];grp[d.book].push(d);});
+return grp;
+}
+};
+function updateStats(){
+const stats=selectors.getGridStats(appData);
 for(let id=1;id<=200;id++){
 let td=document.querySelector(`td[data-id="${id}"]`);
-if(td){if(allDupIds.has(String(id)))td.classList.add('dup-warn');else td.classList.remove('dup-warn');}
+if(td){if(stats.duplicateIds.has(String(id)))td.classList.add('dup-warn');else td.classList.remove('dup-warn');}
 }
-document.getElementById('st-f').textContent=filledCount;
-document.getElementById('st-e').textContent=200-filledCount;
-document.getElementById('st-d').textContent=dCount;
-document.getElementById('st-d').style.color=dCount>0?'#ef4444':'inherit';
-if(dCount>0&&!dupWarned){showToast("Duplicate values detected","warn");dupWarned=true;}
-else if(dCount===0)dupWarned=false;
+document.getElementById('st-f').textContent=stats.filledCount;
+document.getElementById('st-e').textContent=stats.emptyCount;
+document.getElementById('st-d').textContent=stats.duplicateGroupCount;
+document.getElementById('st-d').style.color=stats.duplicateGroupCount>0?'#ef4444':'inherit';
+if(stats.duplicateGroupCount>0&&!dupWarned){showToast(t('toast_duplicates_detected'),"warn");dupWarned=true;}
+else if(stats.duplicateGroupCount===0)dupWarned=false;
 }
 function fuzzyMatch(pattern,str){pattern=pattern.toLowerCase().replace(/\s+/g,'');str=str.toLowerCase();let p=0;for(let i=0;i<str.length&&p<pattern.length;i++)if(str[i]===pattern[p])p++;return p===pattern.length;}
 function runSearch(q){
@@ -2218,12 +2347,12 @@ if(Object.keys(appStyles[id]||{}).length===0||appData[id]==null){delete appStyle
 if(pruned)safeSetItem('lx_style_ul_v4',JSON.stringify(appStyles));
 }
 function requestClearData(){
-if(isPreviewing){showToast("Cannot clear data while previewing history.","warn");return;}
-openModal("Clear Grid Data","Are you sure you want to delete all grid entries?","Clear Data","btn-danger",()=>{recordHistory();appData={};appStyles={};hasUnsavedChanges=true;triggerAutoSave();pushVersion('Clear');renderPage();showToast("Cleared successfully","success");});
+if(isPreviewing){showToast(t('toast_cannot_clear_previewing'),"warn");return;}
+openModal("Clear Grid Data","Are you sure you want to delete all grid entries?","Clear Data","btn-danger",()=>{recordHistory();appData={};appStyles={};hasUnsavedChanges=true;triggerAutoSave();pushVersion('Clear');renderPage();showToast(t('toast_cleared_successfully'),"success");});
 }
 window.addEventListener('beforeunload',(e)=>{if(hasUnsavedChanges&&!isPreviewing){e.preventDefault();e.returnValue='';}});
 function openImportModal(){
-if(isPreviewing){showToast("Cannot import data while previewing.","warn");return;}
+if(isPreviewing){showToast(t('toast_cannot_import_previewing'),"warn");return;}
 document.getElementById('imp-step-1').style.display='block';
 document.getElementById('imp-step-2').style.display='none';
 const modal=document.getElementById('import-modal');
@@ -2283,7 +2412,7 @@ loadImportSheet(0);
 document.getElementById('imp-step-1').style.display='none';
 document.getElementById('imp-step-2').style.display='block';
 }catch(err){
-showToast("Could not read file: "+esc(err.message),"error");
+showToast(t('toast_file_read_error',esc(err.message)),"error");
 }
 };
 reader.readAsArrayBuffer(f);
@@ -2341,7 +2470,7 @@ const mode=document.querySelector('input[name="imp-mode"]:checked').value;
 if(mode==='replace'){appData={};appStyles={};}
 let count=0;
 dataRows.forEach(row=>{const id=parseFloat(row[idCI]),nm=clampText(String(row[nameCI]??'').trim());if(Number.isInteger(id)&&id>=1&&id<=200&&nm){appData[id]=nm;count++;}});
-closeImportModal();hasUnsavedChanges=true;triggerAutoSave();pushVersion('Import');renderPage();showToast(`Imported ${count} entr${count===1?'y':'ies'}`,"success");
+closeImportModal();hasUnsavedChanges=true;triggerAutoSave();pushVersion('Import');renderPage();showToast(t('toast_imported',count),"success");
 }
 
 function handleKey(e,r,c){
@@ -2396,7 +2525,7 @@ if(td.previousElementSibling)td.previousElementSibling.classList.remove('has-dat
 autoFitText(td);
 }
 });
-hasUnsavedChanges=true;updateStats();triggerAutoSave();if(!skipHistory)showToast(`Cleared ${ids.length} cell${ids.length>1?'s':''}`,'success');
+hasUnsavedChanges=true;updateStats();triggerAutoSave();if(!skipHistory)showToast(t('toast_cells_cleared',ids.length),'success');
 }
 function renderPage(){
 const cont=document.getElementById('page-container');cont.innerHTML='';
@@ -2448,7 +2577,7 @@ const insertedLen=e.data!=null?e.data.length:0;
 const projected=e.target.textContent.length-selLen+insertedLen;
 if(projected>100){
 e.preventDefault();
-if(!tdVal._limitWarned){tdVal._limitWarned=true;showToast('100 character limit reached','info');}
+if(!tdVal._limitWarned){tdVal._limitWarned=true;showToast(t('toast_char_limit_reached'),'info');}
 }
 });
 tdVal.addEventListener('input',(e)=>{
@@ -2458,7 +2587,7 @@ v=v.trim();
 if(v){appData[id]=v;tdVal.classList.add('has-data');tdId.classList.add('has-data');}
 else{delete appData[id];tdVal.classList.remove('has-data');tdId.classList.remove('has-data');if(appStyles[id]){delete appStyles[id];applyCellDomStyle(tdVal,id);}}
 const len=e.target.textContent.length;
-if(len>=90){if(!tdVal._nearLimitWarned){tdVal._nearLimitWarned=true;showToast(`${len}/100 characters`,'info');}}
+if(len>=90){if(!tdVal._nearLimitWarned){tdVal._nearLimitWarned=true;showToast(t('toast_char_count',len),'info');}}
 else{tdVal._nearLimitWarned=false;tdVal._limitWarned=false;}
 hasUnsavedChanges=true;autoFitText(e.target);updateStats();
 triggerAutoSave();if(qStr)runSearch(qStr);
@@ -2488,7 +2617,7 @@ activeCellId=id;lastClickedId=id;td._hasModified=false;
 const panel=document.getElementById('cell-panel');
 panel.classList.remove('disabled');setPanelOpen(panel,true);
 const titleEl=panel.querySelector('.panel-title');
-titleEl.innerHTML=`★ Cell Override <span style="color:#64748b;font-size:10px;">(ID: ${parseInt(id)})</span><span class="arrow">▼</span>`;
+titleEl.innerHTML=`<svg class="ui-icon"><use href="#icon-star"></use></svg> Cell Override <span style="color:#64748b;font-size:10px;">(ID: ${parseInt(id)})</span><span class="arrow">▼</span>`;
 const paintBtn=document.getElementById('btn-copy-fmt');if(paintBtn){paintBtn.disabled=false;paintBtn.style.opacity='';}
 const s=appStyles[id]||{};
 document.getElementById('btn-bold').classList.toggle('active',!!s.b);document.getElementById('btn-italic').classList.toggle('active',!!s.i);document.getElementById('btn-under').classList.toggle('active',!!s.u);
@@ -2502,7 +2631,7 @@ clearMultiSelect();activeCellId=null;lastClickedId=null;
 const panel=document.getElementById('cell-panel');
 panel.classList.add('disabled');setPanelOpen(panel,false);
 const titleEl=panel.querySelector('.panel-title');
-titleEl.innerHTML=`★ Selected Cell Override<span class="arrow">▼</span>`;
+titleEl.innerHTML=`<svg class="ui-icon"><use href="#icon-star"></use></svg> Selected Cell Override<span class="arrow">▼</span>`;
 const paintBtn=document.getElementById('btn-copy-fmt');if(paintBtn){paintBtn.disabled=false;paintBtn.style.opacity='';}
 syncSelToolbar();
 }
@@ -2514,12 +2643,12 @@ window._paintFormat=clipboardFormat;
 isPainting=true;
 paintSticky=!!(e&&e.detail>=2);
 document.getElementById('index-workspace').classList.add('paint-mode');
-const btn=document.getElementById('btn-copy-fmt');if(btn){btn.classList.add('painting');btn.textContent=paintSticky?'📌 Sticky Paint — Esc to stop':'✕ Cancel Paint';}
-syncSelToolbar();showToast(paintSticky?"Sticky paint on — click or drag cells, Esc to stop":"Click or drag cells to apply style — Esc to cancel","warn");
+const btn=document.getElementById('btn-copy-fmt');if(btn){btn.classList.add('painting');btn.innerHTML=paintSticky?'<svg class="ui-icon"><use href="#icon-pin"></use></svg> Sticky Paint — Esc to stop':'<svg class="ui-icon"><use href="#icon-x"></use></svg> Cancel Paint';}
+syncSelToolbar();showToast(paintSticky?t('toast_paint_sticky_on'):t('toast_paint_click_drag'),"warn");
 }
 function cancelPaintMode(){
 isPainting=false;paintSticky=false;paintStrokeStarted=false;document.getElementById('index-workspace').classList.remove('paint-mode');
-const btn=document.getElementById('btn-copy-fmt');if(btn){btn.classList.remove('painting');btn.textContent='🖌️ Paint Style';}
+const btn=document.getElementById('btn-copy-fmt');if(btn){btn.classList.remove('painting');btn.innerHTML='<svg class="ui-icon"><use href="#icon-brush"></use></svg> Paint Style';}
 syncSelToolbar();
 }
 function applyPaint(id,td){
@@ -2631,7 +2760,7 @@ if(snapshot)pushVersion('Theme change');
 }
 function downloadTemplate(){
 const d=[["ID","Item Name"]];for(let i=1;i<=200;i++)d.push([i,""]);
-const ws=XLSX.utils.aoa_to_sheet(d),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Template");XLSX.writeFile(wb,"LX_Template_200.xlsx");showToast("Template downloaded","success");
+const ws=XLSX.utils.aoa_to_sheet(d),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Template");XLSX.writeFile(wb,"LX_Template_200.xlsx");showToast(t('toast_template_downloaded'),"success");
 }
 function clipObjToTSV(clipObj){
 const grid=Array.from({length:clipObj.rows},()=>Array(clipObj.cols).fill(''));
@@ -2680,23 +2809,23 @@ const pb=document.getElementById('stb-paste');
 const cpBtn=document.getElementById('stb-clip-btn');
 if(pb){pb.classList.remove('dim');pb.classList.add('ready');}
 if(cpBtn){cpBtn.classList.remove('dim');cpBtn.classList.add('ready');}
-if(!skipToast)showToast(`${ids.length} cell${ids.length>1?'s':''} copied`,'success');
+if(!skipToast)showToast(t('toast_cells_copied',ids.length),'success');
 }
 function cutSelectionBlock(){
 const ids=getTargetIds();if(!ids.length)return;
 recordHistory();
 copySelectionBlock(true);clearSelectionData(true);
-showToast(`${ids.length} cell${ids.length>1?'s':''} cut`,'success');
+showToast(t('toast_cells_cut',ids.length),'success');
 }
 function pasteBlock(clipItem=null){
 const item=clipItem||clipboardHistory[0];
-if(!item||isPreviewing){showToast('Nothing to paste','info');return;}
+if(!item||isPreviewing){showToast(t('toast_nothing_to_paste'),'info');return;}
 const baseId=activeCellId!==null?activeCellId:selectedCells.size>0?Math.min(...selectedCells):lastClickedId;
-if(baseId==null){showToast('Click a target cell first','info');return;}
+if(baseId==null){showToast(t('toast_click_target_first'),'info');return;}
 const base=idToRowCol(baseId);
 const rowSpan=item.rows||1,colSpan=item.cols||1;
 if(base.row+rowSpan-1>50||base.col+colSpan-1>3){
-showToast(`Paste needs ${rowSpan}×${colSpan} cells from here — that overflows the grid`,'warn');
+showToast(t('toast_paste_overflow',rowSpan,colSpan),'warn');
 return;
 }
 if(document.activeElement&&document.activeElement.isContentEditable)document.activeElement.blur();
@@ -2710,7 +2839,7 @@ else{delete appData[tid];if(td){td.classList.remove('has-data');if(td.previousEl
 if(style)appStyles[tid]=JSON.parse(JSON.stringify(style));else delete appStyles[tid];
 if(td){td.textContent=safeVal;applyCellDomStyle(td,tid);autoFitText(td);}
 });
-hasUnsavedChanges=true;updateStats();triggerAutoSave();pushVersion('Paste');showToast(`Pasted ${item.entries.length} cell${item.entries.length>1?'s':''} → cell ${baseId}`,'success');
+hasUnsavedChanges=true;updateStats();triggerAutoSave();pushVersion('Paste');showToast(t('toast_pasted_at_cell',item.entries.length,baseId),'success');
 }
 function pasteTSVIntoGrid(text,anchorId){
 if(isPreviewing)return;
@@ -2720,7 +2849,7 @@ const grid=rows.map(r=>r.split('\t'));
 const anchor=idToRowCol(anchorId);
 const rowSpan=grid.length,colSpan=Math.max(...grid.map(r=>r.length));
 if(anchor.row+rowSpan-1>50||anchor.col+colSpan-1>3){
-showToast(`Paste needs ${rowSpan}×${colSpan} cells from here — that overflows the grid`,'warn');
+showToast(t('toast_paste_overflow',rowSpan,colSpan),'warn');
 return;
 }
 const cellCount=rowSpan*colSpan;
@@ -2737,7 +2866,7 @@ if(td){td.textContent=val;autoFitText(td);}
 }
 }
 hasUnsavedChanges=true;updateStats();triggerAutoSave();pushVersion('Paste');
-showToast(`Pasted ${cellCount} cells → starting at cell ${anchorId}`,'success');
+showToast(t('toast_pasted_starting',cellCount,anchorId),'success');
 };
 if(cellCount>1){
 openModal('Paste Multiple Cells',`Paste ${rowSpan} row${rowSpan>1?'s':''} × ${colSpan} col${colSpan>1?'s':''} (${cellCount} cells) starting at cell ${anchorId}?`,'Paste','btn-primary',doPaste);
@@ -2746,7 +2875,7 @@ doPaste();
 }
 }
 function toggleClipboardPopover(){
-if(clipboardHistory.length===0){showToast('Clipboard is empty','info');return;}
+if(clipboardHistory.length===0){showToast(t('toast_clipboard_empty'),'info');return;}
 const pop=document.getElementById('clip-popover');
 if(pop.classList.contains('open')){
 pop.classList.remove('open');
@@ -2913,14 +3042,14 @@ saveCoverState();
 });
 });
 function pushToRegistry(){
-if(Object.keys(appData).length===0){showToast("Grid is empty","warn");return;}
+if(Object.keys(appData).length===0){showToast(t('toast_grid_empty'),"warn");return;}
 let rawVol=document.getElementById('reg-vol-sel').value;
 let vol=rawVol.trim().toUpperCase().replace(/[^A-Z0-9\-_]/g,'').substring(0,20)||"A";
 openModal("Transfer to Registry",`Overwrite Registry Volume ${esc(vol)} with current grid data?`,"Transfer","btn-primary",()=>{
 registryData=registryData.filter(d=>d.book!==vol);
 for(let id in appData){registryData.push({book:vol,id:parseInt(id),name:appData[id]});}
 safeSetItem('lx_registry_v4',JSON.stringify(registryData));
-showToast(`Pushed to Volume ${esc(vol)}`,"success");
+showToast(t('toast_pushed_to_volume',esc(vol)),"success");
 initRegistryFilters();
 pushVersion('Registry push');
 if(document.body.classList.contains('mode-registry'))buildRegistry();
@@ -2932,7 +3061,7 @@ registryData=[];
 localStorage.removeItem('lx_registry_v4');
 initRegistryFilters();
 buildRegistry();
-showToast("Registry cleared","success");
+showToast(t('toast_registry_cleared'),"success");
 });
 }
 function initRegistryFilters(){
@@ -3053,7 +3182,7 @@ safeSetItem('lx_registry_v4',JSON.stringify(registryData));
 regUndoStack=regUndoStack.filter(u=>u.id!==undoId);
 initRegistryFilters();
 buildRegistry();
-showToast("Volume restoration successful.","success");
+showToast(t('toast_volume_restored'),"success");
 }
 };
 function autoFitRegistryNames(page){
@@ -3112,7 +3241,7 @@ if(showDelete){
 const delBtn=document.createElement('button');
 delBtn.className='btn btn-danger';
 delBtn.style.cssText='position:absolute; top:12px; right:12px; width:auto; padding:6px 12px; font-size:11px; z-index:10; border-radius:8px; box-shadow:var(--shadow-sm);';
-delBtn.textContent='🗑️ Delete Vol '+esc(book);
+delBtn.innerHTML='<svg class="ui-icon"><use href="#icon-trash"></use></svg> Delete Vol '+esc(book);
 delBtn.onclick=()=>deleteRegistryVolume(book);
 page.appendChild(delBtn);
 }
@@ -3194,8 +3323,7 @@ div.textContent="Registry is empty. Push from Grid.";
 box.appendChild(div);
 return;
 }
-const grp={};
-items.forEach(d=>{if(!grp[d.book])grp[d.book]=[];grp[d.book].push(d);});
+const grp=selectors.groupRegistryByVolume(items);
 Array.from(regBooks).sort().forEach(b=>{
 const vol=grp[b]||[];
 if(vol.length===0&&!showAllRegSlots&&!regQ)return;
@@ -3222,7 +3350,7 @@ document.querySelectorAll('.reg-vol-page').forEach(page=>autoFitRegistryNames(pa
 }
 function exportRegCSV(){
 if(registryData.length===0){
-showToast("Registry is empty","warn");
+showToast(t('toast_registry_empty'),"warn");
 return;
 }
 const escapeCsv=v=>`"${String(v).replace(/"/g,'""')}"`;
@@ -3327,7 +3455,7 @@ function addRow() {
     syncReviewModelFromDom();
     const limit = isTransposed ? 12 : 10;
     if (reviewModel.rows.length >= limit) {
-        showToast(`Maximum ${limit} ${isTransposed ? 'months' : 'entities'} allowed.`, "warn");
+        showToast(t('toast_max_allowed',limit,isTransposed?t('unit_months'):t('unit_entities')), "warn");
         return;
     }
     const newRow=new Array(reviewModel.headers.length).fill('');
@@ -3348,7 +3476,7 @@ if(step){
 reviewModel=step.model;
 reviewUndoStack=reviewUndoStack.filter(u=>u.id!==undoId);
 renderReviewTable();
-showToast("Restored.","success");
+showToast(t('toast_restored'),"success");
 }
 };
 function removeRow() {
@@ -3364,7 +3492,7 @@ function addCol() {
     const currentCols = reviewModel.headers.length - 1;
     const limit = isTransposed ? 10 : 12;
     if (currentCols >= limit) {
-        showToast(`Maximum ${limit} ${isTransposed ? 'entities' : 'months'} allowed.`, "warn");
+        showToast(t('toast_max_allowed',limit,isTransposed?t('unit_entities'):t('unit_months')), "warn");
         return;
     }
     reviewModel.headers.push(isTransposed ? "جهة جديدة" : "شهر جديد");
