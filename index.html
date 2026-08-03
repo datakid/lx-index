@@ -1620,9 +1620,96 @@ syncSelToolbar();
 }
 }
 
-function recordHistory(){if(isPreviewing)return;undoStack.push({d:JSON.parse(JSON.stringify(appData)),s:JSON.parse(JSON.stringify(appStyles))});if(undoStack.length>MAX_HISTORY)undoStack.shift();redoStack=[];updateUndoRedoUI();}
-function undo(){if(isPreviewing||undoStack.length===0)return;redoStack.push({d:JSON.parse(JSON.stringify(appData)),s:JSON.parse(JSON.stringify(appStyles))});let state=undoStack.pop();appData=state.d;appStyles=state.s;hasUnsavedChanges=true;triggerAutoSave();renderPage();updateUndoRedoUI();showToast("Undo successful","info");}
-function redo(){if(isPreviewing||redoStack.length===0)return;undoStack.push({d:JSON.parse(JSON.stringify(appData)),s:JSON.parse(JSON.stringify(appStyles))});let state=redoStack.pop();appData=state.d;appStyles=state.s;hasUnsavedChanges=true;triggerAutoSave();renderPage();updateUndoRedoUI();showToast("Redo successful","info");}
+function captureSelectionSnapshot(){
+let caretOffset=null;
+if(activeCellId!==null){
+const td=document.querySelector(`td[data-id="${activeCellId}"]`);
+if(td&&document.activeElement===td){
+const sel=window.getSelection();
+if(sel&&sel.rangeCount>0){
+const range=sel.getRangeAt(0);
+if(td.contains(range.startContainer))caretOffset=range.startOffset;
+}
+}
+}
+const scrollEl=document.getElementById('main-scroll-container');
+return{selectedCells:[...selectedCells],activeCellId,caretOffset,scrollTop:scrollEl?scrollEl.scrollTop:0};
+}
+function restoreSelectionSnapshot(sel){
+if(!sel)return;
+clearMultiSelect();
+(sel.selectedCells||[]).forEach(id=>{
+selectedCells.add(id);
+const td=document.querySelector(`td[data-id="${id}"]`);
+if(td)td.classList.add('cell-selected');
+});
+if(selectedCells.size>0)updateMultiSelectPanel();
+if(sel.activeCellId!==null&&sel.activeCellId!==undefined){
+const td=document.querySelector(`td[data-id="${sel.activeCellId}"]`);
+if(td){
+td.focus({preventScroll:true});
+if(sel.caretOffset!==null&&sel.caretOffset!==undefined){
+try{
+const textNode=td.firstChild;
+if(textNode){
+const range=document.createRange();
+const maxOffset=textNode.textContent?textNode.textContent.length:0;
+range.setStart(textNode,Math.min(sel.caretOffset,maxOffset));
+range.collapse(true);
+const winSel=window.getSelection();
+winSel.removeAllRanges();
+winSel.addRange(range);
+}
+}catch(e){}
+}
+activateCell(sel.activeCellId,td);
+}
+}
+const scrollEl=document.getElementById('main-scroll-container');
+if(scrollEl&&sel.scrollTop!==undefined)scrollEl.scrollTop=sel.scrollTop;
+}
+function patchGridToState(oldData,oldStyles,newData,newStyles){
+const allIds=new Set([...Object.keys(oldData),...Object.keys(newData)]);
+allIds.forEach(idStr=>{
+const id=parseInt(idStr,10);
+const oldVal=oldData[id],newVal=newData[id];
+const oldStyleStr=JSON.stringify(oldStyles[id]||null),newStyleStr=JSON.stringify(newStyles[id]||null);
+if(oldVal===newVal&&oldStyleStr===newStyleStr)return;
+const td=document.querySelector(`td[data-id="${id}"]`);
+if(!td)return;
+const tdId=td.previousElementSibling;
+if(oldVal!==newVal){
+td.textContent=newVal||'';
+if(newVal){td.classList.add('has-data');if(tdId)tdId.classList.add('has-data');}
+else{td.classList.remove('has-data');if(tdId)tdId.classList.remove('has-data');}
+autoFitText(td);
+}
+if(oldStyleStr!==newStyleStr)applyCellDomStyle(td,id);
+});
+}
+function recordHistory(){if(isPreviewing)return;undoStack.push({d:JSON.parse(JSON.stringify(appData)),s:JSON.parse(JSON.stringify(appStyles)),sel:captureSelectionSnapshot()});if(undoStack.length>MAX_HISTORY)undoStack.shift();redoStack=[];updateUndoRedoUI();}
+function undo(){
+if(isPreviewing||undoStack.length===0)return;
+redoStack.push({d:JSON.parse(JSON.stringify(appData)),s:JSON.parse(JSON.stringify(appStyles)),sel:captureSelectionSnapshot()});
+const state=undoStack.pop();
+const oldData=appData,oldStyles=appStyles;
+appData=state.d;appStyles=state.s;
+patchGridToState(oldData,oldStyles,appData,appStyles);
+hasUnsavedChanges=true;triggerAutoSave();updateUndoRedoUI();
+restoreSelectionSnapshot(state.sel);
+showToast("Undo successful","info");
+}
+function redo(){
+if(isPreviewing||redoStack.length===0)return;
+undoStack.push({d:JSON.parse(JSON.stringify(appData)),s:JSON.parse(JSON.stringify(appStyles)),sel:captureSelectionSnapshot()});
+const state=redoStack.pop();
+const oldData=appData,oldStyles=appStyles;
+appData=state.d;appStyles=state.s;
+patchGridToState(oldData,oldStyles,appData,appStyles);
+hasUnsavedChanges=true;triggerAutoSave();updateUndoRedoUI();
+restoreSelectionSnapshot(state.sel);
+showToast("Redo successful","info");
+}
 function updateUndoRedoUI(){document.getElementById('btn-undo').disabled=undoStack.length===0;document.getElementById('btn-redo').disabled=redoStack.length===0;}
 
 function togglePanel(id,forceOpen=false){
