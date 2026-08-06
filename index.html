@@ -1590,6 +1590,7 @@ toast_cells_cut:(n)=>`${n} cell${n>1?'s':''} cut`,
 toast_nothing_to_paste:"Nothing to paste",
 toast_click_target_first:"Click a target cell first",
 toast_paste_overflow:(r,c)=>`Paste needs ${r}×${c} cells from here — that overflows the grid`,
+toast_paste_overflow_flow:(n)=>`Paste needs ${n} cells from here — that overflows the grid`,
 toast_pasted_at_cell:(n,id)=>`Pasted ${n} cell${n>1?'s':''} → cell ${id}`,
 toast_pasted_starting:(n,id)=>`Pasted ${n} cells → starting at cell ${id}`,
 toast_clipboard_empty:"Clipboard is empty",
@@ -1633,6 +1634,7 @@ toast_cells_cut:(n)=>`تم قص ${n} من الخلايا`,
 toast_nothing_to_paste:"لا يوجد شيء للّصق",
 toast_click_target_first:"اختر الخلية المستهدفة أولاً",
 toast_paste_overflow:(r,c)=>`اللصق يحتاج ${r}×${c} خلايا من هنا — هذا يتجاوز حدود الشبكة`,
+toast_paste_overflow_flow:(n)=>`اللصق يحتاج ${n} خلايا من هنا — هذا يتجاوز حدود الشبكة`,
 toast_pasted_at_cell:(n,id)=>`تم لصق ${n} من الخلايا ← الخلية ${id}`,
 toast_pasted_starting:(n,id)=>`تم لصق ${n} خلية ← بدءاً من الخلية ${id}`,
 toast_clipboard_empty:"الحافظة فارغة",
@@ -1658,7 +1660,7 @@ const clampText=t=>t?String(t).slice(0,100):'';
 function safeSetItem(k,v){try{localStorage.setItem(k,v);return true;}catch(e){showToast(t('toast_storage_quota'),"error");return false;}}
 
 let appData={},appStyles={},saveTimeout,activeCellId=null,clipboardHistory=[],dupWarned=false,qStr='',versions=[],hasUnsavedChanges=false,modalConfirmAction=null,backupData=null,backupStyles=null,isPreviewing=false,isPainting=false,selectedCells=new Set(),lastClickedId=null,importWorkbook=null,importCurrentRows=null,importHeaders=null;
-let rangeAnchorId=null,isDragSelecting=false,paintSticky=false,paintStrokeStarted=false;
+let rangeAnchorId=null,isDragSelecting=false,paintSticky=false,paintStrokeStarted=false,lastRangeMode='block';
 function idToRowCol(id){return{row:((id-1)%50)+1,col:Math.floor((id-1)/50)};}
 function rowColToId(row,col){return col*50+row;}
 let undoStack=[],redoStack=[];
@@ -1921,7 +1923,7 @@ if(ids.length>=1){
 bar.setAttribute('data-mode',count<=1?'single':'multi');
 bar.style.display='flex';
 requestAnimationFrame(()=>bar.classList.add('vis'));
-document.getElementById('sel-count-label').textContent=count+' cell'+(count>1?'s':'');
+document.getElementById('sel-count-label').textContent=count+' cell'+(count>1?'s':'')+(count>1?' · '+lastRangeMode:'');
 document.getElementById('stb-bold').classList.toggle('on',ids.every(id=>appStyles[id]?.b));
 document.getElementById('stb-italic').classList.toggle('on',ids.every(id=>appStyles[id]?.i));
 document.getElementById('stb-under').classList.toggle('on',ids.every(id=>appStyles[id]?.u));
@@ -1967,11 +1969,19 @@ const paintBtn=document.getElementById('btn-copy-fmt');
 if(paintBtn){paintBtn.disabled=true;paintBtn.style.opacity='0.4';}
 syncSelToolbar();
 }
-function rangeSelect(fromId,toId){
+function rangeSelect(fromId,toId,mode='block'){
+clearMultiSelect();
+if(mode==='flow'){
+const lo=Math.min(fromId,toId),hi=Math.max(fromId,toId);
+for(let id=lo;id<=hi;id++){
+selectedCells.add(id);
+const td=document.querySelector(`td[data-id="${id}"]`);
+if(td)td.classList.add('cell-selected');
+}
+}else{
 const a=idToRowCol(fromId),b=idToRowCol(toId);
 const rLo=Math.min(a.row,b.row),rHi=Math.max(a.row,b.row);
 const cLo=Math.min(a.col,b.col),cHi=Math.max(a.col,b.col);
-clearMultiSelect();
 for(let col=cLo;col<=cHi;col++){
 for(let row=rLo;row<=rHi;row++){
 const id=rowColToId(row,col);
@@ -1980,7 +1990,9 @@ const td=document.querySelector(`td[data-id="${id}"]`);
 if(td)td.classList.add('cell-selected');
 }
 }
+}
 rangeAnchorId=fromId;
+lastRangeMode=mode;
 updateMultiSelectPanel();
 }
 function getPrintPadMm(){const map={"4mm":4,"8mm":8,"12mm":12};return map[document.getElementById('p-margin').value]??8;}
@@ -2120,7 +2132,8 @@ const SHORTCUTS=[
 {keys:['Delete'],desc:'Delete selected contents'},
 {keys:['Ctrl+A'],desc:'Select all cells'},
 {keys:['Ctrl+Click'],desc:'Add/remove selection'},
-{keys:['Shift+Click'],desc:'Select range'},
+{keys:['Shift+Click'],desc:'Select range (list order)'},
+{keys:['Alt+Shift+Click'],desc:'Select rectangular block'},
 {keys:['/'],desc:'Focus search'},
 {keys:['?'],desc:'Keyboard shortcuts'},
 {keys:['Esc'],desc:'Clear selection / Cancel'},
@@ -2558,7 +2571,7 @@ lastClickedId=id;updateMultiSelectPanel();return;
 if(e.shiftKey&&(rangeAnchorId!==null||activeCellId!==null)){
 e.preventDefault();
 const anchor=rangeAnchorId!==null?rangeAnchorId:activeCellId;
-rangeSelect(anchor,id);
+rangeSelect(anchor,id,e.altKey?'block':'flow');
 lastClickedId=id;
 return;
 }
@@ -2763,6 +2776,7 @@ const d=[["ID","Item Name"]];for(let i=1;i<=200;i++)d.push([i,""]);
 const ws=XLSX.utils.aoa_to_sheet(d),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Template");XLSX.writeFile(wb,"LX_Template_200.xlsx");showToast(t('toast_template_downloaded'),"success");
 }
 function clipObjToTSV(clipObj){
+if(clipObj.flow)return clipObj.entries.map(en=>en.value||'').join('\r\n');
 const grid=Array.from({length:clipObj.rows},()=>Array(clipObj.cols).fill(''));
 clipObj.entries.forEach(en=>{grid[en.dr][en.dc]=en.value||'';});
 return grid.map(row=>row.join('\t')).join('\r\n');
@@ -2772,7 +2786,7 @@ if(!navigator.clipboard)return;
 const tsv=clipObjToTSV(clipObj);
 if(typeof ClipboardItem!=='undefined'&&navigator.clipboard.write){
 try{
-const json=JSON.stringify({lxClip:true,v:1,rows:clipObj.rows,cols:clipObj.cols,entries:clipObj.entries});
+const json=JSON.stringify({lxClip:true,v:1,rows:clipObj.rows,cols:clipObj.cols,flow:clipObj.flow,entries:clipObj.entries});
 const html=`<!--lx-clip:${encodeURIComponent(json)}-->`;
 const item=new ClipboardItem({
 'text/plain':new Blob([tsv],{type:'text/plain'}),
@@ -2791,14 +2805,16 @@ const ids=raw.slice().sort((a,b)=>a-b);
 const coords=ids.map(id=>({id,...idToRowCol(id)}));
 const minRow=Math.min(...coords.map(p=>p.row)),minCol=Math.min(...coords.map(p=>p.col));
 const maxRow=Math.max(...coords.map(p=>p.row)),maxCol=Math.max(...coords.map(p=>p.col));
+const isFlow=ids.length>1&&ids[ids.length-1]-ids[0]===ids.length-1&&(maxCol-minCol)>0;
 const textPreview=ids.slice(0,3).map(id=>appData[id]||'').filter(v=>v).join(', ')+(ids.length>3?'...':'');
 const clipObj={
 id:Date.now(),
 count:ids.length,
 rows:maxRow-minRow+1,
 cols:maxCol-minCol+1,
+flow:isFlow,
 preview:textPreview||'(Empty Cells)',
-entries:coords.map(p=>({dr:p.row-minRow,dc:p.col-minCol,value:appData[p.id]!=null?String(appData[p.id]):'',style:appStyles[p.id]?JSON.parse(JSON.stringify(appStyles[p.id])):null}))
+entries:isFlow?ids.map(id=>({off:id-ids[0],value:appData[id]!=null?String(appData[id]):'',style:appStyles[id]?JSON.parse(JSON.stringify(appStyles[id])):null})):coords.map(p=>({dr:p.row-minRow,dc:p.col-minCol,value:appData[p.id]!=null?String(appData[p.id]):'',style:appStyles[p.id]?JSON.parse(JSON.stringify(appStyles[p.id])):null}))
 };
 clipboardHistory.unshift(clipObj);
 if(clipboardHistory.length>10)clipboardHistory.pop();
@@ -2817,11 +2833,28 @@ recordHistory();
 copySelectionBlock(true);clearSelectionData(true);
 showToast(t('toast_cells_cut',ids.length),'success');
 }
+function writePasteEntry(tid,value,style){
+const td=document.querySelector(`td[data-id="${tid}"]`);
+const safeVal=clampText(value);
+if(safeVal){appData[tid]=safeVal;if(td){td.classList.add('has-data');if(td.previousElementSibling)td.previousElementSibling.classList.add('has-data');}}
+else{delete appData[tid];if(td){td.classList.remove('has-data');if(td.previousElementSibling)td.previousElementSibling.classList.remove('has-data');}}
+if(style)appStyles[tid]=JSON.parse(JSON.stringify(style));else delete appStyles[tid];
+if(td){td.textContent=safeVal;applyCellDomStyle(td,tid);autoFitText(td);}
+}
 function pasteBlock(clipItem=null){
 const item=clipItem||clipboardHistory[0];
 if(!item||isPreviewing){showToast(t('toast_nothing_to_paste'),'info');return;}
 const baseId=activeCellId!==null?activeCellId:selectedCells.size>0?Math.min(...selectedCells):lastClickedId;
 if(baseId==null){showToast(t('toast_click_target_first'),'info');return;}
+if(item.flow){
+if(baseId+item.count-1>200){
+showToast(t('toast_paste_overflow_flow',item.count),'warn');
+return;
+}
+if(document.activeElement&&document.activeElement.isContentEditable)document.activeElement.blur();
+recordHistory();
+item.entries.forEach(({off,value,style})=>writePasteEntry(baseId+off,value,style));
+}else{
 const base=idToRowCol(baseId);
 const rowSpan=item.rows||1,colSpan=item.cols||1;
 if(base.row+rowSpan-1>50||base.col+colSpan-1>3){
@@ -2830,15 +2863,8 @@ return;
 }
 if(document.activeElement&&document.activeElement.isContentEditable)document.activeElement.blur();
 recordHistory();
-item.entries.forEach(({dr,dc,value,style})=>{
-const tid=rowColToId(base.row+dr,base.col+dc);
-const td=document.querySelector(`td[data-id="${tid}"]`);
-const safeVal=clampText(value);
-if(safeVal){appData[tid]=safeVal;if(td){td.classList.add('has-data');if(td.previousElementSibling)td.previousElementSibling.classList.add('has-data');}}
-else{delete appData[tid];if(td){td.classList.remove('has-data');if(td.previousElementSibling)td.previousElementSibling.classList.remove('has-data');}}
-if(style)appStyles[tid]=JSON.parse(JSON.stringify(style));else delete appStyles[tid];
-if(td){td.textContent=safeVal;applyCellDomStyle(td,tid);autoFitText(td);}
-});
+item.entries.forEach(({dr,dc,value,style})=>writePasteEntry(rowColToId(base.row+dr,base.col+dc),value,style));
+}
 hasUnsavedChanges=true;updateStats();triggerAutoSave();pushVersion('Paste');showToast(t('toast_pasted_at_cell',item.entries.length,baseId),'success');
 }
 function pasteTSVIntoGrid(text,anchorId){
