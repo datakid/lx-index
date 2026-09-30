@@ -59,4 +59,4 @@ The existing v4 keys were left unchanged, so current users keep their data.
 - The Review table has no Excel export
 
 ## Deploy
-Static site: one `index.html` plus CDN libraries (SheetJS, ExcelJS, Google Fonts). Use the **Publish** tab.
+Static site: one `index.html` plus CDN libraries (SheetJS, ExcelJS, Google Fonts).
