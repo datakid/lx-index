@@ -1,6 +1,6 @@
 # LX Index
 
-A single-file, offline-friendly web tool for making **printable index sheets**: a 200-slot A4 index grid, matching cover pages, registry volumes (A–Z books), and a landscape monthly review table. Everything stays in the browser (localStorage). There's no account, no server and no tracking.
+A single-file web tool for making **printable index sheets**: a 200-slot A4 index grid, matching cover pages, registry volumes (A–Z books), and a landscape monthly review table. Everything stays in the browser (localStorage). There's no account, no server and no tracking. SheetJS, ExcelJS and Google Fonts load from CDNs, so import and Excel export need a connection.
 
 ## Views (tabs in the side panel)
 
